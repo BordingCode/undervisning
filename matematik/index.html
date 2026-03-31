@@ -547,8 +547,78 @@ p, .theory { max-width: 65ch; margin-bottom: 1.25em; color: var(--text-secondary
         <div class="feedback" id="fb_ex1_5"></div>
       </div>
 
+      <div class="exercise" id="ex1_6">
+        <div class="exercise-title"><span class="num">6</span> Potensregler</div>
+        <p>Reducer: &nbsp; $$(a^2)^4$$</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex1_6')">$$a^6$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex1_6')">$$a^8$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex1_6')">$$a^{16}$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex1_6')">$$4a^2$$</button>
+        </div>
+        <div class="feedback" id="fb_ex1_6"></div>
+      </div>
+
+      <div class="exercise" id="ex1_7">
+        <div class="exercise-title"><span class="num">7</span> L&oslash;s ligningen</div>
+        <p>L&oslash;s: &nbsp; $$2(x + 4) = 18$$</p>
+        <div class="fill-group">
+          <span>$$x =$$</span>
+          <input type="number" class="fill-input" id="inp_ex1_7" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex1_7', 5, 'fb_ex1_7')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex1_7"></div>
+      </div>
+
+      <div class="exercise" id="ex1_8">
+        <div class="exercise-title"><span class="num">8</span> Negativ eksponent</div>
+        <p>Skriv som br&oslash;k: &nbsp; $$5^{-2}$$</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex1_8')">$$-25$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex1_8')">$$\frac{1}{25}$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex1_8')">$$\frac{1}{10}$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex1_8')">$$-10$$</button>
+        </div>
+        <div class="feedback" id="fb_ex1_8"></div>
+      </div>
+
+      <div class="exercise" id="ex1_9">
+        <div class="exercise-title"><span class="num">9</span> Anden kvadrats&aelig;tning</div>
+        <p>Udregn: &nbsp; $$(3x - 2)^2$$</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex1_9')">$$9x^2 + 4$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex1_9')">$$9x^2 + 12x + 4$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex1_9')">$$9x^2 - 12x + 4$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex1_9')">$$3x^2 - 6x + 4$$</button>
+        </div>
+        <div class="feedback" id="fb_ex1_9"></div>
+      </div>
+
+      <div class="exercise" id="ex1_10">
+        <div class="exercise-title"><span class="num">10</span> L&oslash;s ligning med br&oslash;k</div>
+        <p>L&oslash;s: &nbsp; $$\frac{x}{4} + 3 = 7$$</p>
+        <div class="fill-group">
+          <span>$$x =$$</span>
+          <input type="number" class="fill-input" id="inp_ex1_10" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex1_10', 16, 'fb_ex1_10')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex1_10"></div>
+      </div>
+
+      <div class="exercise" id="ex1_11">
+        <div class="exercise-title"><span class="num">11</span> Faktorisering</div>
+        <p>Faktoriser: &nbsp; $$x^2 - 16$$</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex1_11')">$$(x+4)(x-4)$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex1_11')">$$(x-4)^2$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex1_11')">$$(x+8)(x-2)$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex1_11')">$$x(x-16)$$</button>
+        </div>
+        <div class="feedback" id="fb_ex1_11"></div>
+      </div>
+
       <div class="exercise" id="ex1_step">
-        <div class="exercise-title"><span class="num">6</span> Trin-for-trin: L&oslash;s ligningen</div>
+        <div class="exercise-title"><span class="num">12</span> Trin-for-trin: L&oslash;s ligningen</div>
         <p>L&oslash;s: &nbsp; $$5(x - 2) = 3x + 6$$</p>
         <div class="step visible" id="step1_1">
           <div class="step-label">Trin 1: Gang ind i parentesen</div>
@@ -622,6 +692,64 @@ p, .theory { max-width: 65ch; margin-bottom: 1.25em; color: var(--text-secondary
       </div>
     </div>
 
+      <div class="exercise" id="ex2_4">
+        <div class="exercise-title"><span class="num">4</span> Fald i procent</div>
+        <p>En aktie falder 20%. Hvad er fremskrivningsfaktoren?</p>
+        <div class="fill-group">
+          <input type="number" class="fill-input" id="inp_ex2_4" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex2_4', 0.8, 'fb_ex2_4')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex2_4"></div>
+      </div>
+
+      <div class="exercise" id="ex2_5">
+        <div class="exercise-title"><span class="num">5</span> Sammensat stigning</div>
+        <p>En pris stiger f&oslash;rst 10% og derefter 20%. Hvad er den samlede fremskrivningsfaktor?</p>
+        <div class="fill-group">
+          <input type="number" class="fill-input" id="inp_ex2_5" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex2_5', 1.32, 'fb_ex2_5')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex2_5"></div>
+        <div class="hint" id="hint_ex2_5">Hint: $$1{,}10 \cdot 1{,}20 = ?$$</div>
+      </div>
+
+      <div class="exercise" id="ex2_6">
+        <div class="exercise-title"><span class="num">6</span> Find renten</div>
+        <p>Du inds&aelig;tter 5.000 kr. og har 5.618 kr. efter 3 &aring;r. Hvad er den &aring;rlige rente? (Afrund til hele procent)</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex2_6')">3%</button>
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex2_6')">4%</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex2_6')">5%</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex2_6')">6%</button>
+        </div>
+        <div class="feedback" id="fb_ex2_6"></div>
+      </div>
+
+      <div class="exercise" id="ex2_7">
+        <div class="exercise-title"><span class="num">7</span> Antal terminer</div>
+        <p>Hvor mange &aring;r tager det at fordoble en kapital med 8% &aring;rlig rente? (Afrund op til hele &aring;r)</p>
+        <div class="fill-group">
+          <input type="number" class="fill-input" id="inp_ex2_7" step="any">
+          <span>&aring;r</span>
+          <button class="btn btn-primary" onclick="checkFill('inp_ex2_7', 9, 'fb_ex2_7')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex2_7"></div>
+        <div class="hint" id="hint_ex2_7">Hint: L&oslash;s $$1{,}08^n = 2$$. Brug $$n = \frac{\ln 2}{\ln 1{,}08} \approx 9{,}01$$</div>
+      </div>
+
+      <div class="exercise" id="ex2_8">
+        <div class="exercise-title"><span class="num">8</span> Indekstalsberegning</div>
+        <p>I 2020 var prisen 250 kr. I 2024 er prisen 310 kr. Hvad er den gennemsnitlige &aring;rlige stigning i procent? (Afrund til 1 decimal)</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex2_8')">4,8%</button>
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex2_8')">5,5%</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex2_8')">6,0%</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex2_8')">15%</button>
+        </div>
+        <div class="feedback" id="fb_ex2_8"></div>
+      </div>
+    </div>
+
     <!-- ===================== SECTION 3: Lineære funktioner ===================== -->
     <div class="section" id="s3">
       <h2><span class="level-badge badge-c">C</span> Line&aelig;re funktioner</h2>
@@ -673,6 +801,74 @@ p, .theory { max-width: 65ch; margin-bottom: 1.25em; color: var(--text-secondary
           <button class="quiz-option" onclick="checkQuiz(this,false,'ex3_3')">$$-2$$</button>
         </div>
         <div class="feedback" id="fb_ex3_3"></div>
+      </div>
+    </div>
+
+      <div class="exercise" id="ex3_4">
+        <div class="exercise-title"><span class="num">4</span> Sk&aelig;ring med y-aksen</div>
+        <p>$$f(x) = -2x + 8$$. Hvad er sk&aelig;ringen med y-aksen?</p>
+        <div class="fill-group">
+          <span>$$b =$$</span>
+          <input type="number" class="fill-input" id="inp_ex3_4" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex3_4', 8, 'fb_ex3_4')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex3_4"></div>
+      </div>
+
+      <div class="exercise" id="ex3_5">
+        <div class="exercise-title"><span class="num">5</span> Nulpunkt</div>
+        <p>$$f(x) = 3x - 12$$. Find nulpunktet (hvor $$f(x) = 0$$).</p>
+        <div class="fill-group">
+          <span>$$x =$$</span>
+          <input type="number" class="fill-input" id="inp_ex3_5" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex3_5', 4, 'fb_ex3_5')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex3_5"></div>
+      </div>
+
+      <div class="exercise" id="ex3_6">
+        <div class="exercise-title"><span class="num">6</span> Vinkelret linje</div>
+        <p>En linje har h&aelig;ldning $$a = 3$$. Hvad er h&aelig;ldningen af en vinkelret linje?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex3_6')">$$3$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex3_6')">$$-3$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex3_6')">$$-\frac{1}{3}$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex3_6')">$$\frac{1}{3}$$</button>
+        </div>
+        <div class="feedback" id="fb_ex3_6"></div>
+      </div>
+
+      <div class="exercise" id="ex3_7">
+        <div class="exercise-title"><span class="num">7</span> Sk&aelig;ringspunkt</div>
+        <p>Find x-koordinaten for sk&aelig;ringspunktet mellem $$f(x) = 2x + 1$$ og $$g(x) = -x + 10$$.</p>
+        <div class="fill-group">
+          <span>$$x =$$</span>
+          <input type="number" class="fill-input" id="inp_ex3_7" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex3_7', 3, 'fb_ex3_7')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex3_7"></div>
+        <div class="hint" id="hint_ex3_7">Hint: S&aelig;t $$2x+1 = -x+10$$</div>
+      </div>
+
+      <div class="exercise" id="ex3_8">
+        <div class="exercise-title"><span class="num">8</span> Afl&aelig;s funktionsv&aelig;rdi</div>
+        <p>$$f(x) = -4x + 20$$. Beregn $$f(3)$$.</p>
+        <div class="fill-group">
+          <span>$$f(3) =$$</span>
+          <input type="number" class="fill-input" id="inp_ex3_8" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex3_8', 8, 'fb_ex3_8')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex3_8"></div>
+      </div>
+
+      <div class="exercise" id="ex3_9">
+        <div class="exercise-title"><span class="num">9</span> Voksende eller aftagende?</div>
+        <p>$$f(x) = -5x + 3$$. Er funktionen voksende eller aftagende?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex3_9')">Voksende</button>
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex3_9')">Aftagende</button>
+        </div>
+        <div class="feedback" id="fb_ex3_9"></div>
       </div>
     </div>
 
@@ -730,6 +926,65 @@ p, .theory { max-width: 65ch; margin-bottom: 1.25em; color: var(--text-secondary
       </div>
     </div>
 
+      <div class="exercise" id="ex4_4">
+        <div class="exercise-title"><span class="num">4</span> Fordoblingskonstant</div>
+        <p>$$f(x) = 100 \cdot 1{,}08^x$$. Beregn fordoblingskonstanten $$T_2$$ (afrund til 1 decimal).</p>
+        <div class="fill-group">
+          <span>$$T_2 =$$</span>
+          <input type="number" class="fill-input" id="inp_ex4_4" step="any">
+          <button class="btn btn-primary" onclick="checkFillRange('inp_ex4_4', 9.0, 0.1, 'fb_ex4_4')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex4_4"></div>
+        <div class="hint" id="hint_ex4_4">Hint: $$T_2 = \frac{\ln 2}{\ln 1{,}08} \approx 9{,}01$$</div>
+      </div>
+
+      <div class="exercise" id="ex4_5">
+        <div class="exercise-title"><span class="num">5</span> Halveringskonstant</div>
+        <p>Et radioaktivt stof henfalder med formlen $$N(t) = 800 \cdot 0{,}5^{t/5730}$$. Hvad er halveringstiden?</p>
+        <div class="fill-group">
+          <input type="number" class="fill-input" id="inp_ex4_5" step="any">
+          <span>&aring;r</span>
+          <button class="btn btn-primary" onclick="checkFill('inp_ex4_5', 5730, 'fb_ex4_5')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex4_5"></div>
+      </div>
+
+      <div class="exercise" id="ex4_6">
+        <div class="exercise-title"><span class="num">6</span> Beregn funktionsv&aelig;rdi</div>
+        <p>$$f(x) = 50 \cdot 2^x$$. Beregn $$f(4)$$.</p>
+        <div class="fill-group">
+          <span>$$f(4) =$$</span>
+          <input type="number" class="fill-input" id="inp_ex4_6" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex4_6', 800, 'fb_ex4_6')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex4_6"></div>
+      </div>
+
+      <div class="exercise" id="ex4_7">
+        <div class="exercise-title"><span class="num">7</span> Find a fra to punkter</div>
+        <p>En eksponentiel funktion g&aring;r gennem $$(0, 200)$$ og $$(2, 288)$$. Beregn fremskrivningsfaktoren $$a$$ (afrund til 1 decimal).</p>
+        <div class="fill-group">
+          <span>$$a =$$</span>
+          <input type="number" class="fill-input" id="inp_ex4_7" step="any">
+          <button class="btn btn-primary" onclick="checkFillRange('inp_ex4_7', 1.2, 0.05, 'fb_ex4_7')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex4_7"></div>
+        <div class="hint" id="hint_ex4_7">Hint: $$a^2 = \frac{288}{200} = 1{,}44 \Rightarrow a = \sqrt{1{,}44}$$</div>
+      </div>
+
+      <div class="exercise" id="ex4_8">
+        <div class="exercise-title"><span class="num">8</span> V&aelig;kstrate fra graf</div>
+        <p>En bakteriekultur vokser fra 1000 til 2500 p&aring; 4 timer. Hvad er den &aring;rlige v&aelig;kstrate i procent pr. time? (Afrund til hele procent)</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex4_8')">20%</button>
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex4_8')">26%</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex4_8')">38%</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex4_8')">63%</button>
+        </div>
+        <div class="feedback" id="fb_ex4_8"></div>
+      </div>
+    </div>
+
     <!-- ===================== SECTION 5: Potensfunktioner ===================== -->
     <div class="section" id="s5">
       <h2><span class="level-badge badge-c">C</span> Potensfunktioner</h2>
@@ -763,6 +1018,54 @@ p, .theory { max-width: 65ch; margin-bottom: 1.25em; color: var(--text-secondary
           <button class="btn btn-primary" onclick="checkFill('inp_ex5_2', 36, 'fb_ex5_2')">Tjek</button>
         </div>
         <div class="feedback" id="fb_ex5_2"></div>
+      </div>
+    </div>
+
+      <div class="exercise" id="ex5_3">
+        <div class="exercise-title"><span class="num">3</span> Dobbeltlogaritmisk</div>
+        <p>Hvad kendetegner en potensfunktion i et dobbeltlogaritmisk koordinatsystem?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex5_3')">En parabel</button>
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex5_3')">En ret linje</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex5_3')">En eksponentiel kurve</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex5_3')">En cirkel</button>
+        </div>
+        <div class="feedback" id="fb_ex5_3"></div>
+      </div>
+
+      <div class="exercise" id="ex5_4">
+        <div class="exercise-title"><span class="num">4</span> Find eksponenten</div>
+        <p>$$f(x) = 3 \cdot x^a$$ g&aring;r gennem $$(2, 24)$$. Hvad er $$a$$?</p>
+        <div class="fill-group">
+          <span>$$a =$$</span>
+          <input type="number" class="fill-input" id="inp_ex5_4" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex5_4', 3, 'fb_ex5_4')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex5_4"></div>
+        <div class="hint" id="hint_ex5_4">Hint: $$24 = 3 \cdot 2^a \Rightarrow 2^a = 8 \Rightarrow a = 3$$</div>
+      </div>
+
+      <div class="exercise" id="ex5_5">
+        <div class="exercise-title"><span class="num">5</span> Proportionalitet</div>
+        <p>$$f(x) = 7 \cdot x^{0{,}5}$$. Beregn $$f(16)$$.</p>
+        <div class="fill-group">
+          <span>$$f(16) =$$</span>
+          <input type="number" class="fill-input" id="inp_ex5_5" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex5_5', 28, 'fb_ex5_5')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex5_5"></div>
+      </div>
+
+      <div class="exercise" id="ex5_6">
+        <div class="exercise-title"><span class="num">6</span> Eksponentiel vs. potens</div>
+        <p>Hvad er forskellen p&aring; $$f(x) = 2^x$$ og $$g(x) = x^2$$?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex5_6')">$$f$$ er eksponentiel, $$g$$ er en potensfunktion</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex5_6')">Begge er eksponentielle</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex5_6')">Begge er potensfunktioner</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex5_6')">$$f$$ er en potensfunktion, $$g$$ er eksponentiel</button>
+        </div>
+        <div class="feedback" id="fb_ex5_6"></div>
       </div>
     </div>
 
@@ -837,6 +1140,63 @@ p, .theory { max-width: 65ch; margin-bottom: 1.25em; color: var(--text-secondary
       </div>
     </div>
 
+      <div class="exercise" id="ex6_5">
+        <div class="exercise-title"><span class="num">5</span> St&oslash;rste nulpunkt</div>
+        <p>$$f(x) = x^2 - 5x + 6$$. Find det st&oslash;rste nulpunkt.</p>
+        <div class="fill-group">
+          <span>$$x_2 =$$</span>
+          <input type="number" class="fill-input" id="inp_ex6_5" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex6_5', 3, 'fb_ex6_5')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex6_5"></div>
+      </div>
+
+      <div class="exercise" id="ex6_6">
+        <div class="exercise-title"><span class="num">6</span> Toppunktets y-koordinat</div>
+        <p>$$f(x) = -x^2 + 6x - 5$$. Hvad er toppunktets y-koordinat?</p>
+        <div class="fill-group">
+          <span>$$y_T =$$</span>
+          <input type="number" class="fill-input" id="inp_ex6_6" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex6_6', 4, 'fb_ex6_6')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex6_6"></div>
+        <div class="hint" id="hint_ex6_6">Hint: $$d = 36-20 = 16$$, s&aring; $$y_T = -\frac{d}{4a} = -\frac{16}{4 \cdot (-1)} = 4$$</div>
+      </div>
+
+      <div class="exercise" id="ex6_7">
+        <div class="exercise-title"><span class="num">7</span> &Aring;bnings retning</div>
+        <p>$$f(x) = -3x^2 + x + 5$$. Vender parablen opad eller nedad?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex6_7')">Opad (glad smiley)</button>
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex6_7')">Nedad (sur smiley)</button>
+        </div>
+        <div class="feedback" id="fb_ex6_7"></div>
+      </div>
+
+      <div class="exercise" id="ex6_8">
+        <div class="exercise-title"><span class="num">8</span> Parameter for &eacute;t nulpunkt</div>
+        <p>$$f(x) = x^2 - 6x + k$$. For hvilken v&aelig;rdi af $$k$$ har polynomiet pr&aelig;cis &eacute;t nulpunkt?</p>
+        <div class="fill-group">
+          <span>$$k =$$</span>
+          <input type="number" class="fill-input" id="inp_ex6_8" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex6_8', 9, 'fb_ex6_8')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex6_8"></div>
+        <div class="hint" id="hint_ex6_8">Hint: S&aelig;t $$d = 0$$: $$36 - 4k = 0$$</div>
+      </div>
+
+      <div class="exercise" id="ex6_9">
+        <div class="exercise-title"><span class="num">9</span> Faktoriseret form</div>
+        <p>$$f(x) = 2(x-1)(x-5)$$. Hvad er nulpunkterne?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex6_9')">$$x = 1$$ og $$x = 5$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex6_9')">$$x = -1$$ og $$x = -5$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex6_9')">$$x = 2$$ og $$x = 10$$</button>
+        </div>
+        <div class="feedback" id="fb_ex6_9"></div>
+      </div>
+    </div>
+
     <!-- ===================== SECTION 7: Trigonometri ===================== -->
     <div class="section" id="s7">
       <h2><span class="level-badge badge-c">C</span> Trigonometri</h2>
@@ -883,6 +1243,65 @@ p, .theory { max-width: 65ch; margin-bottom: 1.25em; color: var(--text-secondary
       </div>
     </div>
 
+      <div class="exercise" id="ex7_4">
+        <div class="exercise-title"><span class="num">4</span> Find katete</div>
+        <p>I en retvinklet trekant er hypotenusen 13 og den ene katete 5. Find den anden katete.</p>
+        <div class="fill-group">
+          <span>$$b =$$</span>
+          <input type="number" class="fill-input" id="inp_ex7_4" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex7_4', 12, 'fb_ex7_4')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex7_4"></div>
+      </div>
+
+      <div class="exercise" id="ex7_5">
+        <div class="exercise-title"><span class="num">5</span> Beregn vinkel</div>
+        <p>$$\tan(v) = 1$$. Hvad er vinklen $$v$$ i grader?</p>
+        <div class="fill-group">
+          <span>$$v =$$</span>
+          <input type="number" class="fill-input" id="inp_ex7_5" step="any">
+          <span>&deg;</span>
+          <button class="btn btn-primary" onclick="checkFill('inp_ex7_5', 45, 'fb_ex7_5')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex7_5"></div>
+      </div>
+
+      <div class="exercise" id="ex7_6">
+        <div class="exercise-title"><span class="num">6</span> Beregn side</div>
+        <p>I en retvinklet trekant er vinklen 30&deg; og hypotenusen 10. Find den modst&aring;ende katete.</p>
+        <div class="fill-group">
+          <span>modst&aring;ende =</span>
+          <input type="number" class="fill-input" id="inp_ex7_6" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex7_6', 5, 'fb_ex7_6')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex7_6"></div>
+        <div class="hint" id="hint_ex7_6">Hint: $$\sin(30°) = 0{,}5$$, s&aring; modst&aring;ende $$= 10 \cdot 0{,}5$$</div>
+      </div>
+
+      <div class="exercise" id="ex7_7">
+        <div class="exercise-title"><span class="num">7</span> Trekantens areal</div>
+        <p>En retvinklet trekant har kateter p&aring; 6 og 8. Hvad er arealet?</p>
+        <div class="fill-group">
+          <span>Areal =</span>
+          <input type="number" class="fill-input" id="inp_ex7_7" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex7_7', 24, 'fb_ex7_7')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex7_7"></div>
+      </div>
+
+      <div class="exercise" id="ex7_8">
+        <div class="exercise-title"><span class="num">8</span> cos(60&deg;)</div>
+        <p>Hvad er $$\cos(60°)$$?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex7_8')">$$0{,}5$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex7_8')">$$\frac{\sqrt{3}}{2}$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex7_8')">$$\frac{\sqrt{2}}{2}$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex7_8')">$$1$$</button>
+        </div>
+        <div class="feedback" id="fb_ex7_8"></div>
+      </div>
+    </div>
+
     <!-- ===================== SECTION 8: Beskrivende statistik ===================== -->
     <div class="section" id="s8">
       <h2><span class="level-badge badge-c">C</span> Beskrivende statistik</h2>
@@ -921,6 +1340,64 @@ p, .theory { max-width: 65ch; margin-bottom: 1.25em; color: var(--text-secondary
       </div>
     </div>
 
+      <div class="exercise" id="ex8_3">
+        <div class="exercise-title"><span class="num">3</span> Kvartiler</div>
+        <p>Datas&aelig;t (sorteret): 1, 3, 5, 7, 9, 11, 13, 15. Hvad er $$Q_1$$?</p>
+        <div class="fill-group">
+          <span>$$Q_1 =$$</span>
+          <input type="number" class="fill-input" id="inp_ex8_3" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex8_3', 4, 'fb_ex8_3')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex8_3"></div>
+        <div class="hint" id="hint_ex8_3">Hint: $$Q_1$$ er medianen af den nederste halvdel: 1, 3, 5, 7. Median = $$\frac{3+5}{2} = 4$$</div>
+      </div>
+
+      <div class="exercise" id="ex8_4">
+        <div class="exercise-title"><span class="num">4</span> Kvartilbredde</div>
+        <p>$$Q_1 = 12$$ og $$Q_3 = 28$$. Beregn kvartilbredden (IQR).</p>
+        <div class="fill-group">
+          <span>IQR =</span>
+          <input type="number" class="fill-input" id="inp_ex8_4" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex8_4', 16, 'fb_ex8_4')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex8_4"></div>
+      </div>
+
+      <div class="exercise" id="ex8_5">
+        <div class="exercise-title"><span class="num">5</span> Boksplot</div>
+        <p>Hvad viser den venstre "whisker" (venstre streg) i et boksplot?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex8_5')">Minimum</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex8_5')">$$Q_1$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex8_5')">Medianen</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex8_5')">Middelv&aelig;rdien</button>
+        </div>
+        <div class="feedback" id="fb_ex8_5"></div>
+      </div>
+
+      <div class="exercise" id="ex8_6">
+        <div class="exercise-title"><span class="num">6</span> Middelv&aelig;rdi med frekvens</div>
+        <p>Karakterer: 4, 4, 7, 7, 7, 10, 12. Beregn middelv&aelig;rdien.</p>
+        <div class="fill-group">
+          <span>$$\bar{x} =$$</span>
+          <input type="number" class="fill-input" id="inp_ex8_6" step="any">
+          <button class="btn btn-primary" onclick="checkFillRange('inp_ex8_6', 7.29, 0.05, 'fb_ex8_6')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex8_6"></div>
+      </div>
+
+      <div class="exercise" id="ex8_7">
+        <div class="exercise-title"><span class="num">7</span> Spredning</div>
+        <p>Hvad beskriver spredningen (standardafvigelsen)?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex8_7')">Den midterste observation</button>
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex8_7')">Hvor langt observationerne i gennemsnit ligger fra middelv&aelig;rdien</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex8_7')">Forskellen mellem st&oslash;rste og mindste observation</button>
+        </div>
+        <div class="feedback" id="fb_ex8_7"></div>
+      </div>
+    </div>
+
     <!-- ===================== SECTION 9: Sandsynlighedsregning ===================== -->
     <div class="section" id="s9">
       <h2><span class="level-badge badge-c">C</span> Sandsynlighedsregning</h2>
@@ -955,6 +1432,61 @@ p, .theory { max-width: 65ch; margin-bottom: 1.25em; color: var(--text-secondary
       </div>
     </div>
 
+      <div class="exercise" id="ex9_3">
+        <div class="exercise-title"><span class="num">3</span> Sandsynlighed med terninger</div>
+        <p>Du sl&aring;r med to terninger. Hvad er sandsynligheden for at f&aring; summen 7?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex9_3')">$$\frac{6}{36} = \frac{1}{6}$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex9_3')">$$\frac{7}{36}$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex9_3')">$$\frac{1}{12}$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex9_3')">$$\frac{2}{12}$$</button>
+        </div>
+        <div class="feedback" id="fb_ex9_3"></div>
+      </div>
+
+      <div class="exercise" id="ex9_4">
+        <div class="exercise-title"><span class="num">4</span> K(n,r) beregning</div>
+        <p>Beregn $$\binom{6}{2}$$.</p>
+        <div class="fill-group">
+          <input type="number" class="fill-input" id="inp_ex9_4" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex9_4', 15, 'fb_ex9_4')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex9_4"></div>
+      </div>
+
+      <div class="exercise" id="ex9_5">
+        <div class="exercise-title"><span class="num">5</span> Komplement&aelig;rh&aelig;ndelse</div>
+        <p>$$P(A) = 0{,}35$$. Hvad er $$P(\overline{A})$$?</p>
+        <div class="fill-group">
+          <input type="number" class="fill-input" id="inp_ex9_5" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex9_5', 0.65, 'fb_ex9_5')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex9_5"></div>
+      </div>
+
+      <div class="exercise" id="ex9_6">
+        <div class="exercise-title"><span class="num">6</span> Uafh&aelig;ngige h&aelig;ndelser</div>
+        <p>$$P(A) = 0{,}4$$ og $$P(B) = 0{,}3$$. Hvis A og B er uafh&aelig;ngige, hvad er $$P(A \cap B)$$?</p>
+        <div class="fill-group">
+          <input type="number" class="fill-input" id="inp_ex9_6" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex9_6', 0.12, 'fb_ex9_6')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex9_6"></div>
+      </div>
+
+      <div class="exercise" id="ex9_7">
+        <div class="exercise-title"><span class="num">7</span> Kort fra bunke</div>
+        <p>Du tr&aelig;kker et kort fra en standard bunke (52 kort). Hvad er sandsynligheden for at tr&aelig;kke en hjerter?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex9_7')">$$\frac{1}{4}$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex9_7')">$$\frac{1}{13}$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex9_7')">$$\frac{1}{52}$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex9_7')">$$\frac{4}{52}$$</button>
+        </div>
+        <div class="feedback" id="fb_ex9_7"></div>
+      </div>
+    </div>
+
     <!-- ===================== SECTION 10: Regression ===================== -->
     <div class="section" id="s10">
       <h2><span class="level-badge badge-c">C</span> Regression</h2>
@@ -980,6 +1512,51 @@ p, .theory { max-width: 65ch; margin-bottom: 1.25em; color: var(--text-secondary
           <button class="quiz-option" onclick="checkQuiz(this,false,'ex10_1')">Potensregression</button>
         </div>
         <div class="feedback" id="fb_ex10_1"></div>
+      </div>
+    </div>
+
+      <div class="exercise" id="ex10_2">
+        <div class="exercise-title"><span class="num">2</span> Line&aelig;r regression</div>
+        <p>En line&aelig;r regressionsmodel giver $$y = 2{,}3x + 4{,}1$$ med $$R^2 = 0{,}97$$. Hvad betyder det?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex10_2')">Modellen forklarer 97% af variationen i data</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex10_2')">97% af datapunkterne ligger p&aring; linjen</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex10_2')">H&aelig;ldningen er 97%</button>
+        </div>
+        <div class="feedback" id="fb_ex10_2"></div>
+      </div>
+
+      <div class="exercise" id="ex10_3">
+        <div class="exercise-title"><span class="num">3</span> Potensregression</div>
+        <p>En potensr regression giver $$y = 5{,}2 \cdot x^{1{,}8}$$. Hvad er $$y$$, n&aring;r $$x = 2$$? (Afrund til hele tal)</p>
+        <div class="fill-group">
+          <input type="number" class="fill-input" id="inp_ex10_3" step="any">
+          <button class="btn btn-primary" onclick="checkFillRange('inp_ex10_3', 18, 1, 'fb_ex10_3')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex10_3"></div>
+      </div>
+
+      <div class="exercise" id="ex10_4">
+        <div class="exercise-title"><span class="num">4</span> V&aelig;lg regressionsmodel</div>
+        <p>Data viser en ret linje i et enkeltlogaritmisk koordinatsystem (ln y mod x). Hvilken regressionstype passer?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex10_4')">Line&aelig;r</button>
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex10_4')">Eksponentiel</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex10_4')">Potens</button>
+        </div>
+        <div class="feedback" id="fb_ex10_4"></div>
+      </div>
+
+      <div class="exercise" id="ex10_5">
+        <div class="exercise-title"><span class="num">5</span> Fortolk regression</div>
+        <p>Eksponentiel regression: $$y = 120 \cdot 1{,}05^x$$, hvor $$x$$ er &aring;r og $$y$$ er pris i kr. Hvad er den &aring;rlige prisstigning?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex10_5')">5%</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex10_5')">1,05%</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex10_5')">105%</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex10_5')">120%</button>
+        </div>
+        <div class="feedback" id="fb_ex10_5"></div>
       </div>
     </div>
 
@@ -1015,6 +1592,51 @@ p, .theory { max-width: 65ch; margin-bottom: 1.25em; color: var(--text-secondary
           <button class="btn btn-primary" onclick="checkFill('inp_ex11_2', 5, 'fb_ex11_2')">Tjek</button>
         </div>
         <div class="feedback" id="fb_ex11_2"></div>
+      </div>
+    </div>
+
+      <div class="exercise" id="ex11_3">
+        <div class="exercise-title"><span class="num">3</span> ln-regneregler</div>
+        <p>Reducer: $$\ln 8 - \ln 2$$</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex11_3')">$$\ln 6$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex11_3')">$$\ln 4$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex11_3')">$$\ln 10$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex11_3')">$$\ln 16$$</button>
+        </div>
+        <div class="feedback" id="fb_ex11_3"></div>
+      </div>
+
+      <div class="exercise" id="ex11_4">
+        <div class="exercise-title"><span class="num">4</span> Sammensat funktion</div>
+        <p>$$f(x) = \sqrt{x}$$ og $$g(x) = x + 9$$. Hvad er $$f(g(0))$$?</p>
+        <div class="fill-group">
+          <input type="number" class="fill-input" id="inp_ex11_4" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex11_4', 3, 'fb_ex11_4')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex11_4"></div>
+      </div>
+
+      <div class="exercise" id="ex11_5">
+        <div class="exercise-title"><span class="num">5</span> L&oslash;s med ln</div>
+        <p>L&oslash;s: $$e^x = 20$$. Angiv $$x$$ afrundet til 1 decimal.</p>
+        <div class="fill-group">
+          <span>$$x =$$</span>
+          <input type="number" class="fill-input" id="inp_ex11_5" step="any">
+          <button class="btn btn-primary" onclick="checkFillRange('inp_ex11_5', 3.0, 0.05, 'fb_ex11_5')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex11_5"></div>
+      </div>
+
+      <div class="exercise" id="ex11_6">
+        <div class="exercise-title"><span class="num">6</span> Omskriv med ln</div>
+        <p>Skriv $$\ln(x^3)$$ ved hj&aelig;lp af regneregler for ln:</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex11_6')">$$3 \ln x$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex11_6')">$$(\ln x)^3$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex11_6')">$$\ln 3 + \ln x$$</button>
+        </div>
+        <div class="feedback" id="fb_ex11_6"></div>
       </div>
     </div>
 
@@ -1061,6 +1683,65 @@ p, .theory { max-width: 65ch; margin-bottom: 1.25em; color: var(--text-secondary
       </div>
     </div>
 
+      <div class="exercise" id="ex12_3">
+        <div class="exercise-title"><span class="num">3</span> Produktreglen</div>
+        <p>$$f(x) = x^2 \cdot e^x$$. Hvad er $$f'(x)$$?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex12_3')">$$2x \cdot e^x$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex12_3')">$$2xe^x + x^2 e^x$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex12_3')">$$x^2 e^x$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex12_3')">$$2x + e^x$$</button>
+        </div>
+        <div class="feedback" id="fb_ex12_3"></div>
+      </div>
+
+      <div class="exercise" id="ex12_4">
+        <div class="exercise-title"><span class="num">4</span> Afled potens</div>
+        <p>$$f(x) = 7x^3 - 4x + 1$$. Beregn $$f'(2)$$.</p>
+        <div class="fill-group">
+          <span>$$f'(2) =$$</span>
+          <input type="number" class="fill-input" id="inp_ex12_4" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex12_4', 80, 'fb_ex12_4')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex12_4"></div>
+        <div class="hint" id="hint_ex12_4">Hint: $$f'(x) = 21x^2 - 4$$, s&aring; $$f'(2) = 21 \cdot 4 - 4 = 80$$</div>
+      </div>
+
+      <div class="exercise" id="ex12_5">
+        <div class="exercise-title"><span class="num">5</span> Tretrinsreglen</div>
+        <p>Hvad er det f&oslash;rste trin i tretrinsreglen?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex12_5')">Beregn $$f(x + \Delta x) - f(x)$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex12_5')">Divider med $$\Delta x$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex12_5')">Lad $$\Delta x \to 0$$</button>
+        </div>
+        <div class="feedback" id="fb_ex12_5"></div>
+      </div>
+
+      <div class="exercise" id="ex12_6">
+        <div class="exercise-title"><span class="num">6</span> Konstant afledt</div>
+        <p>$$f(x) = 42$$. Hvad er $$f'(x)$$?</p>
+        <div class="fill-group">
+          <span>$$f'(x) =$$</span>
+          <input type="number" class="fill-input" id="inp_ex12_6" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex12_6', 0, 'fb_ex12_6')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex12_6"></div>
+      </div>
+
+      <div class="exercise" id="ex12_7">
+        <div class="exercise-title"><span class="num">7</span> Kvotientreglen</div>
+        <p>$$f(x) = \frac{x^2}{x+1}$$. Hvad er $$f'(x)$$?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex12_7')">$$\frac{2x}{x+1}$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex12_7')">$$\frac{x^2 + 2x}{(x+1)^2}$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex12_7')">$$\frac{2x(x+1) - x^2}{x+1}$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex12_7')">$$\frac{x}{(x+1)^2}$$</button>
+        </div>
+        <div class="feedback" id="fb_ex12_7"></div>
+      </div>
+    </div>
+
     <!-- ===================== SECTION 13: Standardafledede ===================== -->
     <div class="section" id="s13">
       <h2><span class="level-badge badge-b">B</span> Standardafledede</h2>
@@ -1103,6 +1784,55 @@ p, .theory { max-width: 65ch; margin-bottom: 1.25em; color: var(--text-secondary
       </div>
     </div>
 
+      <div class="exercise" id="ex13_3">
+        <div class="exercise-title"><span class="num">3</span> Afled $$e^{2x}$$</div>
+        <p>$$f(x) = e^{2x}$$. Hvad er $$f'(x)$$?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex13_3')">$$2e^{2x}$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex13_3')">$$e^{2x}$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex13_3')">$$2xe^{2x}$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex13_3')">$$e^{2}$$</button>
+        </div>
+        <div class="feedback" id="fb_ex13_3"></div>
+      </div>
+
+      <div class="exercise" id="ex13_4">
+        <div class="exercise-title"><span class="num">4</span> Afled ln</div>
+        <p>$$f(x) = 4\ln x - x^2$$. Beregn $$f'(1)$$.</p>
+        <div class="fill-group">
+          <span>$$f'(1) =$$</span>
+          <input type="number" class="fill-input" id="inp_ex13_4" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex13_4', 2, 'fb_ex13_4')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex13_4"></div>
+        <div class="hint" id="hint_ex13_4">Hint: $$f'(x) = \frac{4}{x} - 2x$$, s&aring; $$f'(1) = 4 - 2 = 2$$</div>
+      </div>
+
+      <div class="exercise" id="ex13_5">
+        <div class="exercise-title"><span class="num">5</span> Afled $$\cos(x)$$</div>
+        <p>Hvad er den afledede af $$\cos(x)$$?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex13_5')">$$\cos(x)$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex13_5')">$$\sin(x)$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex13_5')">$$-\sin(x)$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex13_5')">$$-\cos(x)$$</button>
+        </div>
+        <div class="feedback" id="fb_ex13_5"></div>
+      </div>
+
+      <div class="exercise" id="ex13_6">
+        <div class="exercise-title"><span class="num">6</span> Afled $$a^x$$</div>
+        <p>$$f(x) = 3^x$$. Hvad er $$f'(x)$$?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex13_6')">$$3^x \cdot \ln 3$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex13_6')">$$x \cdot 3^{x-1}$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex13_6')">$$3^x$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex13_6')">$$3 \cdot 3^{x-1}$$</button>
+        </div>
+        <div class="feedback" id="fb_ex13_6"></div>
+      </div>
+    </div>
+
     <!-- ===================== SECTION 14: Tangentligning ===================== -->
     <div class="section" id="s14">
       <h2><span class="level-badge badge-b">B</span> Tangentligning</h2>
@@ -1127,6 +1857,53 @@ p, .theory { max-width: 65ch; margin-bottom: 1.25em; color: var(--text-secondary
         </div>
         <div class="feedback" id="fb_ex14_1"></div>
         <div class="hint" id="hint_ex14_1">Hint: $$f'(x) = 2x - 3$$, s&aring; $$f'(4) = 2 \cdot 4 - 3$$</div>
+      </div>
+    </div>
+
+      <div class="exercise" id="ex14_2">
+        <div class="exercise-title"><span class="num">2</span> Tangentligning</div>
+        <p>$$f(x) = x^3$$ i punktet $$x_0 = 2$$. Hvad er tangentens sk&aelig;ring med y-aksen?</p>
+        <div class="fill-group">
+          <span>$$b =$$</span>
+          <input type="number" class="fill-input" id="inp_ex14_2" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex14_2', -16, 'fb_ex14_2')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex14_2"></div>
+        <div class="hint" id="hint_ex14_2">Hint: $$f'(2) = 12$$, $$f(2) = 8$$. Tangent: $$y = 12(x-2)+8 = 12x - 16$$</div>
+      </div>
+
+      <div class="exercise" id="ex14_3">
+        <div class="exercise-title"><span class="num">3</span> Vandret tangent</div>
+        <p>Hvorn&aring;r er tangenten vandret for $$f(x) = x^2 - 8x + 3$$?</p>
+        <div class="fill-group">
+          <span>$$x =$$</span>
+          <input type="number" class="fill-input" id="inp_ex14_3" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex14_3', 4, 'fb_ex14_3')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex14_3"></div>
+      </div>
+
+      <div class="exercise" id="ex14_4">
+        <div class="exercise-title"><span class="num">4</span> Tangent for $$e^x$$</div>
+        <p>$$f(x) = e^x$$. Find tangentens h&aelig;ldning i $$x_0 = 0$$.</p>
+        <div class="fill-group">
+          <span>$$f'(0) =$$</span>
+          <input type="number" class="fill-input" id="inp_ex14_4" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex14_4', 1, 'fb_ex14_4')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex14_4"></div>
+      </div>
+
+      <div class="exercise" id="ex14_5">
+        <div class="exercise-title"><span class="num">5</span> Tangentens ligning</div>
+        <p>$$f(x) = \ln x$$ i punktet $$x_0 = 1$$. Hvad er tangentens ligning?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex14_5')">$$y = x - 1$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex14_5')">$$y = x$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex14_5')">$$y = \frac{1}{x}$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex14_5')">$$y = x + 1$$</button>
+        </div>
+        <div class="feedback" id="fb_ex14_5"></div>
       </div>
     </div>
 
@@ -1155,6 +1932,55 @@ p, .theory { max-width: 65ch; margin-bottom: 1.25em; color: var(--text-secondary
         </div>
         <div class="feedback" id="fb_ex15_1"></div>
         <div class="hint" id="hint_ex15_1">Hint: $$f'(x) = 3x^2 - 12 = 0 \Rightarrow x^2 = 4$$</div>
+      </div>
+    </div>
+
+      <div class="exercise" id="ex15_2">
+        <div class="exercise-title"><span class="num">2</span> Optimering: Indhegning</div>
+        <p>En rektangul&aelig;r indhegning op mod en mur har omkreds 20 m (3 sider, den 4. er muren). Hvad er den maksimale bredde for st&oslash;rst areal?</p>
+        <div class="fill-group">
+          <span>bredde =</span>
+          <input type="number" class="fill-input" id="inp_ex15_2" step="any">
+          <span>m</span>
+          <button class="btn btn-primary" onclick="checkFill('inp_ex15_2', 5, 'fb_ex15_2')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex15_2"></div>
+        <div class="hint" id="hint_ex15_2">Hint: Lad bredde = $$x$$, l&aelig;ngde = $$20-2x$$. $$A(x) = x(20-2x) = 20x - 2x^2$$. $$A'(x) = 20-4x = 0 \Rightarrow x = 5$$</div>
+      </div>
+
+      <div class="exercise" id="ex15_3">
+        <div class="exercise-title"><span class="num">3</span> Monotoniforhold</div>
+        <p>$$f(x) = x^3 - 3x$$. P&aring; hvilket interval er $$f$$ aftagende?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex15_3')">$$-1 < x < 1$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex15_3')">$$x < -1$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex15_3')">$$x > 1$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex15_3')">$$0 < x < 3$$</button>
+        </div>
+        <div class="feedback" id="fb_ex15_3"></div>
+      </div>
+
+      <div class="exercise" id="ex15_4">
+        <div class="exercise-title"><span class="num">4</span> Lokalt minimum</div>
+        <p>$$f(x) = x^4 - 8x^2 + 16$$. Find den positive x-v&aelig;rdi, hvor der er lokalt minimum.</p>
+        <div class="fill-group">
+          <span>$$x =$$</span>
+          <input type="number" class="fill-input" id="inp_ex15_4" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex15_4', 2, 'fb_ex15_4')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex15_4"></div>
+      </div>
+
+      <div class="exercise" id="ex15_5">
+        <div class="exercise-title"><span class="num">5</span> Optimering: D&aring;se</div>
+        <p>En cylindrisk d&aring;se skal rumme 500 ml. Radiusen der minimerer overfladearealet er ca. (afrund til 1 decimal):</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex15_5')">3,0 cm</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex15_5')">3,7 cm</button>
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex15_5')">4,3 cm</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex15_5')">5,0 cm</button>
+        </div>
+        <div class="feedback" id="fb_ex15_5"></div>
       </div>
     </div>
 
@@ -1195,6 +2021,51 @@ p, .theory { max-width: 65ch; margin-bottom: 1.25em; color: var(--text-secondary
       </div>
     </div>
 
+      <div class="exercise" id="ex16_3">
+        <div class="exercise-title"><span class="num">3</span> Linjes ligning</div>
+        <p>Find h&aelig;ldningen for linjen der g&aring;r gennem $$(0, 3)$$ og $$(4, 11)$$.</p>
+        <div class="fill-group">
+          <span>$$a =$$</span>
+          <input type="number" class="fill-input" id="inp_ex16_3" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex16_3', 2, 'fb_ex16_3')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex16_3"></div>
+      </div>
+
+      <div class="exercise" id="ex16_4">
+        <div class="exercise-title"><span class="num">4</span> Punkt p&aring; cirkel</div>
+        <p>$$(x-2)^2 + (y-3)^2 = 25$$. Ligger punktet $$(5, 7)$$ p&aring; cirklen?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex16_4')">Ja</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex16_4')">Nej</button>
+        </div>
+        <div class="feedback" id="fb_ex16_4"></div>
+      </div>
+
+      <div class="exercise" id="ex16_5">
+        <div class="exercise-title"><span class="num">5</span> Midtpunkt</div>
+        <p>Find midtpunktet af strækningen fra $$(-2, 4)$$ til $$(6, 10)$$. Hvad er x-koordinaten?</p>
+        <div class="fill-group">
+          <span>$$x_m =$$</span>
+          <input type="number" class="fill-input" id="inp_ex16_5" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex16_5', 2, 'fb_ex16_5')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex16_5"></div>
+      </div>
+
+      <div class="exercise" id="ex16_6">
+        <div class="exercise-title"><span class="num">6</span> Cirklens centrum</div>
+        <p>$$x^2 + y^2 - 6x + 4y - 12 = 0$$. Find centrums x-koordinat.</p>
+        <div class="fill-group">
+          <span>$$a =$$</span>
+          <input type="number" class="fill-input" id="inp_ex16_6" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex16_6', 3, 'fb_ex16_6')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex16_6"></div>
+        <div class="hint" id="hint_ex16_6">Hint: Omskriv til $$(x-3)^2 + (y+2)^2 = 25$$</div>
+      </div>
+    </div>
+
     <!-- ===================== SECTION 17: Vektorer 2D ===================== -->
     <div class="section" id="s17">
       <h2><span class="level-badge badge-b">B</span> Vektorer 2D</h2>
@@ -1231,6 +2102,52 @@ p, .theory { max-width: 65ch; margin-bottom: 1.25em; color: var(--text-secondary
       </div>
     </div>
 
+      <div class="exercise" id="ex17_3">
+        <div class="exercise-title"><span class="num">3</span> Determinant</div>
+        <p>$$\vec{a} = \binom{3}{4}$$ og $$\vec{b} = \binom{2}{-1}$$. Beregn determinanten.</p>
+        <div class="fill-group">
+          <input type="number" class="fill-input" id="inp_ex17_3" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex17_3', -11, 'fb_ex17_3')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex17_3"></div>
+        <div class="hint" id="hint_ex17_3">Hint: $$\det = 3 \cdot (-1) - 4 \cdot 2 = -3 - 8 = -11$$</div>
+      </div>
+
+      <div class="exercise" id="ex17_4">
+        <div class="exercise-title"><span class="num">4</span> Ortogonale vektorer</div>
+        <p>$$\vec{a} = \binom{4}{k}$$ og $$\vec{b} = \binom{3}{-2}$$ er ortogonale. Find $$k$$.</p>
+        <div class="fill-group">
+          <span>$$k =$$</span>
+          <input type="number" class="fill-input" id="inp_ex17_4" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex17_4', 6, 'fb_ex17_4')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex17_4"></div>
+        <div class="hint" id="hint_ex17_4">Hint: $$\vec{a} \cdot \vec{b} = 0 \Rightarrow 12 - 2k = 0$$</div>
+      </div>
+
+      <div class="exercise" id="ex17_5">
+        <div class="exercise-title"><span class="num">5</span> Enhedsvektor</div>
+        <p>$$\vec{v} = \binom{3}{4}$$. Hvad er l&aelig;ngden af enhedsvektoren $$\hat{v}$$?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex17_5')">$$1$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex17_5')">$$5$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex17_5')">$$7$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex17_5')">$$\frac{1}{5}$$</button>
+        </div>
+        <div class="feedback" id="fb_ex17_5"></div>
+      </div>
+
+      <div class="exercise" id="ex17_6">
+        <div class="exercise-title"><span class="num">6</span> Vektoraddition</div>
+        <p>$$\vec{a} = \binom{1}{3}$$ og $$\vec{b} = \binom{4}{-2}$$. Hvad er y-koordinaten af $$\vec{a} + \vec{b}$$?</p>
+        <div class="fill-group">
+          <input type="number" class="fill-input" id="inp_ex17_6" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex17_6', 1, 'fb_ex17_6')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex17_6"></div>
+      </div>
+    </div>
+
     <!-- ===================== SECTION 18: Trigonometri udvidet ===================== -->
     <div class="section" id="s18">
       <h2><span class="level-badge badge-b">B</span> Trigonometri udvidet</h2>
@@ -1258,6 +2175,55 @@ p, .theory { max-width: 65ch; margin-bottom: 1.25em; color: var(--text-secondary
       </div>
     </div>
 
+      <div class="exercise" id="ex18_2">
+        <div class="exercise-title"><span class="num">2</span> Cosinusrelationen</div>
+        <p>I en trekant er $$a = 5$$, $$b = 7$$, $$C = 60°$$. Beregn $$c^2$$.</p>
+        <div class="fill-group">
+          <span>$$c^2 =$$</span>
+          <input type="number" class="fill-input" id="inp_ex18_2" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex18_2', 39, 'fb_ex18_2')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex18_2"></div>
+        <div class="hint" id="hint_ex18_2">Hint: $$c^2 = 25 + 49 - 2 \cdot 5 \cdot 7 \cdot \cos 60° = 74 - 70 \cdot 0{,}5 = 39$$</div>
+      </div>
+
+      <div class="exercise" id="ex18_3">
+        <div class="exercise-title"><span class="num">3</span> Grundrelationen</div>
+        <p>$$\sin v = 0{,}6$$. Find $$\cos v$$ (for $$0 < v < 90°$$).</p>
+        <div class="fill-group">
+          <span>$$\cos v =$$</span>
+          <input type="number" class="fill-input" id="inp_ex18_3" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex18_3', 0.8, 'fb_ex18_3')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex18_3"></div>
+        <div class="hint" id="hint_ex18_3">Hint: $$\cos^2 v = 1 - \sin^2 v = 1 - 0{,}36 = 0{,}64$$</div>
+      </div>
+
+      <div class="exercise" id="ex18_4">
+        <div class="exercise-title"><span class="num">4</span> Omregn grader</div>
+        <p>Omregn 180° til radianer.</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex18_4')">$$\pi$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex18_4')">$$2\pi$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex18_4')">$$\frac{\pi}{2}$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex18_4')">$$\frac{3\pi}{2}$$</button>
+        </div>
+        <div class="feedback" id="fb_ex18_4"></div>
+      </div>
+
+      <div class="exercise" id="ex18_5">
+        <div class="exercise-title"><span class="num">5</span> Trekantens areal</div>
+        <p>Beregn arealet af en trekant med $$a = 8$$, $$b = 6$$ og $$C = 30°$$.</p>
+        <div class="fill-group">
+          <span>$$T =$$</span>
+          <input type="number" class="fill-input" id="inp_ex18_5" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex18_5', 12, 'fb_ex18_5')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex18_5"></div>
+        <div class="hint" id="hint_ex18_5">Hint: $$T = \frac{1}{2} \cdot 8 \cdot 6 \cdot \sin 30° = \frac{1}{2} \cdot 48 \cdot 0{,}5 = 12$$</div>
+      </div>
+    </div>
+
     <!-- ===================== SECTION 19: Binomialfordeling ===================== -->
     <div class="section" id="s19">
       <h2><span class="level-badge badge-b">B</span> Binomialfordeling</h2>
@@ -1278,6 +2244,52 @@ p, .theory { max-width: 65ch; margin-bottom: 1.25em; color: var(--text-secondary
           <button class="btn btn-primary" onclick="checkFill('inp_ex19_1', 6, 'fb_ex19_1')">Tjek</button>
         </div>
         <div class="feedback" id="fb_ex19_1"></div>
+      </div>
+    </div>
+
+      <div class="exercise" id="ex19_2">
+        <div class="exercise-title"><span class="num">2</span> Spredning</div>
+        <p>$$X \sim b(100,\; 0{,}4)$$. Beregn spredningen $$\sigma$$ (afrund til 1 decimal).</p>
+        <div class="fill-group">
+          <span>$$\sigma =$$</span>
+          <input type="number" class="fill-input" id="inp_ex19_2" step="any">
+          <button class="btn btn-primary" onclick="checkFillRange('inp_ex19_2', 4.9, 0.1, 'fb_ex19_2')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex19_2"></div>
+        <div class="hint" id="hint_ex19_2">Hint: $$\sigma = \sqrt{100 \cdot 0{,}4 \cdot 0{,}6} = \sqrt{24} \approx 4{,}9$$</div>
+      </div>
+
+      <div class="exercise" id="ex19_3">
+        <div class="exercise-title"><span class="num">3</span> P(X = r)</div>
+        <p>$$X \sim b(3,\; 0{,}5)$$. Beregn $$P(X = 2)$$.</p>
+        <div class="fill-group">
+          <input type="number" class="fill-input" id="inp_ex19_3" step="any">
+          <button class="btn btn-primary" onclick="checkFillRange('inp_ex19_3', 0.375, 0.005, 'fb_ex19_3')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex19_3"></div>
+        <div class="hint" id="hint_ex19_3">Hint: $$P(X=2) = \binom{3}{2} \cdot 0{,}5^2 \cdot 0{,}5^1 = 3 \cdot 0{,}125 = 0{,}375$$</div>
+      </div>
+
+      <div class="exercise" id="ex19_4">
+        <div class="exercise-title"><span class="num">4</span> Antal fors&oslash;g</div>
+        <p>Sandsynligheden for succes er $$p = 0{,}2$$, og vi laver 50 fors&oslash;g. Hvad er det forventede antal succeser?</p>
+        <div class="fill-group">
+          <span>$$E(X) =$$</span>
+          <input type="number" class="fill-input" id="inp_ex19_4" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex19_4', 10, 'fb_ex19_4')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex19_4"></div>
+      </div>
+
+      <div class="exercise" id="ex19_5">
+        <div class="exercise-title"><span class="num">5</span> Genkend fordeling</div>
+        <p>Hvilke betingelser skal v&aelig;re opfyldt for en binomialfordeling?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex19_5')">Fast antal fors&oslash;g, uafh&aelig;ngige, fast sandsynlighed, to udfald</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex19_5')">Uendeligt mange fors&oslash;g med varierende sandsynlighed</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex19_5')">Data er normalfordelt</button>
+        </div>
+        <div class="feedback" id="fb_ex19_5"></div>
       </div>
     </div>
 
@@ -1303,6 +2315,49 @@ p, .theory { max-width: 65ch; margin-bottom: 1.25em; color: var(--text-secondary
           <button class="quiz-option" onclick="checkQuiz(this,false,'ex20_1')">5% af data er forkerte</button>
         </div>
         <div class="feedback" id="fb_ex20_1"></div>
+      </div>
+    </div>
+
+      <div class="exercise" id="ex20_2">
+        <div class="exercise-title"><span class="num">2</span> Forkast eller accepter</div>
+        <p>$$H_0: p = 0{,}5$$. Du observerer 18 succeser ud af 25. P-v&aelig;rdien er 0,02. Signifikansniveau er 5%. Hvad g&oslash;r du?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex20_2')">Forkast $$H_0$$ (0,02 &lt; 0,05)</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex20_2')">Accepter $$H_0$$</button>
+        </div>
+        <div class="feedback" id="fb_ex20_2"></div>
+      </div>
+
+      <div class="exercise" id="ex20_3">
+        <div class="exercise-title"><span class="num">3</span> Chi-i-anden beregning</div>
+        <p>Observeret: 30, 20. Forventet: 25, 25. Beregn $$\chi^2$$.</p>
+        <div class="fill-group">
+          <input type="number" class="fill-input" id="inp_ex20_3" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex20_3', 2, 'fb_ex20_3')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex20_3"></div>
+        <div class="hint" id="hint_ex20_3">Hint: $$\chi^2 = \frac{(30-25)^2}{25} + \frac{(20-25)^2}{25} = 1 + 1 = 2$$</div>
+      </div>
+
+      <div class="exercise" id="ex20_4">
+        <div class="exercise-title"><span class="num">4</span> Frihedsgrader</div>
+        <p>En chi-i-anden test har 4 kategorier. Hvor mange frihedsgrader er der?</p>
+        <div class="fill-group">
+          <input type="number" class="fill-input" id="inp_ex20_4" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex20_4', 3, 'fb_ex20_4')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex20_4"></div>
+      </div>
+
+      <div class="exercise" id="ex20_5">
+        <div class="exercise-title"><span class="num">5</span> Type 1 fejl</div>
+        <p>Hvad er en type 1 fejl?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex20_5')">At forkaste $$H_0$$, selvom den er sand</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex20_5')">At acceptere $$H_0$$, selvom den er falsk</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex20_5')">At beregne $$\chi^2$$ forkert</button>
+        </div>
+        <div class="feedback" id="fb_ex20_5"></div>
       </div>
     </div>
 
@@ -1355,6 +2410,61 @@ p, .theory { max-width: 65ch; margin-bottom: 1.25em; color: var(--text-secondary
       </div>
     </div>
 
+      <div class="exercise" id="ex21_3">
+        <div class="exercise-title"><span class="num">3</span> Stamfunktion af $$e^x$$</div>
+        <p>Hvad er stamfunktionen til $$f(x) = 3e^x$$?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex21_3')">$$3e^x + c$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex21_3')">$$3xe^x + c$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex21_3')">$$e^{3x} + c$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex21_3')">$$\frac{3e^{x+1}}{x+1} + c$$</button>
+        </div>
+        <div class="feedback" id="fb_ex21_3"></div>
+      </div>
+
+      <div class="exercise" id="ex21_4">
+        <div class="exercise-title"><span class="num">4</span> Bestemt integral</div>
+        <p>Beregn $$\int_1^4 3\sqrt{x}\,dx$$ (afrund til hele tal).</p>
+        <div class="fill-group">
+          <input type="number" class="fill-input" id="inp_ex21_4" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex21_4', 14, 'fb_ex21_4')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex21_4"></div>
+        <div class="hint" id="hint_ex21_4">Hint: $$\int 3x^{1/2}\,dx = 3 \cdot \frac{x^{3/2}}{3/2} = 2x^{3/2}$$. $$2 \cdot 8 - 2 \cdot 1 = 14$$</div>
+      </div>
+
+      <div class="exercise" id="ex21_5">
+        <div class="exercise-title"><span class="num">5</span> Areal mellem kurver</div>
+        <p>Hvad udtrykker $$\int_a^b (f(x) - g(x))\,dx$$ geometrisk?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex21_5')">Arealet mellem kurverne $$f$$ og $$g$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex21_5')">Summen af arealerne under $$f$$ og $$g$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex21_5')">L&aelig;ngden af $$f$$ fra $$a$$ til $$b$$</button>
+        </div>
+        <div class="feedback" id="fb_ex21_5"></div>
+      </div>
+
+      <div class="exercise" id="ex21_6">
+        <div class="exercise-title"><span class="num">6</span> Stamfunktion af $$\frac{1}{x}$$</div>
+        <p>Beregn $$\int_1^e \frac{1}{x}\,dx$$.</p>
+        <div class="fill-group">
+          <input type="number" class="fill-input" id="inp_ex21_6" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex21_6', 1, 'fb_ex21_6')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex21_6"></div>
+      </div>
+
+      <div class="exercise" id="ex21_7">
+        <div class="exercise-title"><span class="num">7</span> Integral af cos</div>
+        <p>Beregn $$\int_0^{\pi/2} \cos x\,dx$$.</p>
+        <div class="fill-group">
+          <input type="number" class="fill-input" id="inp_ex21_7" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex21_7', 1, 'fb_ex21_7')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex21_7"></div>
+      </div>
+    </div>
+
     <!-- ===================== SECTION 22: Rumfang og buelængde ===================== -->
     <div class="section" id="s22">
       <h2><span class="level-badge badge-a">A</span> Rumfang og buel&aelig;ngde</h2>
@@ -1375,6 +2485,43 @@ p, .theory { max-width: 65ch; margin-bottom: 1.25em; color: var(--text-secondary
           <button class="quiz-option" onclick="checkQuiz(this,false,'ex22_1')">$$V = 2\pi \int_0^3 x\,dx$$</button>
         </div>
         <div class="feedback" id="fb_ex22_1"></div>
+      </div>
+    </div>
+
+      <div class="exercise" id="ex22_2">
+        <div class="exercise-title"><span class="num">2</span> Beregn rumfang</div>
+        <p>$$f(x) = \sqrt{x}$$ drejes om x-aksen fra 0 til 4. Hvad er rumfanget?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex22_2')">$$8\pi$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex22_2')">$$4\pi$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex22_2')">$$16\pi$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex22_2')">$$2\pi$$</button>
+        </div>
+        <div class="feedback" id="fb_ex22_2"></div>
+      </div>
+
+      <div class="exercise" id="ex22_3">
+        <div class="exercise-title"><span class="num">3</span> Buel&aelig;ngdeformel</div>
+        <p>Hvilken formel bruges til at beregne buel&aelig;ngden af $$f(x)$$ fra $$a$$ til $$b$$?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex22_3')">$$L = \int_a^b \sqrt{1 + f'(x)^2}\,dx$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex22_3')">$$L = \int_a^b f(x)\,dx$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex22_3')">$$L = \pi \int_a^b f(x)^2\,dx$$</button>
+        </div>
+        <div class="feedback" id="fb_ex22_3"></div>
+      </div>
+
+      <div class="exercise" id="ex22_4">
+        <div class="exercise-title"><span class="num">4</span> Kegle</div>
+        <p>$$f(x) = 2x$$ drejes om x-aksen fra 0 til 3. Hvad er rumfanget?</p>
+        <div class="fill-group">
+          <span>$$V =$$</span>
+          <input type="number" class="fill-input" id="inp_ex22_4" step="any">
+          <span>$$\cdot \pi$$</span>
+          <button class="btn btn-primary" onclick="checkFill('inp_ex22_4', 36, 'fb_ex22_4')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex22_4"></div>
+        <div class="hint" id="hint_ex22_4">Hint: $$V = \pi \int_0^3 4x^2\,dx = \pi \left[\frac{4x^3}{3}\right]_0^3 = 36\pi$$</div>
       </div>
     </div>
 
@@ -1406,6 +2553,52 @@ p, .theory { max-width: 65ch; margin-bottom: 1.25em; color: var(--text-secondary
       </div>
     </div>
 
+      <div class="exercise" id="ex23_2">
+        <div class="exercise-title"><span class="num">2</span> Begyndelsesbetingelse</div>
+        <p>$$y' = 0{,}05y$$ og $$y(0) = 200$$. Hvad er $$c$$ i l&oslash;sningen $$y = ce^{0{,}05x}$$?</p>
+        <div class="fill-group">
+          <span>$$c =$$</span>
+          <input type="number" class="fill-input" id="inp_ex23_2" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex23_2', 200, 'fb_ex23_2')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex23_2"></div>
+      </div>
+
+      <div class="exercise" id="ex23_3">
+        <div class="exercise-title"><span class="num">3</span> Logistisk v&aelig;kst</div>
+        <p>Hvad beskriver $$M$$ i den logistiske model $$y' = ky(M-y)$$?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex23_3')">Den maksimale b&aelig;rekapacitet</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex23_3')">V&aelig;ksthastigheden</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex23_3')">Startv&aelig;rdien</button>
+        </div>
+        <div class="feedback" id="fb_ex23_3"></div>
+      </div>
+
+      <div class="exercise" id="ex23_4">
+        <div class="exercise-title"><span class="num">4</span> Newton's afk&oslash;lingslov</div>
+        <p>$$y' = -0{,}1(y - 20)$$ med $$y(0) = 80$$. Hvad n&aelig;rmer temperaturen sig over tid?</p>
+        <div class="fill-group">
+          <span>$$y \to$$</span>
+          <input type="number" class="fill-input" id="inp_ex23_4" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex23_4', 20, 'fb_ex23_4')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex23_4"></div>
+      </div>
+
+      <div class="exercise" id="ex23_5">
+        <div class="exercise-title"><span class="num">5</span> Eulers metode</div>
+        <p>$$y' = 2x$$, $$y(0) = 1$$, skridt $$h = 0{,}5$$. Beregn $$y_1$$ (v&aelig;rdien i $$x = 0{,}5$$).</p>
+        <div class="fill-group">
+          <span>$$y_1 =$$</span>
+          <input type="number" class="fill-input" id="inp_ex23_5" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex23_5', 1, 'fb_ex23_5')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex23_5"></div>
+        <div class="hint" id="hint_ex23_5">Hint: $$y_1 = y_0 + h \cdot f(x_0, y_0) = 1 + 0{,}5 \cdot 2 \cdot 0 = 1$$</div>
+      </div>
+    </div>
+
     <!-- ===================== SECTION 24: Vektorer 3D ===================== -->
     <div class="section" id="s24">
       <h2><span class="level-badge badge-a">A</span> Vektorer 3D</h2>
@@ -1430,6 +2623,51 @@ p, .theory { max-width: 65ch; margin-bottom: 1.25em; color: var(--text-secondary
       </div>
     </div>
 
+      <div class="exercise" id="ex24_2">
+        <div class="exercise-title"><span class="num">2</span> Vektorl&aelig;ngde 3D</div>
+        <p>$$\vec{v} = (1, 2, 2)$$. Beregn $$|\vec{v}|$$.</p>
+        <div class="fill-group">
+          <input type="number" class="fill-input" id="inp_ex24_2" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex24_2', 3, 'fb_ex24_2')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex24_2"></div>
+      </div>
+
+      <div class="exercise" id="ex24_3">
+        <div class="exercise-title"><span class="num">3</span> Krydsprodukt</div>
+        <p>$$\vec{a} = (1, 0, 0)$$ og $$\vec{b} = (0, 1, 0)$$. Hvad er z-koordinaten af $$\vec{a} \times \vec{b}$$?</p>
+        <div class="fill-group">
+          <input type="number" class="fill-input" id="inp_ex24_3" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex24_3', 1, 'fb_ex24_3')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex24_3"></div>
+      </div>
+
+      <div class="exercise" id="ex24_4">
+        <div class="exercise-title"><span class="num">4</span> Afstand punkt til plan</div>
+        <p>Plan: $$2x + 2y + z - 9 = 0$$. Punkt: $$(1, 1, 1)$$. Beregn afstanden.</p>
+        <div class="fill-group">
+          <span>$$d =$$</span>
+          <input type="number" class="fill-input" id="inp_ex24_4" step="any">
+          <button class="btn btn-primary" onclick="checkFillRange('inp_ex24_4', 2, 0.1, 'fb_ex24_4')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex24_4"></div>
+        <div class="hint" id="hint_ex24_4">Hint: $$d = \frac{|2+2+1-9|}{\sqrt{4+4+1}} = \frac{4}{3} \approx 1{,}33$$... Vent: $$\frac{|-4|}{3} = \frac{4}{3} \approx 1{,}33$$</div>
+      </div>
+
+      <div class="exercise" id="ex24_5">
+        <div class="exercise-title"><span class="num">5</span> Plan og normalvektor</div>
+        <p>Planens ligning er $$3x - y + 2z = 7$$. Hvad er normalvektoren?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex24_5')">$$(3, -1, 2)$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex24_5')">$$(3, 1, 2)$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex24_5')">$$(7, 3, -1)$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex24_5')">$$(x, y, z)$$</button>
+        </div>
+        <div class="feedback" id="fb_ex24_5"></div>
+      </div>
+    </div>
+
     <!-- ===================== SECTION 25: Vektorfunktioner ===================== -->
     <div class="section" id="s25">
       <h2><span class="level-badge badge-a">A</span> Vektorfunktioner</h2>
@@ -1450,6 +2688,43 @@ p, .theory { max-width: 65ch; margin-bottom: 1.25em; color: var(--text-secondary
           <button class="quiz-option" onclick="checkQuiz(this,false,'ex25_1')">$$\binom{0}{2}$$</button>
         </div>
         <div class="feedback" id="fb_ex25_1"></div>
+      </div>
+    </div>
+
+      <div class="exercise" id="ex25_2">
+        <div class="exercise-title"><span class="num">2</span> Fart</div>
+        <p>$$\vec{r}(t) = \binom{3t}{t^2}$$. Beregn farten i $$t = 2$$.</p>
+        <div class="fill-group">
+          <span>fart =</span>
+          <input type="number" class="fill-input" id="inp_ex25_2" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex25_2', 5, 'fb_ex25_2')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex25_2"></div>
+        <div class="hint" id="hint_ex25_2">Hint: $$\vec{r}\,'(t) = \binom{3}{2t}$$, fart $$= \sqrt{9 + 16} = 5$$</div>
+      </div>
+
+      <div class="exercise" id="ex25_3">
+        <div class="exercise-title"><span class="num">3</span> Parameterkurve</div>
+        <p>$$x(t) = \cos t$$, $$y(t) = \sin t$$. Hvad beskriver kurven?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex25_3')">En cirkel med radius 1</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex25_3')">En ret linje</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex25_3')">En parabel</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex25_3')">En ellipse med radii 2 og 1</button>
+        </div>
+        <div class="feedback" id="fb_ex25_3"></div>
+      </div>
+
+      <div class="exercise" id="ex25_4">
+        <div class="exercise-title"><span class="num">4</span> Tangentvektor</div>
+        <p>$$\vec{r}(t) = \binom{e^t}{t^3}$$. Hvad er $$\vec{r}\,'(0)$$?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex25_4')">$$\binom{1}{0}$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex25_4')">$$\binom{0}{1}$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex25_4')">$$\binom{e}{0}$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex25_4')">$$\binom{1}{3}$$</button>
+        </div>
+        <div class="feedback" id="fb_ex25_4"></div>
       </div>
     </div>
 
@@ -1484,6 +2759,52 @@ p, .theory { max-width: 65ch; margin-bottom: 1.25em; color: var(--text-secondary
       </div>
     </div>
 
+      <div class="exercise" id="ex26_2">
+        <div class="exercise-title"><span class="num">2</span> Periode</div>
+        <p>$$f(x) = \sin(4x)$$. Hvad er perioden?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex26_2')">$$\frac{\pi}{2}$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex26_2')">$$4\pi$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex26_2')">$$2\pi$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex26_2')">$$\pi$$</button>
+        </div>
+        <div class="feedback" id="fb_ex26_2"></div>
+      </div>
+
+      <div class="exercise" id="ex26_3">
+        <div class="exercise-title"><span class="num">3</span> Afled trig</div>
+        <p>$$f(x) = 2\sin(3x)$$. Hvad er $$f'(x)$$?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex26_3')">$$6\cos(3x)$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex26_3')">$$2\cos(3x)$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex26_3')">$$-6\sin(3x)$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex26_3')">$$3\cos(2x)$$</button>
+        </div>
+        <div class="feedback" id="fb_ex26_3"></div>
+      </div>
+
+      <div class="exercise" id="ex26_4">
+        <div class="exercise-title"><span class="num">4</span> Lodret forskydning</div>
+        <p>$$f(x) = \sin(x) + 3$$. Hvad er den lodrette forskydning?</p>
+        <div class="fill-group">
+          <span>$$d =$$</span>
+          <input type="number" class="fill-input" id="inp_ex26_4" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex26_4', 3, 'fb_ex26_4')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex26_4"></div>
+      </div>
+
+      <div class="exercise" id="ex26_5">
+        <div class="exercise-title"><span class="num">5</span> Integration af sin</div>
+        <p>Beregn $$\int_0^{\pi} \sin x\,dx$$.</p>
+        <div class="fill-group">
+          <input type="number" class="fill-input" id="inp_ex26_5" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex26_5', 2, 'fb_ex26_5')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex26_5"></div>
+      </div>
+    </div>
+
     <!-- ===================== SECTION 27: Normalfordeling ===================== -->
     <div class="section" id="s27">
       <h2><span class="level-badge badge-a">A</span> Normalfordeling</h2>
@@ -1510,6 +2831,53 @@ p, .theory { max-width: 65ch; margin-bottom: 1.25em; color: var(--text-secondary
       </div>
     </div>
 
+      <div class="exercise" id="ex27_2">
+        <div class="exercise-title"><span class="num">2</span> 68-95-99.7 reglen</div>
+        <p>$$X \sim N(50, 10^2)$$. Cirka hvor mange procent af observationerne ligger mellem 40 og 60?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex27_2')">Ca. 68%</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex27_2')">Ca. 50%</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex27_2')">Ca. 95%</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex27_2')">Ca. 99.7%</button>
+        </div>
+        <div class="feedback" id="fb_ex27_2"></div>
+      </div>
+
+      <div class="exercise" id="ex27_3">
+        <div class="exercise-title"><span class="num">3</span> Konfidensinterval</div>
+        <p>$$\bar{x} = 25$$, $$\sigma = 4$$, $$n = 64$$. Beregn halvbredden af 95%-konfidensintervallet.</p>
+        <div class="fill-group">
+          <span>halvbredde =</span>
+          <input type="number" class="fill-input" id="inp_ex27_3" step="any">
+          <button class="btn btn-primary" onclick="checkFillRange('inp_ex27_3', 0.98, 0.02, 'fb_ex27_3')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex27_3"></div>
+        <div class="hint" id="hint_ex27_3">Hint: $$1{,}96 \cdot \frac{4}{\sqrt{64}} = 1{,}96 \cdot 0{,}5 = 0{,}98$$</div>
+      </div>
+
+      <div class="exercise" id="ex27_4">
+        <div class="exercise-title"><span class="num">4</span> Standardisering</div>
+        <p>$$X \sim N(70, 5^2)$$. Hvad svarer $$x = 80$$ til som z-score?</p>
+        <div class="fill-group">
+          <span>$$z =$$</span>
+          <input type="number" class="fill-input" id="inp_ex27_4" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex27_4', 2, 'fb_ex27_4')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex27_4"></div>
+      </div>
+
+      <div class="exercise" id="ex27_5">
+        <div class="exercise-title"><span class="num">5</span> Normalapproksimation</div>
+        <p>Hvorn&aring;r kan man approksimere en binomialfordeling med en normalfordeling?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex27_5')">N&aring;r $$np > 5$$ og $$n(1-p) > 5$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex27_5')">Altid</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex27_5')">Kun n&aring;r $$p = 0{,}5$$</button>
+        </div>
+        <div class="feedback" id="fb_ex27_5"></div>
+      </div>
+    </div>
+
     <!-- ===================== SECTION 28: Funktioner af to variable ===================== -->
     <div class="section" id="s28">
       <h2><span class="level-badge badge-a">A</span> Funktioner af to variable</h2>
@@ -1530,6 +2898,54 @@ p, .theory { max-width: 65ch; margin-bottom: 1.25em; color: var(--text-secondary
           <button class="quiz-option" onclick="checkQuiz(this,false,'ex28_1')">$$6x^2 y$$</button>
         </div>
         <div class="feedback" id="fb_ex28_1"></div>
+      </div>
+    </div>
+
+      <div class="exercise" id="ex28_2">
+        <div class="exercise-title"><span class="num">2</span> Partiel afledet mht. y</div>
+        <p>$$f(x,y) = 3x^2 y + y^3$$. Hvad er $$f'_y(x,y)$$?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex28_2')">$$3x^2 + 3y^2$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex28_2')">$$6xy$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex28_2')">$$6xy + 3y^2$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex28_2')">$$3x^2 y^2$$</button>
+        </div>
+        <div class="feedback" id="fb_ex28_2"></div>
+      </div>
+
+      <div class="exercise" id="ex28_3">
+        <div class="exercise-title"><span class="num">3</span> Beregn partiel</div>
+        <p>$$f(x,y) = x^2 + xy - y^2$$. Beregn $$f'_x(2, 3)$$.</p>
+        <div class="fill-group">
+          <span>$$f'_x(2,3) =$$</span>
+          <input type="number" class="fill-input" id="inp_ex28_3" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex28_3', 7, 'fb_ex28_3')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex28_3"></div>
+        <div class="hint" id="hint_ex28_3">Hint: $$f'_x = 2x + y$$, s&aring; $$f'_x(2,3) = 4 + 3 = 7$$</div>
+      </div>
+
+      <div class="exercise" id="ex28_4">
+        <div class="exercise-title"><span class="num">4</span> Station&aelig;rt punkt</div>
+        <p>$$f(x,y) = x^2 + y^2 - 4x + 6y$$. S&aelig;t begge partielle afledede lig nul. Hvad er $$x$$-koordinaten af det station&aelig;re punkt?</p>
+        <div class="fill-group">
+          <span>$$x =$$</span>
+          <input type="number" class="fill-input" id="inp_ex28_4" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex28_4', 2, 'fb_ex28_4')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex28_4"></div>
+      </div>
+
+      <div class="exercise" id="ex28_5">
+        <div class="exercise-title"><span class="num">5</span> Gradient</div>
+        <p>Hvad er gradienten $$\nabla f$$ for $$f(x,y) = xy$$?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex28_5')">$$(y, x)$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex28_5')">$$(x, y)$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex28_5')">$$(1, 1)$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex28_5')">$$(xy, xy)$$</button>
+        </div>
+        <div class="feedback" id="fb_ex28_5"></div>
       </div>
     </div>
 
