@@ -1,0 +1,1909 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STX Matematik — Interaktive Opgaver</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsxgraph/distrib/jsxgraph.css">
+<script src="https://cdn.jsdelivr.net/npm/jsxgraph/distrib/jsxgraphcore.js"></script>
+<style>
+:root {
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F7F8F9;
+  --bg-tertiary: #F0F0F0;
+  --text-primary: #222222;
+  --text-secondary: #575760;
+  --text-muted: #6F6F6F;
+  --primary: #1865F2;
+  --primary-hover: #284998;
+  --primary-light: #E8F0FE;
+  --success: #1B873F;
+  --success-light: #E6F4EA;
+  --error: #D33131;
+  --error-light: #FDEAEA;
+  --warning: #F49000;
+  --warning-light: #FFF3E0;
+  --accent: #FFC200;
+  --border: #E0E0E0;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --mat-c: #4FC3F7;
+  --mat-c-bg: #E1F5FE;
+  --mat-b: #1865F2;
+  --mat-b-bg: #E8F0FE;
+  --mat-a: #0D47A1;
+  --mat-a-bg: #E3F2FD;
+  --sidebar-width: 280px;
+}
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-primary);
+  background: var(--bg-primary);
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Top nav */
+.top-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #FFFFFF;
+  border-bottom: 1px solid var(--border);
+  padding: 0 1rem;
+  display: flex;
+  align-items: center;
+  height: 56px;
+  gap: 1rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+.top-nav h1 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0;
+  white-space: nowrap;
+}
+.top-nav .level-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+.level-tab {
+  padding: 6px 16px;
+  border-radius: 20px;
+  border: 2px solid var(--border);
+  background: #fff;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.level-tab:hover { border-color: var(--primary); }
+.level-tab.active-c { background: var(--mat-c-bg); border-color: var(--mat-c); color: #0277BD; }
+.level-tab.active-b { background: var(--mat-b-bg); border-color: var(--mat-b); color: var(--mat-b); }
+.level-tab.active-a { background: var(--mat-a-bg); border-color: var(--mat-a); color: var(--mat-a); }
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+.score-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+.score-toggle input { cursor: pointer; }
+.score-display {
+  background: var(--accent);
+  color: #222;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  display: none;
+}
+.score-display.visible { display: inline-block; }
+.mode-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+.mode-toggle input { cursor: pointer; }
+
+/* Layout */
+.layout {
+  display: flex;
+  min-height: calc(100vh - 56px);
+}
+
+/* Sidebar */
+.sidebar {
+  width: var(--sidebar-width);
+  background: var(--bg-secondary);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  position: sticky;
+  top: 56px;
+  height: calc(100vh - 56px);
+  padding: 1rem 0;
+  flex-shrink: 0;
+}
+.sidebar-section {
+  padding: 0.5rem 1rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+.sidebar a {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 8px 1rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.85rem;
+  border-left: 3px solid transparent;
+  transition: all 0.15s;
+}
+.sidebar a:hover {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+.sidebar a.active {
+  background: var(--primary-light);
+  color: var(--primary);
+  border-left-color: var(--primary);
+  font-weight: 600;
+}
+.sidebar .level-badge {
+  font-size: 0.65rem;
+  padding: 1px 6px;
+  border-radius: 10px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.badge-c { background: var(--mat-c-bg); color: #0277BD; }
+.badge-b { background: var(--mat-b-bg); color: var(--mat-b); }
+.badge-a { background: var(--mat-a-bg); color: var(--mat-a); }
+
+/* Main content */
+.main {
+  flex: 1;
+  padding: 2rem 2.5rem;
+  max-width: 900px;
+  min-width: 0;
+}
+.section {
+  display: none;
+  animation: fadeIn 0.3s ease;
+}
+.section.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+h3 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 2rem 0 0.75rem 0;
+  color: var(--text-primary);
+}
+h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 1.5rem 0 0.5rem 0;
+}
+p, .theory { max-width: 65ch; margin-bottom: 1.25em; color: var(--text-secondary); }
+.theory { background: var(--bg-secondary); padding: 1.25rem 1.5rem; border-radius: var(--radius-md); border-left: 4px solid var(--primary); margin: 1rem 0 1.5rem; }
+.theory p:last-child { margin-bottom: 0; }
+.formula-box {
+  background: var(--primary-light);
+  padding: 1rem 1.5rem;
+  border-radius: var(--radius-md);
+  margin: 1rem 0;
+  text-align: center;
+  font-size: 1.1rem;
+}
+
+/* Exercises */
+.exercise {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+}
+.exercise-title {
+  font-weight: 600;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.exercise-title .num {
+  background: var(--primary);
+  color: #fff;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* Quiz options */
+.quiz-options { display: flex; flex-direction: column; gap: 0.5rem; }
+.quiz-option {
+  background: #FFFFFF;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 12px 16px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+  font-family: inherit;
+  width: 100%;
+}
+.quiz-option:hover { border-color: var(--primary); background: var(--primary-light); }
+.quiz-option.correct {
+  border-color: var(--success);
+  background: var(--success-light);
+  animation: pulse-green 0.3s ease;
+}
+.quiz-option.incorrect {
+  border-color: var(--error);
+  background: var(--error-light);
+  animation: shake 0.4s ease;
+}
+.quiz-option.disabled { pointer-events: none; opacity: 0.7; }
+@keyframes pulse-green { 0%{transform:scale(1)} 50%{transform:scale(1.02)} 100%{transform:scale(1)} }
+@keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-4px)} 75%{transform:translateX(4px)} }
+
+/* Fill in */
+.fill-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin: 0.75rem 0;
+}
+.fill-input {
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  font-size: 1rem;
+  font-family: inherit;
+  width: 100px;
+  transition: border-color 0.2s;
+}
+.fill-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(24,101,242,0.15); }
+.fill-input.correct { border-color: var(--success); background: var(--success-light); }
+.fill-input.incorrect { border-color: var(--error); background: var(--error-light); }
+.btn {
+  padding: 8px 20px;
+  border-radius: var(--radius-sm);
+  border: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s;
+  min-height: 44px;
+}
+.btn-primary { background: var(--primary); color: #fff; }
+.btn-primary:hover { background: var(--primary-hover); }
+.btn-secondary { background: var(--bg-tertiary); color: var(--text-primary); }
+.btn-secondary:hover { background: var(--border); }
+.feedback {
+  margin-top: 0.75rem;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+  font-size: 0.9rem;
+  display: none;
+}
+.feedback.show { display: block; }
+.feedback.correct { background: var(--success-light); color: var(--success); }
+.feedback.incorrect { background: var(--error-light); color: var(--error); }
+.hint {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+  display: none;
+}
+.hint.show { display: block; }
+
+/* Step by step */
+.step { display: none; margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed var(--border); }
+.step.visible { display: block; animation: fadeIn 0.3s ease; }
+.step-label { font-weight: 600; color: var(--primary); margin-bottom: 0.5rem; }
+
+/* JSXGraph */
+.graph-container {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin: 1rem 0;
+}
+.jxgbox { width: 100% !important; aspect-ratio: 4/3; }
+
+/* Formelsamling */
+.formel-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.9rem;
+}
+.formel-table th {
+  background: var(--primary);
+  color: #fff;
+  padding: 10px 14px;
+  text-align: left;
+  font-weight: 600;
+}
+.formel-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+}
+.formel-table tr:nth-child(even) td { background: var(--bg-secondary); }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hamburger { display: block; }
+  .sidebar {
+    position: fixed;
+    left: -100%;
+    top: 56px;
+    z-index: 99;
+    width: 280px;
+    transition: left 0.3s ease;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+  }
+  .sidebar.open { left: 0; }
+  .sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    top: 56px;
+    background: rgba(0,0,0,0.3);
+    z-index: 98;
+  }
+  .sidebar-overlay.open { display: block; }
+  .main { padding: 1.5rem 1rem; }
+  .top-nav .level-tabs { display: none; }
+  .mode-toggle span { display: none; }
+  .score-toggle span { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- Top Navigation -->
+<nav class="top-nav">
+  <button class="hamburger" onclick="toggleSidebar()" aria-label="Menu">&#9776;</button>
+  <h1>STX Matematik</h1>
+  <div class="level-tabs">
+    <button class="level-tab active-c" onclick="filterLevel('c')">Mat C</button>
+    <button class="level-tab" onclick="filterLevel('b')">Mat B</button>
+    <button class="level-tab" onclick="filterLevel('a')">Mat A</button>
+    <button class="level-tab" onclick="filterLevel('all')" style="border-color:var(--primary);color:var(--primary);font-weight:700">Alle</button>
+  </div>
+  <div class="mode-toggle">
+    <label><input type="checkbox" id="randomMode" onchange="toggleRandomMode()"> <span>Nye tal</span></label>
+  </div>
+  <div class="score-toggle">
+    <label><input type="checkbox" id="scoreToggle" onchange="toggleScore()"> <span>Point</span></label>
+  </div>
+  <div class="score-display" id="scoreDisplay">0 point</div>
+</nav>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+<div class="layout">
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-section">Mat C &mdash; Grundl&aelig;ggende</div>
+    <a href="#" onclick="showSection('s1',this)" class="active"><span class="level-badge badge-c">C</span> Tal og algebra</a>
+    <a href="#" onclick="showSection('s2',this)"><span class="level-badge badge-c">C</span> Procent og finans</a>
+    <a href="#" onclick="showSection('s3',this)"><span class="level-badge badge-c">C</span> Line&aelig;re funktioner</a>
+    <a href="#" onclick="showSection('s4',this)"><span class="level-badge badge-c">C</span> Eksponentielle funkt.</a>
+    <a href="#" onclick="showSection('s5',this)"><span class="level-badge badge-c">C</span> Potensfunktioner</a>
+    <a href="#" onclick="showSection('s6',this)"><span class="level-badge badge-c">C</span> Andengradspolyn.</a>
+    <a href="#" onclick="showSection('s7',this)"><span class="level-badge badge-c">C</span> Trigonometri</a>
+    <a href="#" onclick="showSection('s8',this)"><span class="level-badge badge-c">C</span> Beskriv. statistik</a>
+    <a href="#" onclick="showSection('s9',this)"><span class="level-badge badge-c">C</span> Sandsynlighed</a>
+    <a href="#" onclick="showSection('s10',this)"><span class="level-badge badge-c">C</span> Regression</a>
+
+    <div class="sidebar-section">Mat B &mdash; Videregående</div>
+    <a href="#" onclick="showSection('s11',this)"><span class="level-badge badge-b">B</span> Sammensatte funkt.</a>
+    <a href="#" onclick="showSection('s12',this)"><span class="level-badge badge-b">B</span> Differentialregning</a>
+    <a href="#" onclick="showSection('s13',this)"><span class="level-badge badge-b">B</span> Standardafledede</a>
+    <a href="#" onclick="showSection('s14',this)"><span class="level-badge badge-b">B</span> Tangentligning</a>
+    <a href="#" onclick="showSection('s15',this)"><span class="level-badge badge-b">B</span> Monotoni og optim.</a>
+    <a href="#" onclick="showSection('s16',this)"><span class="level-badge badge-b">B</span> Analytisk geometri</a>
+    <a href="#" onclick="showSection('s17',this)"><span class="level-badge badge-b">B</span> Vektorer 2D</a>
+    <a href="#" onclick="showSection('s18',this)"><span class="level-badge badge-b">B</span> Trigonometri udv.</a>
+    <a href="#" onclick="showSection('s19',this)"><span class="level-badge badge-b">B</span> Binomialfordeling</a>
+    <a href="#" onclick="showSection('s20',this)"><span class="level-badge badge-b">B</span> Hypotesetest</a>
+
+    <div class="sidebar-section">Mat A &mdash; Avanceret</div>
+    <a href="#" onclick="showSection('s21',this)"><span class="level-badge badge-a">A</span> Integralregning</a>
+    <a href="#" onclick="showSection('s22',this)"><span class="level-badge badge-a">A</span> Rumfang og buel.</a>
+    <a href="#" onclick="showSection('s23',this)"><span class="level-badge badge-a">A</span> Differentiallign.</a>
+    <a href="#" onclick="showSection('s24',this)"><span class="level-badge badge-a">A</span> Vektorer 3D</a>
+    <a href="#" onclick="showSection('s25',this)"><span class="level-badge badge-a">A</span> Vektorfunktioner</a>
+    <a href="#" onclick="showSection('s26',this)"><span class="level-badge badge-a">A</span> Trig. funktioner</a>
+    <a href="#" onclick="showSection('s27',this)"><span class="level-badge badge-a">A</span> Normalfordeling</a>
+    <a href="#" onclick="showSection('s28',this)"><span class="level-badge badge-a">A</span> Funkt. af to var.</a>
+
+    <div class="sidebar-section">Reference</div>
+    <a href="#" onclick="showSection('formel',this)">&#128210; Formelsamling</a>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main" id="mainContent">
+
+    <!-- ===================== SECTION 1: Tal og algebra ===================== -->
+    <div class="section active" id="s1">
+      <h2><span class="level-badge badge-c">C</span> Tal og algebra</h2>
+      <div class="theory">
+        <p>Algebra handler om at arbejde med udtryk, ligninger og regneregler. Det er fundamentet for al matematik p&aring; gymnasiet.</p>
+        <h4>Potensregneregler</h4>
+        <p>$$a^n \cdot a^m = a^{n+m} \qquad \frac{a^n}{a^m} = a^{n-m} \qquad (a^n)^m = a^{n \cdot m} \qquad a^0 = 1 \qquad a^{-n} = \frac{1}{a^n}$$</p>
+        <h4>Kvadrats&aelig;tningerne</h4>
+        <p>$$(a+b)^2 = a^2 + 2ab + b^2 \qquad (a-b)^2 = a^2 - 2ab + b^2 \qquad (a+b)(a-b) = a^2 - b^2$$</p>
+      </div>
+
+      <h3>Opgaver</h3>
+
+      <div class="exercise" id="ex1_1">
+        <div class="exercise-title"><span class="num">1</span> Reduktion af potensudtryk</div>
+        <p>Reducer udtrykket: &nbsp; $$a^3 \cdot a^5$$</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex1_1')">$$a^{15}$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex1_1')">$$a^{8}$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex1_1')">$$a^{35}$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex1_1')">$$2a^{8}$$</button>
+        </div>
+        <div class="feedback" id="fb_ex1_1"></div>
+      </div>
+
+      <div class="exercise" id="ex1_2">
+        <div class="exercise-title"><span class="num">2</span> Kvadrats&aelig;tning</div>
+        <p>Udregn: &nbsp; $$(x+3)^2$$</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex1_2')">$$x^2 + 9$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex1_2')">$$x^2 + 3x + 9$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex1_2')">$$x^2 + 6x + 9$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex1_2')">$$2x + 6$$</button>
+        </div>
+        <div class="feedback" id="fb_ex1_2"></div>
+      </div>
+
+      <div class="exercise" id="ex1_3">
+        <div class="exercise-title"><span class="num">3</span> L&oslash;s ligningen</div>
+        <p>L&oslash;s: &nbsp; $$3x - 7 = 14$$</p>
+        <div class="fill-group">
+          <span>$$x =$$</span>
+          <input type="number" class="fill-input" id="inp_ex1_3" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex1_3', 7, 'fb_ex1_3')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex1_3"></div>
+        <div class="hint" id="hint_ex1_3">Hint: Tilf&oslash;j 7 p&aring; begge sider, derefter divider med 3.</div>
+      </div>
+
+      <div class="exercise" id="ex1_4">
+        <div class="exercise-title"><span class="num">4</span> Tredje kvadrats&aelig;tning</div>
+        <p>Reducer: &nbsp; $$(2a+5)(2a-5)$$</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex1_4')">$$4a^2 - 25$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex1_4')">$$4a^2 + 25$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex1_4')">$$4a^2 - 20a - 25$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex1_4')">$$2a^2 - 25$$</button>
+        </div>
+        <div class="feedback" id="fb_ex1_4"></div>
+      </div>
+
+      <div class="exercise" id="ex1_5">
+        <div class="exercise-title"><span class="num">5</span> Potensreduktion</div>
+        <p>Reducer: &nbsp; $$\frac{a^7}{a^3}$$</p>
+        <div class="fill-group">
+          <span>$$a^{?}$$ &mdash; Skriv eksponenten:</span>
+          <input type="number" class="fill-input" id="inp_ex1_5" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex1_5', 4, 'fb_ex1_5')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex1_5"></div>
+      </div>
+
+      <div class="exercise" id="ex1_step">
+        <div class="exercise-title"><span class="num">6</span> Trin-for-trin: L&oslash;s ligningen</div>
+        <p>L&oslash;s: &nbsp; $$5(x - 2) = 3x + 6$$</p>
+        <div class="step visible" id="step1_1">
+          <div class="step-label">Trin 1: Gang ind i parentesen</div>
+          <p>$$5x - 10 = 3x + 6$$. Hvad f&aring;r du, n&aring;r du tr&aelig;kker $$3x$$ fra begge sider?</p>
+          <div class="fill-group">
+            <span>$$?x - 10 = 6$$</span>
+            <input type="number" class="fill-input" id="inp_step1_1" step="any">
+            <button class="btn btn-primary" onclick="checkStep('inp_step1_1',2,'fb_step1_1','step1_2')">Tjek</button>
+          </div>
+          <div class="feedback" id="fb_step1_1"></div>
+        </div>
+        <div class="step" id="step1_2">
+          <div class="step-label">Trin 2: Isoler x</div>
+          <p>$$2x - 10 = 6$$. Tilf&oslash;j 10 p&aring; begge sider og divider med 2.</p>
+          <div class="fill-group">
+            <span>$$x =$$</span>
+            <input type="number" class="fill-input" id="inp_step1_2" step="any">
+            <button class="btn btn-primary" onclick="checkFill('inp_step1_2', 8, 'fb_step1_2')">Tjek</button>
+          </div>
+          <div class="feedback" id="fb_step1_2"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== SECTION 2: Procent og finans ===================== -->
+    <div class="section" id="s2">
+      <h2><span class="level-badge badge-c">C</span> Procentregning og finansiel regning</h2>
+      <div class="theory">
+        <h4>Procentvis &aelig;ndring</h4>
+        <p>En stigning p&aring; $$p\%$$ svarer til at gange med fremskrivningsfaktoren $$1 + \frac{p}{100}$$.</p>
+        <p>Et fald p&aring; $$p\%$$ svarer til at gange med $$1 - \frac{p}{100}$$.</p>
+        <h4>Renteformlen</h4>
+        <p>$$K_n = K_0 \cdot (1+r)^n$$</p>
+        <p>hvor $$K_0$$ er startkapital, $$r$$ er renten (som decimaltal), og $$n$$ er antal terminer.</p>
+      </div>
+
+      <h3>Opgaver</h3>
+      <div class="exercise" id="ex2_1">
+        <div class="exercise-title"><span class="num">1</span> Fremskrivningsfaktor</div>
+        <p>En vare stiger 15% i pris. Hvad er fremskrivningsfaktoren?</p>
+        <div class="fill-group">
+          <input type="number" class="fill-input" id="inp_ex2_1" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex2_1', 1.15, 'fb_ex2_1')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex2_1"></div>
+      </div>
+
+      <div class="exercise" id="ex2_2">
+        <div class="exercise-title"><span class="num">2</span> Renteformlen</div>
+        <p>Du inds&aelig;tter 10.000 kr. p&aring; en konto med 3% &aring;rlig rente. Hvad er bel&oslash;bet efter 5 &aring;r? (Afrund til hele kr.)</p>
+        <div class="fill-group">
+          <span>$$K_5 =$$</span>
+          <input type="number" class="fill-input" id="inp_ex2_2" step="any" style="width:140px">
+          <span>kr.</span>
+          <button class="btn btn-primary" onclick="checkFillRange('inp_ex2_2', 11593, 2, 'fb_ex2_2')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex2_2"></div>
+        <div class="hint" id="hint_ex2_2">Hint: $$K_5 = 10000 \cdot 1{,}03^5$$</div>
+      </div>
+
+      <div class="exercise" id="ex2_3">
+        <div class="exercise-title"><span class="num">3</span> Procentvis &aelig;ndring</div>
+        <p>En pris falder fra 800 kr. til 680 kr. Hvad er den procentvise &aelig;ndring?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex2_3')">$$-15\%$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex2_3')">$$-12\%$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex2_3')">$$-20\%$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex2_3')">$$15\%$$</button>
+        </div>
+        <div class="feedback" id="fb_ex2_3"></div>
+      </div>
+    </div>
+
+    <!-- ===================== SECTION 3: Lineære funktioner ===================== -->
+    <div class="section" id="s3">
+      <h2><span class="level-badge badge-c">C</span> Line&aelig;re funktioner</h2>
+      <div class="theory">
+        <h4>Forskrift</h4>
+        <p>$$f(x) = ax + b$$</p>
+        <p>hvor $$a$$ er h&aelig;ldningskoefficienten (stigning pr. enhed) og $$b$$ er sk&aelig;ringen med y-aksen.</p>
+        <h4>To-punkts formlen</h4>
+        <p>$$a = \frac{y_2 - y_1}{x_2 - x_1}$$</p>
+      </div>
+
+      <h3>Interaktiv graf</h3>
+      <p>Tr&aelig;k i gliderne for at &aelig;ndre $$a$$ og $$b$$:</p>
+      <div class="graph-container">
+        <div id="graph_linear" class="jxgbox" style="max-width:600px;margin:0 auto"></div>
+      </div>
+
+      <h3>Opgaver</h3>
+      <div class="exercise" id="ex3_1">
+        <div class="exercise-title"><span class="num">1</span> Afl&aelig;s h&aelig;ldning</div>
+        <p>En line&aelig;r funktion g&aring;r gennem punkterne $$(2, 5)$$ og $$(6, 13)$$. Hvad er h&aelig;ldningen $$a$$?</p>
+        <div class="fill-group">
+          <span>$$a =$$</span>
+          <input type="number" class="fill-input" id="inp_ex3_1" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex3_1', 2, 'fb_ex3_1')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex3_1"></div>
+      </div>
+
+      <div class="exercise" id="ex3_2">
+        <div class="exercise-title"><span class="num">2</span> Find forskriften</div>
+        <p>En linje har h&aelig;ldning $$a = 3$$ og g&aring;r gennem $$(1, 7)$$. Hvad er $$b$$?</p>
+        <div class="fill-group">
+          <span>$$b =$$</span>
+          <input type="number" class="fill-input" id="inp_ex3_2" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex3_2', 4, 'fb_ex3_2')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex3_2"></div>
+        <div class="hint" id="hint_ex3_2">Hint: Inds&aelig;t i $$f(x) = 3x + b$$: $$7 = 3 \cdot 1 + b$$</div>
+      </div>
+
+      <div class="exercise" id="ex3_3">
+        <div class="exercise-title"><span class="num">3</span> Parallelle linjer</div>
+        <p>To linjer er parallelle. Den ene har forskriften $$y = 4x - 2$$. Hvad er h&aelig;ldningen af den anden?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex3_3')">$$-4$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex3_3')">$$4$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex3_3')">$$\frac{1}{4}$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex3_3')">$$-2$$</button>
+        </div>
+        <div class="feedback" id="fb_ex3_3"></div>
+      </div>
+    </div>
+
+    <!-- ===================== SECTION 4: Eksponentielle funktioner ===================== -->
+    <div class="section" id="s4">
+      <h2><span class="level-badge badge-c">C</span> Eksponentielle funktioner</h2>
+      <div class="theory">
+        <h4>Forskrift</h4>
+        <p>$$f(x) = b \cdot a^x$$</p>
+        <p>hvor $$b$$ er startv&aelig;rdien $$(f(0) = b)$$ og $$a$$ er fremskrivningsfaktoren.</p>
+        <ul>
+          <li>$$a > 1$$: v&aelig;kst (stigning p&aring; $$(a-1) \cdot 100\%$$ pr. enhed)</li>
+          <li>$$0 < a < 1$$: h&aelig;nfald</li>
+        </ul>
+        <h4>Fordoblings- og halveringskonstant</h4>
+        <p>$$T_2 = \frac{\ln 2}{\ln a} \qquad T_{1/2} = \frac{\ln \frac{1}{2}}{\ln a}$$</p>
+      </div>
+
+      <h3>Interaktiv graf</h3>
+      <div class="graph-container">
+        <div id="graph_exp" class="jxgbox" style="max-width:600px;margin:0 auto"></div>
+      </div>
+
+      <h3>Opgaver</h3>
+      <div class="exercise" id="ex4_1">
+        <div class="exercise-title"><span class="num">1</span> V&aelig;kst eller h&aelig;nfald?</div>
+        <p>$$f(x) = 500 \cdot 0{,}92^x$$. Er der tale om v&aelig;kst eller h&aelig;nfald?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex4_1')">V&aelig;kst</button>
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex4_1')">H&aelig;nfald</button>
+        </div>
+        <div class="feedback" id="fb_ex4_1"></div>
+      </div>
+
+      <div class="exercise" id="ex4_2">
+        <div class="exercise-title"><span class="num">2</span> &Aring;rlig v&aelig;kstrate</div>
+        <p>$$f(x) = 200 \cdot 1{,}06^x$$. Hvad er den &aring;rlige v&aelig;kstrate i procent?</p>
+        <div class="fill-group">
+          <input type="number" class="fill-input" id="inp_ex4_2" step="any">
+          <span>%</span>
+          <button class="btn btn-primary" onclick="checkFill('inp_ex4_2', 6, 'fb_ex4_2')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex4_2"></div>
+      </div>
+
+      <div class="exercise" id="ex4_3">
+        <div class="exercise-title"><span class="num">3</span> Find b og a</div>
+        <p>En eksponentiel funktion g&aring;r gennem $$(0, 100)$$ og $$(3, 800)$$. Hvad er $$b$$?</p>
+        <div class="fill-group">
+          <span>$$b =$$</span>
+          <input type="number" class="fill-input" id="inp_ex4_3" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex4_3', 100, 'fb_ex4_3')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex4_3"></div>
+      </div>
+    </div>
+
+    <!-- ===================== SECTION 5: Potensfunktioner ===================== -->
+    <div class="section" id="s5">
+      <h2><span class="level-badge badge-c">C</span> Potensfunktioner</h2>
+      <div class="theory">
+        <h4>Forskrift</h4>
+        <p>$$f(x) = b \cdot x^a$$</p>
+        <p>I et dobbeltlogaritmisk koordinatsystem bliver grafen en ret linje med h&aelig;ldning $$a$$.</p>
+        <h4>Bestemmelse af a og b fra to punkter</h4>
+        <p>$$a = \frac{\ln y_2 - \ln y_1}{\ln x_2 - \ln x_1} \qquad b = \frac{y_1}{x_1^a}$$</p>
+      </div>
+
+      <h3>Opgaver</h3>
+      <div class="exercise" id="ex5_1">
+        <div class="exercise-title"><span class="num">1</span> Genkend en potensfunktion</div>
+        <p>Hvilken er en potensfunktion?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex5_1')">$$f(x) = 3 \cdot 2^x$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex5_1')">$$f(x) = 5 \cdot x^{0{,}7}$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex5_1')">$$f(x) = 2x + 3$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex5_1')">$$f(x) = x^2 + 3x$$</button>
+        </div>
+        <div class="feedback" id="fb_ex5_1"></div>
+      </div>
+
+      <div class="exercise" id="ex5_2">
+        <div class="exercise-title"><span class="num">2</span> Beregn funktionsv&aelig;rdi</div>
+        <p>$$f(x) = 4 \cdot x^2$$. Beregn $$f(3)$$.</p>
+        <div class="fill-group">
+          <span>$$f(3) =$$</span>
+          <input type="number" class="fill-input" id="inp_ex5_2" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex5_2', 36, 'fb_ex5_2')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex5_2"></div>
+      </div>
+    </div>
+
+    <!-- ===================== SECTION 6: Andengradspolynomier ===================== -->
+    <div class="section" id="s6">
+      <h2><span class="level-badge badge-c">C</span> Andengradspolynomier</h2>
+      <div class="theory">
+        <h4>Forskrift</h4>
+        <p>$$f(x) = ax^2 + bx + c$$</p>
+        <h4>Diskriminanten</h4>
+        <p>$$d = b^2 - 4ac$$</p>
+        <ul>
+          <li>$$d > 0$$: to nulpunkter</li>
+          <li>$$d = 0$$: &eacute;t nulpunkt (dobbeltr&oslash;d)</li>
+          <li>$$d < 0$$: ingen nulpunkter</li>
+        </ul>
+        <h4>Nulpunktsformlen</h4>
+        <p>$$x = \frac{-b \pm \sqrt{d}}{2a}$$</p>
+        <h4>Toppunktsformlen</h4>
+        <p>$$T = \left(-\frac{b}{2a},\; -\frac{d}{4a}\right)$$</p>
+      </div>
+
+      <h3>Interaktiv graf</h3>
+      <div class="graph-container">
+        <div id="graph_quad" class="jxgbox" style="max-width:600px;margin:0 auto"></div>
+      </div>
+
+      <h3>Opgaver</h3>
+      <div class="exercise" id="ex6_1">
+        <div class="exercise-title"><span class="num">1</span> Beregn diskriminanten</div>
+        <p>$$f(x) = 2x^2 - 4x - 6$$. Beregn diskriminanten $$d$$.</p>
+        <div class="fill-group">
+          <span>$$d =$$</span>
+          <input type="number" class="fill-input" id="inp_ex6_1" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex6_1', 64, 'fb_ex6_1')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex6_1"></div>
+        <div class="hint" id="hint_ex6_1">Hint: $$d = (-4)^2 - 4 \cdot 2 \cdot (-6) = 16 + 48$$</div>
+      </div>
+
+      <div class="exercise" id="ex6_2">
+        <div class="exercise-title"><span class="num">2</span> Antal nulpunkter</div>
+        <p>$$d = -7$$. Hvor mange nulpunkter har polynomiet?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex6_2')">To</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex6_2')">Et</button>
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex6_2')">Ingen</button>
+        </div>
+        <div class="feedback" id="fb_ex6_2"></div>
+      </div>
+
+      <div class="exercise" id="ex6_3">
+        <div class="exercise-title"><span class="num">3</span> Find nulpunkterne</div>
+        <p>$$f(x) = x^2 - 5x + 6$$. Find det mindste nulpunkt.</p>
+        <div class="fill-group">
+          <span>$$x_1 =$$</span>
+          <input type="number" class="fill-input" id="inp_ex6_3" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex6_3', 2, 'fb_ex6_3')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex6_3"></div>
+      </div>
+
+      <div class="exercise" id="ex6_4">
+        <div class="exercise-title"><span class="num">4</span> Toppunkt</div>
+        <p>$$f(x) = -x^2 + 6x - 5$$. Hvad er toppunktets x-koordinat?</p>
+        <div class="fill-group">
+          <span>$$x_T =$$</span>
+          <input type="number" class="fill-input" id="inp_ex6_4" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex6_4', 3, 'fb_ex6_4')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex6_4"></div>
+      </div>
+    </div>
+
+    <!-- ===================== SECTION 7: Trigonometri ===================== -->
+    <div class="section" id="s7">
+      <h2><span class="level-badge badge-c">C</span> Trigonometri</h2>
+      <div class="theory">
+        <h4>Retvinklede trekanter</h4>
+        <p>$$\sin(v) = \frac{\text{modst&aring;ende}}{\text{hypotenusen}} \qquad \cos(v) = \frac{\text{hosliggende}}{\text{hypotenusen}} \qquad \tan(v) = \frac{\text{modst&aring;ende}}{\text{hosliggende}}$$</p>
+        <h4>Pythagoras' s&aelig;tning</h4>
+        <p>$$a^2 + b^2 = c^2$$</p>
+        <p>hvor $$c$$ er hypotenusen.</p>
+      </div>
+
+      <h3>Opgaver</h3>
+      <div class="exercise" id="ex7_1">
+        <div class="exercise-title"><span class="num">1</span> Pythagoras</div>
+        <p>En retvinklet trekant har kateter p&aring; 3 og 4. Hvad er hypotenusen?</p>
+        <div class="fill-group">
+          <span>$$c =$$</span>
+          <input type="number" class="fill-input" id="inp_ex7_1" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex7_1', 5, 'fb_ex7_1')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex7_1"></div>
+      </div>
+
+      <div class="exercise" id="ex7_2">
+        <div class="exercise-title"><span class="num">2</span> Trigonometrisk forhold</div>
+        <p>I en retvinklet trekant er den modst&aring;ende katete 6 og hypotenusen 10. Hvad er $$\sin(v)$$?</p>
+        <div class="fill-group">
+          <span>$$\sin(v) =$$</span>
+          <input type="number" class="fill-input" id="inp_ex7_2" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex7_2', 0.6, 'fb_ex7_2')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex7_2"></div>
+      </div>
+
+      <div class="exercise" id="ex7_3">
+        <div class="exercise-title"><span class="num">3</span> Hvad bruges?</div>
+        <p>Du kender hypotenusen og den hosliggende katete og skal finde vinklen. Hvilket trigonometrisk forhold bruger du?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex7_3')">$$\sin$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex7_3')">$$\cos$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex7_3')">$$\tan$$</button>
+        </div>
+        <div class="feedback" id="fb_ex7_3"></div>
+      </div>
+    </div>
+
+    <!-- ===================== SECTION 8: Beskrivende statistik ===================== -->
+    <div class="section" id="s8">
+      <h2><span class="level-badge badge-c">C</span> Beskrivende statistik</h2>
+      <div class="theory">
+        <h4>Centrale begreber</h4>
+        <ul>
+          <li><strong>Middelv&aelig;rdi (gennemsnit):</strong> $$\bar{x} = \frac{\sum x_i}{n}$$</li>
+          <li><strong>Median:</strong> Den midterste observation n&aring;r data er sorteret</li>
+          <li><strong>Kvartiler:</strong> $$Q_1$$ (25%), $$Q_2$$ (median), $$Q_3$$ (75%)</li>
+          <li><strong>Kvartilbredde:</strong> $$IQR = Q_3 - Q_1$$</li>
+          <li><strong>Boksplot:</strong> Viser minimum, $$Q_1$$, median, $$Q_3$$, maksimum</li>
+        </ul>
+      </div>
+
+      <h3>Opgaver</h3>
+      <div class="exercise" id="ex8_1">
+        <div class="exercise-title"><span class="num">1</span> Beregn middelv&aelig;rdi</div>
+        <p>Datas&aelig;t: 3, 7, 5, 9, 6. Beregn middelv&aelig;rdien.</p>
+        <div class="fill-group">
+          <span>$$\bar{x} =$$</span>
+          <input type="number" class="fill-input" id="inp_ex8_1" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex8_1', 6, 'fb_ex8_1')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex8_1"></div>
+      </div>
+
+      <div class="exercise" id="ex8_2">
+        <div class="exercise-title"><span class="num">2</span> Find medianen</div>
+        <p>Datas&aelig;t (sorteret): 2, 4, 7, 9, 12, 15, 18. Hvad er medianen?</p>
+        <div class="fill-group">
+          <span>Median =</span>
+          <input type="number" class="fill-input" id="inp_ex8_2" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex8_2', 9, 'fb_ex8_2')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex8_2"></div>
+      </div>
+    </div>
+
+    <!-- ===================== SECTION 9: Sandsynlighedsregning ===================== -->
+    <div class="section" id="s9">
+      <h2><span class="level-badge badge-c">C</span> Sandsynlighedsregning</h2>
+      <div class="theory">
+        <h4>Grundl&aelig;ggende sandsynlighed</h4>
+        <p>$$P(A) = \frac{\text{antal gunstige udfald}}{\text{antal mulige udfald}}$$</p>
+        <h4>Kombinatorik</h4>
+        <p>$$K(n,r) = \binom{n}{r} = \frac{n!}{r!(n-r)!}$$</p>
+      </div>
+
+      <h3>Opgaver</h3>
+      <div class="exercise" id="ex9_1">
+        <div class="exercise-title"><span class="num">1</span> Terningkast</div>
+        <p>Hvad er sandsynligheden for at sl&aring; en 6'er med en almindelig terning?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex9_1')">$$\frac{1}{6}$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex9_1')">$$\frac{1}{3}$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex9_1')">$$\frac{6}{36}$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex9_1')">$$\frac{1}{12}$$</button>
+        </div>
+        <div class="feedback" id="fb_ex9_1"></div>
+      </div>
+
+      <div class="exercise" id="ex9_2">
+        <div class="exercise-title"><span class="num">2</span> Kombinationer</div>
+        <p>Beregn $$\binom{5}{2}$$.</p>
+        <div class="fill-group">
+          <input type="number" class="fill-input" id="inp_ex9_2" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex9_2', 10, 'fb_ex9_2')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex9_2"></div>
+      </div>
+    </div>
+
+    <!-- ===================== SECTION 10: Regression ===================== -->
+    <div class="section" id="s10">
+      <h2><span class="level-badge badge-c">C</span> Regression</h2>
+      <div class="theory">
+        <p>Regression bruges til at finde den funktion, der bedst beskriver et datas&aelig;t.</p>
+        <h4>Typer</h4>
+        <ul>
+          <li><strong>Line&aelig;r:</strong> $$y = ax + b$$</li>
+          <li><strong>Eksponentiel:</strong> $$y = b \cdot a^x$$</li>
+          <li><strong>Potens:</strong> $$y = b \cdot x^a$$</li>
+        </ul>
+        <h4>Forklaringsgraden $$R^2$$</h4>
+        <p>$$R^2$$ angiver, hvor stor en del af variationen i data, der forklares af modellen. $$R^2 = 1$$ er perfekt fit.</p>
+      </div>
+
+      <h3>Opgaver</h3>
+      <div class="exercise" id="ex10_1">
+        <div class="exercise-title"><span class="num">1</span> V&aelig;lg regressionstype</div>
+        <p>Data viser en konstant procentvis stigning. Hvilken regressionstype er mest passende?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex10_1')">Line&aelig;r regression</button>
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex10_1')">Eksponentiel regression</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex10_1')">Potensregression</button>
+        </div>
+        <div class="feedback" id="fb_ex10_1"></div>
+      </div>
+    </div>
+
+    <!-- ===================== SECTION 11: Sammensatte funktioner ===================== -->
+    <div class="section" id="s11">
+      <h2><span class="level-badge badge-b">B</span> Sammensatte funktioner og ln</h2>
+      <div class="theory">
+        <h4>Sammensat funktion</h4>
+        <p>$$(f \circ g)(x) = f(g(x))$$</p>
+        <h4>Naturlig logaritme</h4>
+        <p>$$\ln(x)$$ er den inverse til $$e^x$$. Dvs. $$\ln(e^x) = x$$ og $$e^{\ln x} = x$$.</p>
+        <h4>Regneregler for ln</h4>
+        <p>$$\ln(a \cdot b) = \ln a + \ln b \qquad \ln\frac{a}{b} = \ln a - \ln b \qquad \ln(a^n) = n \cdot \ln a$$</p>
+      </div>
+
+      <h3>Opgaver</h3>
+      <div class="exercise" id="ex11_1">
+        <div class="exercise-title"><span class="num">1</span> Sammensat funktion</div>
+        <p>$$f(x) = x^2$$ og $$g(x) = 3x + 1$$. Hvad er $$f(g(2))$$?</p>
+        <div class="fill-group">
+          <span>$$f(g(2)) =$$</span>
+          <input type="number" class="fill-input" id="inp_ex11_1" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex11_1', 49, 'fb_ex11_1')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex11_1"></div>
+      </div>
+
+      <div class="exercise" id="ex11_2">
+        <div class="exercise-title"><span class="num">2</span> Logaritmeregel</div>
+        <p>Reducer: $$\ln(e^5)$$</p>
+        <div class="fill-group">
+          <input type="number" class="fill-input" id="inp_ex11_2" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex11_2', 5, 'fb_ex11_2')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex11_2"></div>
+      </div>
+    </div>
+
+    <!-- ===================== SECTION 12: Differentialregning ===================== -->
+    <div class="section" id="s12">
+      <h2><span class="level-badge badge-b">B</span> Differentialregning</h2>
+      <div class="theory">
+        <h4>Tretrinsreglen</h4>
+        <p>Den afledede defineres ved:</p>
+        <p>$$f'(x) = \lim_{\Delta x \to 0} \frac{f(x + \Delta x) - f(x)}{\Delta x}$$</p>
+        <h4>Regneregler</h4>
+        <ul>
+          <li><strong>Sumregel:</strong> $$(f+g)' = f' + g'$$</li>
+          <li><strong>Konstantregel:</strong> $$(k \cdot f)' = k \cdot f'$$</li>
+          <li><strong>Produktregel:</strong> $$(f \cdot g)' = f' \cdot g + f \cdot g'$$</li>
+          <li><strong>K&aelig;deregel:</strong> $$(f(g(x)))' = f'(g(x)) \cdot g'(x)$$</li>
+          <li><strong>Kvotientregel:</strong> $$\left(\frac{f}{g}\right)' = \frac{f' \cdot g - f \cdot g'}{g^2}$$</li>
+        </ul>
+      </div>
+
+      <h3>Opgaver</h3>
+      <div class="exercise" id="ex12_1">
+        <div class="exercise-title"><span class="num">1</span> Afled polymonium</div>
+        <p>$$f(x) = 3x^4 - 2x^2 + 7$$. Hvad er $$f'(x)$$?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex12_1')">$$12x^3 - 4x$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex12_1')">$$12x^3 - 2x$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex12_1')">$$3x^3 - 2x + 7$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex12_1')">$$12x^4 - 4x^2$$</button>
+        </div>
+        <div class="feedback" id="fb_ex12_1"></div>
+      </div>
+
+      <div class="exercise" id="ex12_2">
+        <div class="exercise-title"><span class="num">2</span> K&aelig;dereglen</div>
+        <p>$$f(x) = (2x+3)^5$$. Hvad er $$f'(x)$$?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex12_2')">$$5(2x+3)^4$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex12_2')">$$10(2x+3)^4$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex12_2')">$$5 \cdot 2(2x+3)^5$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex12_2')">$$10x(2x+3)^4$$</button>
+        </div>
+        <div class="feedback" id="fb_ex12_2"></div>
+      </div>
+    </div>
+
+    <!-- ===================== SECTION 13: Standardafledede ===================== -->
+    <div class="section" id="s13">
+      <h2><span class="level-badge badge-b">B</span> Standardafledede</h2>
+      <div class="theory">
+        <table class="formel-table">
+          <tr><th>$$f(x)$$</th><th>$$f'(x)$$</th></tr>
+          <tr><td>$$x^n$$</td><td>$$n \cdot x^{n-1}$$</td></tr>
+          <tr><td>$$e^x$$</td><td>$$e^x$$</td></tr>
+          <tr><td>$$a^x$$</td><td>$$a^x \cdot \ln a$$</td></tr>
+          <tr><td>$$\ln x$$</td><td>$$\frac{1}{x}$$</td></tr>
+          <tr><td>$$\sin x$$</td><td>$$\cos x$$</td></tr>
+          <tr><td>$$\cos x$$</td><td>$$-\sin x$$</td></tr>
+          <tr><td>$$\tan x$$</td><td>$$\frac{1}{\cos^2 x}$$</td></tr>
+        </table>
+      </div>
+
+      <h3>Opgaver</h3>
+      <div class="exercise" id="ex13_1">
+        <div class="exercise-title"><span class="num">1</span> Afled</div>
+        <p>$$f(x) = 5e^x + 3\ln x$$. Hvad er $$f'(x)$$?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex13_1')">$$5e^x + \frac{3}{x}$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex13_1')">$$5e^x + 3x$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex13_1')">$$e^x + \frac{1}{x}$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex13_1')">$$5e^{x-1} + 3\ln x$$</button>
+        </div>
+        <div class="feedback" id="fb_ex13_1"></div>
+      </div>
+
+      <div class="exercise" id="ex13_2">
+        <div class="exercise-title"><span class="num">2</span> Afledt af sin</div>
+        <p>$$f(x) = \sin(3x)$$. Hvad er $$f'(x)$$? (brug k&aelig;dereglen)</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex13_2')">$$\cos(3x)$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex13_2')">$$3\cos(3x)$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex13_2')">$$-3\sin(3x)$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex13_2')">$$3\sin(3x)$$</button>
+        </div>
+        <div class="feedback" id="fb_ex13_2"></div>
+      </div>
+    </div>
+
+    <!-- ===================== SECTION 14: Tangentligning ===================== -->
+    <div class="section" id="s14">
+      <h2><span class="level-badge badge-b">B</span> Tangentligning</h2>
+      <div class="theory">
+        <h4>Tangentens ligning i punktet $$(x_0, f(x_0))$$</h4>
+        <div class="formula-box">$$y = f'(x_0)(x - x_0) + f(x_0)$$</div>
+      </div>
+
+      <h3>Interaktiv tangent</h3>
+      <div class="graph-container">
+        <div id="graph_tangent" class="jxgbox" style="max-width:600px;margin:0 auto"></div>
+      </div>
+
+      <h3>Opgaver</h3>
+      <div class="exercise" id="ex14_1">
+        <div class="exercise-title"><span class="num">1</span> Find tangentens h&aelig;ldning</div>
+        <p>$$f(x) = x^2 - 3x + 2$$. Hvad er tangentens h&aelig;ldning i $$x_0 = 4$$?</p>
+        <div class="fill-group">
+          <span>$$f'(4) =$$</span>
+          <input type="number" class="fill-input" id="inp_ex14_1" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex14_1', 5, 'fb_ex14_1')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex14_1"></div>
+        <div class="hint" id="hint_ex14_1">Hint: $$f'(x) = 2x - 3$$, s&aring; $$f'(4) = 2 \cdot 4 - 3$$</div>
+      </div>
+    </div>
+
+    <!-- ===================== SECTION 15: Monotoni og optimering ===================== -->
+    <div class="section" id="s15">
+      <h2><span class="level-badge badge-b">B</span> Monotoni og optimering</h2>
+      <div class="theory">
+        <h4>Monotoniforhold</h4>
+        <p>L&oslash;s $$f'(x) = 0$$ for at finde station&aelig;re punkter. Unders&oslash;g fortegn af $$f'(x)$$:</p>
+        <ul>
+          <li>$$f'(x) > 0$$: funktionen er voksende</li>
+          <li>$$f'(x) < 0$$: funktionen er aftagende</li>
+        </ul>
+        <h4>Optimering</h4>
+        <p>Opskriv funktionen, der skal optimeres. Diff&eacute;rentier, s&aelig;t $$f'(x)=0$$, og tjek om det er max eller min.</p>
+      </div>
+
+      <h3>Opgaver</h3>
+      <div class="exercise" id="ex15_1">
+        <div class="exercise-title"><span class="num">1</span> Station&aelig;rt punkt</div>
+        <p>$$f(x) = x^3 - 12x + 5$$. Find de station&aelig;re punkter (l&oslash;s $$f'(x) = 0$$). Hvad er den positive l&oslash;sning?</p>
+        <div class="fill-group">
+          <span>$$x =$$</span>
+          <input type="number" class="fill-input" id="inp_ex15_1" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex15_1', 2, 'fb_ex15_1')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex15_1"></div>
+        <div class="hint" id="hint_ex15_1">Hint: $$f'(x) = 3x^2 - 12 = 0 \Rightarrow x^2 = 4$$</div>
+      </div>
+    </div>
+
+    <!-- ===================== SECTION 16: Analytisk plangeometri ===================== -->
+    <div class="section" id="s16">
+      <h2><span class="level-badge badge-b">B</span> Analytisk plangeometri</h2>
+      <div class="theory">
+        <h4>Linjens ligning</h4>
+        <p>$$ax + by + c = 0 \qquad \text{eller} \qquad y = ax + b$$</p>
+        <h4>Cirklens ligning</h4>
+        <p>$$(x - a)^2 + (y - b)^2 = r^2$$</p>
+        <p>Centrum $$(a,b)$$, radius $$r$$.</p>
+        <h4>Afstand mellem to punkter</h4>
+        <p>$$d = \sqrt{(x_2-x_1)^2 + (y_2-y_1)^2}$$</p>
+      </div>
+
+      <h3>Opgaver</h3>
+      <div class="exercise" id="ex16_1">
+        <div class="exercise-title"><span class="num">1</span> Find centrum og radius</div>
+        <p>$$(x-3)^2 + (y+2)^2 = 25$$. Hvad er radius?</p>
+        <div class="fill-group">
+          <span>$$r =$$</span>
+          <input type="number" class="fill-input" id="inp_ex16_1" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex16_1', 5, 'fb_ex16_1')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex16_1"></div>
+      </div>
+
+      <div class="exercise" id="ex16_2">
+        <div class="exercise-title"><span class="num">2</span> Afstand</div>
+        <p>Find afstanden mellem $$(1, 2)$$ og $$(4, 6)$$.</p>
+        <div class="fill-group">
+          <span>$$d =$$</span>
+          <input type="number" class="fill-input" id="inp_ex16_2" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex16_2', 5, 'fb_ex16_2')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex16_2"></div>
+      </div>
+    </div>
+
+    <!-- ===================== SECTION 17: Vektorer 2D ===================== -->
+    <div class="section" id="s17">
+      <h2><span class="level-badge badge-b">B</span> Vektorer 2D</h2>
+      <div class="theory">
+        <h4>Vektor</h4>
+        <p>$$\vec{a} = \binom{a_1}{a_2}$$</p>
+        <h4>Skalarprodukt</h4>
+        <p>$$\vec{a} \cdot \vec{b} = a_1 b_1 + a_2 b_2 = |\vec{a}||\vec{b}|\cos v$$</p>
+        <h4>Determinant</h4>
+        <p>$$\det(\vec{a}, \vec{b}) = a_1 b_2 - a_2 b_1$$</p>
+        <h4>L&aelig;ngde</h4>
+        <p>$$|\vec{a}| = \sqrt{a_1^2 + a_2^2}$$</p>
+      </div>
+
+      <h3>Opgaver</h3>
+      <div class="exercise" id="ex17_1">
+        <div class="exercise-title"><span class="num">1</span> Skalarprodukt</div>
+        <p>$$\vec{a} = \binom{3}{4}$$ og $$\vec{b} = \binom{2}{-1}$$. Beregn $$\vec{a} \cdot \vec{b}$$.</p>
+        <div class="fill-group">
+          <input type="number" class="fill-input" id="inp_ex17_1" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex17_1', 2, 'fb_ex17_1')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex17_1"></div>
+      </div>
+
+      <div class="exercise" id="ex17_2">
+        <div class="exercise-title"><span class="num">2</span> Vektorl&aelig;ngde</div>
+        <p>$$\vec{v} = \binom{5}{12}$$. Beregn $$|\vec{v}|$$.</p>
+        <div class="fill-group">
+          <input type="number" class="fill-input" id="inp_ex17_2" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex17_2', 13, 'fb_ex17_2')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex17_2"></div>
+      </div>
+    </div>
+
+    <!-- ===================== SECTION 18: Trigonometri udvidet ===================== -->
+    <div class="section" id="s18">
+      <h2><span class="level-badge badge-b">B</span> Trigonometri udvidet</h2>
+      <div class="theory">
+        <h4>Enhedscirklen</h4>
+        <p>$$\cos^2 v + \sin^2 v = 1$$</p>
+        <h4>Sinusrelationen</h4>
+        <p>$$\frac{a}{\sin A} = \frac{b}{\sin B} = \frac{c}{\sin C}$$</p>
+        <h4>Cosinusrelationen</h4>
+        <p>$$c^2 = a^2 + b^2 - 2ab \cdot \cos C$$</p>
+        <h4>Radianer</h4>
+        <p>$$\pi \text{ rad} = 180° \qquad 1 \text{ rad} \approx 57{,}3°$$</p>
+      </div>
+
+      <h3>Opgaver</h3>
+      <div class="exercise" id="ex18_1">
+        <div class="exercise-title"><span class="num">1</span> Radianer</div>
+        <p>Omregn 90&deg; til radianer (som br&oslash;k af $$\pi$$). Skriv svaret som decimaltal.</p>
+        <div class="fill-group">
+          <input type="number" class="fill-input" id="inp_ex18_1" step="any">
+          <span>$$\cdot \pi$$ rad</span>
+          <button class="btn btn-primary" onclick="checkFill('inp_ex18_1', 0.5, 'fb_ex18_1')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex18_1"></div>
+      </div>
+    </div>
+
+    <!-- ===================== SECTION 19: Binomialfordeling ===================== -->
+    <div class="section" id="s19">
+      <h2><span class="level-badge badge-b">B</span> Binomialfordeling</h2>
+      <div class="theory">
+        <h4>Binomialfordelingen</h4>
+        <p>$$X \sim b(n, p)$$</p>
+        <p>$$P(X = r) = \binom{n}{r} p^r (1-p)^{n-r}$$</p>
+        <h4>Middelv&aelig;rdi og spredning</h4>
+        <p>$$E(X) = np \qquad \sigma = \sqrt{np(1-p)}$$</p>
+      </div>
+
+      <h3>Opgaver</h3>
+      <div class="exercise" id="ex19_1">
+        <div class="exercise-title"><span class="num">1</span> Middelv&aelig;rdi</div>
+        <p>$$X \sim b(20,\; 0{,}3)$$. Hvad er middelv&aelig;rdien $$E(X)$$?</p>
+        <div class="fill-group">
+          <input type="number" class="fill-input" id="inp_ex19_1" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex19_1', 6, 'fb_ex19_1')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex19_1"></div>
+      </div>
+    </div>
+
+    <!-- ===================== SECTION 20: Hypotesetest ===================== -->
+    <div class="section" id="s20">
+      <h2><span class="level-badge badge-b">B</span> Hypotesetest og chi-i-anden</h2>
+      <div class="theory">
+        <h4>Binomialtest</h4>
+        <p>$$H_0: p = p_0$$ (nulhypotese)</p>
+        <p>Signifikansniveau typisk $$\alpha = 5\%$$. Beregn $$P(X \geq k)$$ og forkast $$H_0$$ hvis $$P < \alpha$$.</p>
+        <h4>Chi-i-anden test</h4>
+        <p>$$\chi^2 = \sum \frac{(O_i - E_i)^2}{E_i}$$</p>
+        <p>Sammenlign med kritisk v&aelig;rdi fra tabel.</p>
+      </div>
+
+      <h3>Opgaver</h3>
+      <div class="exercise" id="ex20_1">
+        <div class="exercise-title"><span class="num">1</span> Signifikansniveau</div>
+        <p>Hvad betyder et signifikansniveau p&aring; 5%?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex20_1')">Vi accepterer 5% risiko for at forkaste $$H_0$$, selvom den er sand</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex20_1')">Vi er 5% sikre p&aring; resultatet</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex20_1')">5% af data er forkerte</button>
+        </div>
+        <div class="feedback" id="fb_ex20_1"></div>
+      </div>
+    </div>
+
+    <!-- ===================== SECTION 21: Integralregning ===================== -->
+    <div class="section" id="s21">
+      <h2><span class="level-badge badge-a">A</span> Integralregning</h2>
+      <div class="theory">
+        <h4>Stamfunktion</h4>
+        <p>$$F$$ er en stamfunktion til $$f$$ hvis $$F'(x) = f(x)$$.</p>
+        <h4>Standard stamfunktioner</h4>
+        <table class="formel-table">
+          <tr><th>$$f(x)$$</th><th>$$F(x)$$</th></tr>
+          <tr><td>$$x^n \;(n \neq -1)$$</td><td>$$\frac{x^{n+1}}{n+1}$$</td></tr>
+          <tr><td>$$e^x$$</td><td>$$e^x$$</td></tr>
+          <tr><td>$$\frac{1}{x}$$</td><td>$$\ln|x|$$</td></tr>
+          <tr><td>$$\cos x$$</td><td>$$\sin x$$</td></tr>
+          <tr><td>$$\sin x$$</td><td>$$-\cos x$$</td></tr>
+        </table>
+        <h4>Bestemt integral (areal)</h4>
+        <p>$$\int_a^b f(x)\,dx = F(b) - F(a)$$</p>
+      </div>
+
+      <h3>Interaktiv: Areal under kurve</h3>
+      <div class="graph-container">
+        <div id="graph_integral" class="jxgbox" style="max-width:600px;margin:0 auto"></div>
+      </div>
+
+      <h3>Opgaver</h3>
+      <div class="exercise" id="ex21_1">
+        <div class="exercise-title"><span class="num">1</span> Stamfunktion</div>
+        <p>Hvad er stamfunktionen til $$f(x) = 6x^2$$?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex21_1')">$$3x^2$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex21_1')">$$2x^3$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex21_1')">$$6x^3$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex21_1')">$$12x$$</button>
+        </div>
+        <div class="feedback" id="fb_ex21_1"></div>
+      </div>
+
+      <div class="exercise" id="ex21_2">
+        <div class="exercise-title"><span class="num">2</span> Bestemt integral</div>
+        <p>Beregn $$\int_0^3 2x\,dx$$.</p>
+        <div class="fill-group">
+          <input type="number" class="fill-input" id="inp_ex21_2" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex21_2', 9, 'fb_ex21_2')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex21_2"></div>
+        <div class="hint" id="hint_ex21_2">Hint: $$F(x) = x^2$$, s&aring; $$F(3) - F(0) = 9 - 0$$</div>
+      </div>
+    </div>
+
+    <!-- ===================== SECTION 22: Rumfang og buelængde ===================== -->
+    <div class="section" id="s22">
+      <h2><span class="level-badge badge-a">A</span> Rumfang og buel&aelig;ngde</h2>
+      <div class="theory">
+        <h4>Omdrejningslegeme</h4>
+        <p>$$V = \pi \int_a^b f(x)^2\,dx$$</p>
+        <h4>Buel&aelig;ngde</h4>
+        <p>$$L = \int_a^b \sqrt{1 + f'(x)^2}\,dx$$</p>
+      </div>
+
+      <h3>Opgaver</h3>
+      <div class="exercise" id="ex22_1">
+        <div class="exercise-title"><span class="num">1</span> Rumfangsformel</div>
+        <p>Hvad er formlen for rumfanget, n&aring;r $$f(x) = x$$ drejes om x-aksen fra 0 til 3?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex22_1')">$$V = \pi \int_0^3 x^2\,dx = 9\pi$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex22_1')">$$V = \int_0^3 \pi x\,dx$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex22_1')">$$V = 2\pi \int_0^3 x\,dx$$</button>
+        </div>
+        <div class="feedback" id="fb_ex22_1"></div>
+      </div>
+    </div>
+
+    <!-- ===================== SECTION 23: Differentialligninger ===================== -->
+    <div class="section" id="s23">
+      <h2><span class="level-badge badge-a">A</span> Differentialligninger</h2>
+      <div class="theory">
+        <h4>Typer</h4>
+        <table class="formel-table">
+          <tr><th>Type</th><th>L&oslash;sning</th></tr>
+          <tr><td>$$y' = ky$$</td><td>$$y = c \cdot e^{kx}$$</td></tr>
+          <tr><td>$$y' = k(M - y)$$</td><td>$$y = M - c \cdot e^{-kx}$$</td></tr>
+          <tr><td>$$y' = ky(M - y)$$</td><td>$$y = \frac{M}{1 + c \cdot e^{-kMx}}$$ (logistisk)</td></tr>
+        </table>
+        <h4>Eulers metode</h4>
+        <p>$$y_{n+1} = y_n + h \cdot f(x_n, y_n)$$</p>
+      </div>
+
+      <h3>Opgaver</h3>
+      <div class="exercise" id="ex23_1">
+        <div class="exercise-title"><span class="num">1</span> Genkend typen</div>
+        <p>$$y' = 0{,}05y$$. Hvad er l&oslash;sningen?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex23_1')">$$y = c \cdot e^{0{,}05x}$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex23_1')">$$y = 0{,}05x + c$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex23_1')">$$y = \frac{1}{1+ce^{-0{,}05x}}$$</button>
+        </div>
+        <div class="feedback" id="fb_ex23_1"></div>
+      </div>
+    </div>
+
+    <!-- ===================== SECTION 24: Vektorer 3D ===================== -->
+    <div class="section" id="s24">
+      <h2><span class="level-badge badge-a">A</span> Vektorer 3D</h2>
+      <div class="theory">
+        <h4>Krydsprodukt</h4>
+        <p>$$\vec{a} \times \vec{b} = \begin{pmatrix} a_2 b_3 - a_3 b_2 \\ a_3 b_1 - a_1 b_3 \\ a_1 b_2 - a_2 b_1 \end{pmatrix}$$</p>
+        <h4>Planens ligning</h4>
+        <p>$$ax + by + cz + d = 0$$</p>
+        <h4>Afstand fra punkt til plan</h4>
+        <p>$$\text{dist} = \frac{|ax_0 + by_0 + cz_0 + d|}{\sqrt{a^2+b^2+c^2}}$$</p>
+      </div>
+
+      <h3>Opgaver</h3>
+      <div class="exercise" id="ex24_1">
+        <div class="exercise-title"><span class="num">1</span> Skalarprodukt 3D</div>
+        <p>$$\vec{a} = (1, 2, 3)$$ og $$\vec{b} = (4, -1, 2)$$. Beregn $$\vec{a} \cdot \vec{b}$$.</p>
+        <div class="fill-group">
+          <input type="number" class="fill-input" id="inp_ex24_1" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex24_1', 8, 'fb_ex24_1')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex24_1"></div>
+      </div>
+    </div>
+
+    <!-- ===================== SECTION 25: Vektorfunktioner ===================== -->
+    <div class="section" id="s25">
+      <h2><span class="level-badge badge-a">A</span> Vektorfunktioner</h2>
+      <div class="theory">
+        <h4>Parameterkurve</h4>
+        <p>$$\vec{r}(t) = \binom{x(t)}{y(t)}$$</p>
+        <h4>Hastighed og fart</h4>
+        <p>$$\vec{r}\,'(t) = \binom{x'(t)}{y'(t)} \qquad \text{fart} = |\vec{r}\,'(t)| = \sqrt{x'(t)^2 + y'(t)^2}$$</p>
+      </div>
+
+      <h3>Opgaver</h3>
+      <div class="exercise" id="ex25_1">
+        <div class="exercise-title"><span class="num">1</span> Hastighedsvektor</div>
+        <p>$$\vec{r}(t) = \binom{3t}{t^2}$$. Hvad er $$\vec{r}\,'(t)$$?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex25_1')">$$\binom{3}{2t}$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex25_1')">$$\binom{3t}{2t}$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex25_1')">$$\binom{0}{2}$$</button>
+        </div>
+        <div class="feedback" id="fb_ex25_1"></div>
+      </div>
+    </div>
+
+    <!-- ===================== SECTION 26: Trigonometriske funktioner ===================== -->
+    <div class="section" id="s26">
+      <h2><span class="level-badge badge-a">A</span> Trigonometriske funktioner</h2>
+      <div class="theory">
+        <h4>Harmonisk svingning</h4>
+        <p>$$f(x) = A \sin(\omega x + \varphi) + d$$</p>
+        <p>Amplitude $$A$$, frekvens $$\omega$$, faseforskydning $$\varphi$$, lodret forskydning $$d$$.</p>
+        <h4>Differentiation</h4>
+        <p>$$(\sin x)' = \cos x \qquad (\cos x)' = -\sin x$$</p>
+        <h4>Integration</h4>
+        <p>$$\int \sin x\,dx = -\cos x + c \qquad \int \cos x\,dx = \sin x + c$$</p>
+      </div>
+
+      <h3>Interaktiv: Harmonisk svingning</h3>
+      <div class="graph-container">
+        <div id="graph_trig" class="jxgbox" style="max-width:600px;margin:0 auto"></div>
+      </div>
+
+      <h3>Opgaver</h3>
+      <div class="exercise" id="ex26_1">
+        <div class="exercise-title"><span class="num">1</span> Afl&aelig;s amplitude</div>
+        <p>$$f(x) = 3\sin(2x) + 1$$. Hvad er amplituden?</p>
+        <div class="fill-group">
+          <span>$$A =$$</span>
+          <input type="number" class="fill-input" id="inp_ex26_1" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex26_1', 3, 'fb_ex26_1')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex26_1"></div>
+      </div>
+    </div>
+
+    <!-- ===================== SECTION 27: Normalfordeling ===================== -->
+    <div class="section" id="s27">
+      <h2><span class="level-badge badge-a">A</span> Normalfordeling</h2>
+      <div class="theory">
+        <h4>Normalfordelingen</h4>
+        <p>$$X \sim N(\mu, \sigma^2)$$</p>
+        <h4>Standardisering (z-score)</h4>
+        <p>$$z = \frac{x - \mu}{\sigma}$$</p>
+        <h4>Konfidensinterval for $$\mu$$</h4>
+        <p>$$\bar{x} \pm z_{\alpha/2} \cdot \frac{\sigma}{\sqrt{n}}$$</p>
+        <p>For 95%: $$z_{0{,}025} = 1{,}96$$</p>
+      </div>
+
+      <h3>Opgaver</h3>
+      <div class="exercise" id="ex27_1">
+        <div class="exercise-title"><span class="num">1</span> Z-score</div>
+        <p>$$X \sim N(100, 15^2)$$. Beregn z-scoren for $$x = 130$$.</p>
+        <div class="fill-group">
+          <span>$$z =$$</span>
+          <input type="number" class="fill-input" id="inp_ex27_1" step="any">
+          <button class="btn btn-primary" onclick="checkFill('inp_ex27_1', 2, 'fb_ex27_1')">Tjek</button>
+        </div>
+        <div class="feedback" id="fb_ex27_1"></div>
+      </div>
+    </div>
+
+    <!-- ===================== SECTION 28: Funktioner af to variable ===================== -->
+    <div class="section" id="s28">
+      <h2><span class="level-badge badge-a">A</span> Funktioner af to variable</h2>
+      <div class="theory">
+        <h4>Partielle afledede</h4>
+        <p>$$f'_x(x,y) = \frac{\partial f}{\partial x} \qquad f'_y(x,y) = \frac{\partial f}{\partial y}$$</p>
+        <p>Differenti&eacute;r med hensyn til &eacute;n variabel og hold den anden konstant.</p>
+      </div>
+
+      <h3>Opgaver</h3>
+      <div class="exercise" id="ex28_1">
+        <div class="exercise-title"><span class="num">1</span> Partiel afledet</div>
+        <p>$$f(x,y) = 3x^2 y + y^3$$. Hvad er $$f'_x(x,y)$$?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex28_1')">$$6xy$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex28_1')">$$3x^2 + 3y^2$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex28_1')">$$6xy + 3y^2$$</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex28_1')">$$6x^2 y$$</button>
+        </div>
+        <div class="feedback" id="fb_ex28_1"></div>
+      </div>
+    </div>
+
+    <!-- ===================== FORMELSAMLING ===================== -->
+    <div class="section" id="formel">
+      <h2>&#128210; Formelsamling</h2>
+      <p>Komplet formeloversigt svarende til den officielle STX formelsamling.</p>
+
+      <h3>Algebra</h3>
+      <table class="formel-table">
+        <tr><th>Navn</th><th>Formel</th></tr>
+        <tr><td>Potensregneregler</td><td>$$a^n \cdot a^m = a^{n+m}, \quad \frac{a^n}{a^m}=a^{n-m}, \quad (a^n)^m=a^{nm}$$</td></tr>
+        <tr><td>1. kvadrats&aelig;tning</td><td>$$(a+b)^2 = a^2+2ab+b^2$$</td></tr>
+        <tr><td>2. kvadrats&aelig;tning</td><td>$$(a-b)^2 = a^2-2ab+b^2$$</td></tr>
+        <tr><td>3. kvadrats&aelig;tning</td><td>$$(a+b)(a-b) = a^2-b^2$$</td></tr>
+        <tr><td>Nulpunktsformel</td><td>$$x=\frac{-b \pm \sqrt{b^2-4ac}}{2a}$$</td></tr>
+        <tr><td>Diskriminant</td><td>$$d = b^2 - 4ac$$</td></tr>
+        <tr><td>Toppunkt</td><td>$$T=\left(-\frac{b}{2a},\;-\frac{d}{4a}\right)$$</td></tr>
+      </table>
+
+      <h3>Funktioner</h3>
+      <table class="formel-table">
+        <tr><th>Type</th><th>Forskrift</th><th>Parametre</th></tr>
+        <tr><td>Line&aelig;r</td><td>$$f(x)=ax+b$$</td><td>$$a=\frac{y_2-y_1}{x_2-x_1}$$</td></tr>
+        <tr><td>Eksponentiel</td><td>$$f(x)=b\cdot a^x$$</td><td>$$T_2=\frac{\ln 2}{\ln a}$$</td></tr>
+        <tr><td>Potens</td><td>$$f(x)=b\cdot x^a$$</td><td>$$a=\frac{\ln y_2-\ln y_1}{\ln x_2-\ln x_1}$$</td></tr>
+      </table>
+
+      <h3>Differentialregning</h3>
+      <table class="formel-table">
+        <tr><th>$$f(x)$$</th><th>$$f'(x)$$</th></tr>
+        <tr><td>$$x^n$$</td><td>$$nx^{n-1}$$</td></tr>
+        <tr><td>$$e^x$$</td><td>$$e^x$$</td></tr>
+        <tr><td>$$a^x$$</td><td>$$a^x \ln a$$</td></tr>
+        <tr><td>$$\ln x$$</td><td>$$\frac{1}{x}$$</td></tr>
+        <tr><td>$$\sin x$$</td><td>$$\cos x$$</td></tr>
+        <tr><td>$$\cos x$$</td><td>$$-\sin x$$</td></tr>
+      </table>
+      <table class="formel-table">
+        <tr><th>Regel</th><th>Formel</th></tr>
+        <tr><td>Sumregel</td><td>$$(f+g)'=f'+g'$$</td></tr>
+        <tr><td>Konstantregel</td><td>$$(kf)'=kf'$$</td></tr>
+        <tr><td>Produktregel</td><td>$$(fg)'=f'g+fg'$$</td></tr>
+        <tr><td>K&aelig;deregel</td><td>$$(f(g(x)))'=f'(g(x))\cdot g'(x)$$</td></tr>
+        <tr><td>Kvotientregel</td><td>$$\left(\frac{f}{g}\right)'=\frac{f'g-fg'}{g^2}$$</td></tr>
+        <tr><td>Tangent</td><td>$$y=f'(x_0)(x-x_0)+f(x_0)$$</td></tr>
+      </table>
+
+      <h3>Integralregning</h3>
+      <table class="formel-table">
+        <tr><th>$$f(x)$$</th><th>$$\int f(x)\,dx$$</th></tr>
+        <tr><td>$$x^n\;(n\neq -1)$$</td><td>$$\frac{x^{n+1}}{n+1}+c$$</td></tr>
+        <tr><td>$$e^x$$</td><td>$$e^x+c$$</td></tr>
+        <tr><td>$$\frac{1}{x}$$</td><td>$$\ln|x|+c$$</td></tr>
+        <tr><td>$$\sin x$$</td><td>$$-\cos x+c$$</td></tr>
+        <tr><td>$$\cos x$$</td><td>$$\sin x+c$$</td></tr>
+      </table>
+      <table class="formel-table">
+        <tr><th>Formel</th><th>Udtryk</th></tr>
+        <tr><td>Bestemt integral</td><td>$$\int_a^b f(x)\,dx = F(b)-F(a)$$</td></tr>
+        <tr><td>Areal</td><td>$$A = \int_a^b |f(x)|\,dx$$</td></tr>
+        <tr><td>Rumfang (omdrejning)</td><td>$$V=\pi\int_a^b f(x)^2\,dx$$</td></tr>
+        <tr><td>Buel&aelig;ngde</td><td>$$L=\int_a^b \sqrt{1+f'(x)^2}\,dx$$</td></tr>
+      </table>
+
+      <h3>Vektorer</h3>
+      <table class="formel-table">
+        <tr><th>Formel</th><th>Udtryk</th></tr>
+        <tr><td>L&aelig;ngde 2D</td><td>$$|\vec{a}|=\sqrt{a_1^2+a_2^2}$$</td></tr>
+        <tr><td>Skalarprodukt</td><td>$$\vec{a}\cdot\vec{b}=a_1b_1+a_2b_2$$</td></tr>
+        <tr><td>Determinant</td><td>$$\det(\vec{a},\vec{b})=a_1b_2-a_2b_1$$</td></tr>
+        <tr><td>Vinkel</td><td>$$\cos v=\frac{\vec{a}\cdot\vec{b}}{|\vec{a}||\vec{b}|}$$</td></tr>
+        <tr><td>Krydsprodukt 3D</td><td>$$\vec{a}\times\vec{b}=(a_2b_3-a_3b_2,\; a_3b_1-a_1b_3,\; a_1b_2-a_2b_1)$$</td></tr>
+        <tr><td>Afstand pkt-plan</td><td>$$d=\frac{|ax_0+by_0+cz_0+d|}{\sqrt{a^2+b^2+c^2}}$$</td></tr>
+      </table>
+
+      <h3>Trigonometri</h3>
+      <table class="formel-table">
+        <tr><th>Formel</th><th>Udtryk</th></tr>
+        <tr><td>Grundrelation</td><td>$$\cos^2 v+\sin^2 v=1$$</td></tr>
+        <tr><td>Sinusrelation</td><td>$$\frac{a}{\sin A}=\frac{b}{\sin B}=\frac{c}{\sin C}$$</td></tr>
+        <tr><td>Cosinusrelation</td><td>$$c^2=a^2+b^2-2ab\cos C$$</td></tr>
+        <tr><td>Areal af trekant</td><td>$$T=\frac{1}{2}ab\sin C$$</td></tr>
+        <tr><td>Radianer</td><td>$$\pi\;\text{rad}=180°$$</td></tr>
+      </table>
+
+      <h3>Statistik og sandsynlighed</h3>
+      <table class="formel-table">
+        <tr><th>Formel</th><th>Udtryk</th></tr>
+        <tr><td>Middelv&aelig;rdi</td><td>$$\bar{x}=\frac{\sum x_i}{n}$$</td></tr>
+        <tr><td>Kombinationer</td><td>$$\binom{n}{r}=\frac{n!}{r!(n-r)!}$$</td></tr>
+        <tr><td>Binomialfordeling</td><td>$$P(X=r)=\binom{n}{r}p^r(1-p)^{n-r}$$</td></tr>
+        <tr><td>Middelv&aelig;rdi binom.</td><td>$$E(X)=np$$</td></tr>
+        <tr><td>Spredning binom.</td><td>$$\sigma=\sqrt{np(1-p)}$$</td></tr>
+        <tr><td>Z-score</td><td>$$z=\frac{x-\mu}{\sigma}$$</td></tr>
+        <tr><td>Konfidensinterval</td><td>$$\bar{x}\pm z_{\alpha/2}\cdot\frac{\sigma}{\sqrt{n}}$$</td></tr>
+        <tr><td>Chi-i-anden</td><td>$$\chi^2=\sum\frac{(O_i-E_i)^2}{E_i}$$</td></tr>
+      </table>
+
+      <h3>Differentialligninger</h3>
+      <table class="formel-table">
+        <tr><th>Type</th><th>L&oslash;sning</th></tr>
+        <tr><td>$$y'=ky$$</td><td>$$y=ce^{kx}$$</td></tr>
+        <tr><td>$$y'=k(M-y)$$</td><td>$$y=M-ce^{-kx}$$</td></tr>
+        <tr><td>$$y'=ky(M-y)$$</td><td>$$y=\frac{M}{1+ce^{-kMx}}$$</td></tr>
+        <tr><td>Euler</td><td>$$y_{n+1}=y_n+h\cdot f(x_n,y_n)$$</td></tr>
+      </table>
+
+      <h3>Finansiel regning</h3>
+      <table class="formel-table">
+        <tr><th>Formel</th><th>Udtryk</th></tr>
+        <tr><td>Renteformel</td><td>$$K_n=K_0(1+r)^n$$</td></tr>
+        <tr><td>Fremskrivningsfaktor</td><td>$$a=1+\frac{p}{100}$$</td></tr>
+      </table>
+    </div>
+
+  </main>
+</div>
+
+<script>
+// ===== STATE =====
+let score = 0;
+let randomMode = false;
+let scoreEnabled = false;
+let currentSection = 's1';
+
+// ===== NAVIGATION =====
+function showSection(id, link) {
+  if (link) link.blur();
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
+  if (link) link.classList.add('active');
+  currentSection = id;
+  // Init graphs if needed
+  setTimeout(() => initGraphsForSection(id), 50);
+  // Close mobile sidebar
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('open');
+  // Render math
+  renderMathInElement(document.getElementById(id), {
+    delimiters: [
+      {left: "$$", right: "$$", display: true},
+      {left: "$", right: "$", display: false}
+    ],
+    throwOnError: false
+  });
+  window.scrollTo(0, 0);
+  return false;
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebarOverlay').classList.toggle('open');
+}
+
+function filterLevel(level) {
+  const tabs = document.querySelectorAll('.level-tab');
+  tabs.forEach(t => { t.className = 'level-tab'; });
+  const links = document.querySelectorAll('.sidebar a');
+  links.forEach(a => {
+    const badge = a.querySelector('.level-badge');
+    if (!badge) { a.style.display = ''; return; }
+    if (level === 'all') { a.style.display = ''; }
+    else if (badge.classList.contains('badge-' + level)) { a.style.display = ''; }
+    else { a.style.display = 'none'; }
+  });
+  if (level === 'all') {
+    tabs[3].classList.add('active-b');
+  } else {
+    tabs[level === 'c' ? 0 : level === 'b' ? 1 : 2].classList.add('active-' + level);
+  }
+}
+
+// ===== QUIZ CHECKING =====
+function checkQuiz(btn, correct, exId) {
+  const fb = document.getElementById('fb_' + exId);
+  const options = btn.parentElement.querySelectorAll('.quiz-option');
+  if (correct) {
+    btn.classList.add('correct');
+    fb.textContent = 'Rigtigt!';
+    fb.className = 'feedback show correct';
+    options.forEach(o => o.classList.add('disabled'));
+    addScore(10);
+  } else {
+    btn.classList.add('incorrect');
+    fb.textContent = 'Forkert — pr\u00f8v igen.';
+    fb.className = 'feedback show incorrect';
+    setTimeout(() => { btn.classList.remove('incorrect'); }, 800);
+    // Show hint if exists
+    const hint = document.getElementById('hint_' + exId);
+    if (hint) hint.classList.add('show');
+  }
+}
+
+function checkFill(inputId, answer, fbId) {
+  const input = document.getElementById(inputId);
+  const fb = document.getElementById(fbId);
+  const val = parseFloat(input.value);
+  if (Math.abs(val - answer) < 0.01) {
+    input.classList.add('correct');
+    fb.textContent = 'Rigtigt!';
+    fb.className = 'feedback show correct';
+    addScore(10);
+  } else {
+    input.classList.add('incorrect');
+    fb.textContent = 'Forkert — pr\u00f8v igen.';
+    fb.className = 'feedback show incorrect';
+    setTimeout(() => input.classList.remove('incorrect'), 800);
+    const hint = document.getElementById('hint_' + inputId.replace('inp_',''));
+    if (hint) hint.classList.add('show');
+  }
+}
+
+function checkFillRange(inputId, answer, tolerance, fbId) {
+  const input = document.getElementById(inputId);
+  const fb = document.getElementById(fbId);
+  const val = parseFloat(input.value);
+  if (Math.abs(val - answer) <= tolerance) {
+    input.classList.add('correct');
+    fb.textContent = 'Rigtigt!';
+    fb.className = 'feedback show correct';
+    addScore(10);
+  } else {
+    input.classList.add('incorrect');
+    fb.textContent = 'Forkert — pr\u00f8v igen.';
+    fb.className = 'feedback show incorrect';
+    setTimeout(() => input.classList.remove('incorrect'), 800);
+    const hint = document.getElementById('hint_' + inputId.replace('inp_',''));
+    if (hint) hint.classList.add('show');
+  }
+}
+
+function checkStep(inputId, answer, fbId, nextStepId) {
+  const input = document.getElementById(inputId);
+  const fb = document.getElementById(fbId);
+  const val = parseFloat(input.value);
+  if (Math.abs(val - answer) < 0.01) {
+    input.classList.add('correct');
+    fb.textContent = 'Rigtigt!';
+    fb.className = 'feedback show correct';
+    addScore(5);
+    if (nextStepId) {
+      document.getElementById(nextStepId).classList.add('visible');
+    }
+  } else {
+    input.classList.add('incorrect');
+    fb.textContent = 'Forkert — pr\u00f8v igen.';
+    fb.className = 'feedback show incorrect';
+    setTimeout(() => input.classList.remove('incorrect'), 800);
+  }
+}
+
+// ===== SCORE =====
+function addScore(points) {
+  if (!scoreEnabled) return;
+  score += points;
+  document.getElementById('scoreDisplay').textContent = score + ' point';
+}
+
+function toggleScore() {
+  scoreEnabled = document.getElementById('scoreToggle').checked;
+  document.getElementById('scoreDisplay').classList.toggle('visible', scoreEnabled);
+}
+
+function toggleRandomMode() {
+  randomMode = document.getElementById('randomMode').checked;
+}
+
+// ===== GRAPHS =====
+const graphsInitialized = {};
+
+function initGraphsForSection(id) {
+  if (graphsInitialized[id]) return;
+
+  if (id === 's3') {
+    const el = document.getElementById('graph_linear');
+    if (!el || el.offsetWidth === 0) return;
+    const board = JXG.JSXGraph.initBoard('graph_linear', {
+      boundingbox: [-6, 10, 6, -6], axis: true, showCopyright: false, showNavigation: false
+    });
+    const sa = board.create('slider', [[-5,8],[-1,8],[-5,2,5]], {name:'a', snapWidth:0.1});
+    const sb = board.create('slider', [[-5,7],[-1,7],[-5,0,5]], {name:'b', snapWidth:0.1});
+    board.create('functiongraph', [function(x){ return sa.Value()*x + sb.Value(); }], {strokeColor:'#1865F2', strokeWidth:2});
+    graphsInitialized[id] = true;
+  }
+
+  if (id === 's4') {
+    const el = document.getElementById('graph_exp');
+    if (!el || el.offsetWidth === 0) return;
+    const board = JXG.JSXGraph.initBoard('graph_exp', {
+      boundingbox: [-2, 20, 8, -2], axis: true, showCopyright: false, showNavigation: false
+    });
+    const sb = board.create('slider', [[-1,18],[3,18],[0.1,1,10]], {name:'b', snapWidth:0.1});
+    const sa = board.create('slider', [[-1,16],[3,16],[0.5,1.2,3]], {name:'a', snapWidth:0.01});
+    board.create('functiongraph', [function(x){ return sb.Value()*Math.pow(sa.Value(),x); }], {strokeColor:'#1865F2', strokeWidth:2});
+    graphsInitialized[id] = true;
+  }
+
+  if (id === 's6') {
+    const el = document.getElementById('graph_quad');
+    if (!el || el.offsetWidth === 0) return;
+    const board = JXG.JSXGraph.initBoard('graph_quad', {
+      boundingbox: [-6, 12, 6, -8], axis: true, showCopyright: false, showNavigation: false
+    });
+    const sa = board.create('slider', [[-5,10],[-1,10],[-3,1,3]], {name:'a', snapWidth:0.1});
+    const sbb = board.create('slider', [[-5,9],[-1,9],[-5,0,5]], {name:'b', snapWidth:0.1});
+    const sc = board.create('slider', [[-5,8],[-1,8],[-5,0,5]], {name:'c', snapWidth:0.1});
+    board.create('functiongraph', [function(x){ return sa.Value()*x*x + sbb.Value()*x + sc.Value(); }], {strokeColor:'#1865F2', strokeWidth:2});
+    graphsInitialized[id] = true;
+  }
+
+  if (id === 's14') {
+    const el = document.getElementById('graph_tangent');
+    if (!el || el.offsetWidth === 0) return;
+    const board = JXG.JSXGraph.initBoard('graph_tangent', {
+      boundingbox: [-4, 12, 6, -4], axis: true, showCopyright: false, showNavigation: false
+    });
+    const f = function(x) { return x*x - 2*x + 1; };
+    const fp = function(x) { return 2*x - 2; };
+    board.create('functiongraph', [f], {strokeColor:'#1865F2', strokeWidth:2, name:'f(x)=x²-2x+1'});
+    const sp = board.create('slider', [[-3,10],[1,10],[-3,2,5]], {name:'x₀', snapWidth:0.1});
+    const tangentPt = board.create('point', [function(){ return sp.Value(); }, function(){ return f(sp.Value()); }], {name:'', color:'#D33131', size:4});
+    board.create('functiongraph', [function(x){
+      const x0 = sp.Value();
+      return fp(x0)*(x-x0) + f(x0);
+    }], {strokeColor:'#D33131', strokeWidth:1.5, dash:2});
+    graphsInitialized[id] = true;
+  }
+
+  if (id === 's21') {
+    const el = document.getElementById('graph_integral');
+    if (!el || el.offsetWidth === 0) return;
+    const board = JXG.JSXGraph.initBoard('graph_integral', {
+      boundingbox: [-1, 8, 6, -1], axis: true, showCopyright: false, showNavigation: false
+    });
+    const f = function(x) { return 0.5*x*x; };
+    board.create('functiongraph', [f], {strokeColor:'#1865F2', strokeWidth:2});
+    const sa = board.create('slider', [[0.5,7],[2.5,7],[0,1,5]], {name:'a', snapWidth:0.1});
+    const sbb = board.create('slider', [[0.5,6],[2.5,6],[0,4,5]], {name:'b', snapWidth:0.1});
+    board.create('integral', [[function(){return sa.Value();}, function(){return sbb.Value();}],
+      board.create('functiongraph',[f],{visible:false})], {
+      fillColor:'#E8F0FE', fillOpacity:0.5
+    });
+    graphsInitialized[id] = true;
+  }
+
+  if (id === 's26') {
+    const el = document.getElementById('graph_trig');
+    if (!el || el.offsetWidth === 0) return;
+    const board = JXG.JSXGraph.initBoard('graph_trig', {
+      boundingbox: [-1, 6, 10, -6], axis: true, showCopyright: false, showNavigation: false
+    });
+    const sA = board.create('slider', [[-0.5,5],[3,5],[0.5,2,5]], {name:'A', snapWidth:0.1});
+    const sW = board.create('slider', [[-0.5,4],[3,4],[0.5,1,4]], {name:'\u03c9', snapWidth:0.1});
+    const sD = board.create('slider', [[-0.5,3],[3,3],[-3,0,3]], {name:'d', snapWidth:0.1});
+    board.create('functiongraph', [function(x){
+      return sA.Value()*Math.sin(sW.Value()*x) + sD.Value();
+    }], {strokeColor:'#1865F2', strokeWidth:2});
+    graphsInitialized[id] = true;
+  }
+}
+
+// ===== INIT =====
+document.addEventListener('DOMContentLoaded', function() {
+  renderMathInElement(document.body, {
+    delimiters: [
+      {left: "$$", right: "$$", display: true},
+      {left: "$", right: "$", display: false}
+    ],
+    throwOnError: false
+  });
+  setTimeout(() => initGraphsForSection('s1'), 100);
+});
+</script>
+</body>
+</html>

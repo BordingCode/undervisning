@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Musikteori — Interaktive &Oslash;velser</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/abcjs@6.4.4/dist/abcjs-basic-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tone@14.7.77/build/Tone.js"></script>
+<style>
+:root {
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F7F8F9;
+  --bg-tertiary: #F0F0F0;
+  --text-primary: #222222;
+  --text-secondary: #575760;
+  --text-muted: #6F6F6F;
+  --primary: #8549BA;
+  --primary-hover: #6A1B9A;
+  --primary-light: #F3E5F5;
+  --success: #1B873F;
+  --success-light: #E6F4EA;
+  --error: #D33131;
+  --error-light: #FDEAEA;
+  --accent: #FFC200;
+  --border: #E0E0E0;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --sidebar-width: 260px;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:16px;line-height:1.6;color:var(--text-primary);background:var(--bg-primary);margin:0;-webkit-font-smoothing:antialiased}
+
+/* Top nav */
+.top-nav{position:sticky;top:0;z-index:100;background:#fff;border-bottom:1px solid var(--border);padding:0 1rem;display:flex;align-items:center;height:56px;gap:1rem;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.top-nav h1{font-size:1.2rem;font-weight:700;margin:0;color:var(--primary)}
+.hamburger{display:none;background:none;border:none;font-size:1.5rem;cursor:pointer;padding:4px 8px}
+.level-tabs{display:flex;gap:.4rem;margin-left:auto}
+.level-tab{padding:5px 14px;border-radius:20px;border:2px solid var(--border);background:#fff;font-size:.8rem;font-weight:600;cursor:pointer;transition:all .2s}
+.level-tab:hover{border-color:var(--primary)}
+.level-tab.active{background:var(--primary-light);border-color:var(--primary);color:var(--primary)}
+.sound-toggle,.score-toggle{display:flex;align-items:center;gap:.4rem;font-size:.8rem;color:var(--text-secondary);white-space:nowrap}
+.sound-toggle select{font-size:.8rem;padding:2px 4px;border-radius:4px;border:1px solid var(--border)}
+.score-display{background:var(--accent);color:#222;padding:4px 12px;border-radius:20px;font-weight:700;font-size:.85rem;display:none}
+.score-display.visible{display:inline-block}
+
+/* Layout */
+.layout{display:flex;min-height:calc(100vh - 56px)}
+.sidebar{width:var(--sidebar-width);background:var(--bg-secondary);border-right:1px solid var(--border);overflow-y:auto;position:sticky;top:56px;height:calc(100vh - 56px);padding:1rem 0;flex-shrink:0}
+.sidebar-section{padding:.5rem 1rem;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--text-muted)}
+.sidebar a{display:block;padding:7px 1rem;color:var(--text-secondary);text-decoration:none;font-size:.82rem;border-left:3px solid transparent;transition:all .15s}
+.sidebar a:hover{background:var(--bg-tertiary);color:var(--text-primary)}
+.sidebar a.active{background:var(--primary-light);color:var(--primary);border-left-color:var(--primary);font-weight:600}
+.main{flex:1;padding:2rem 2.5rem;max-width:850px;min-width:0}
+.section{display:none;animation:fadeIn .3s ease}
+.section.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+h2{font-size:1.5rem;font-weight:700;margin:0 0 .5rem;color:var(--primary)}
+h3{font-size:1.15rem;font-weight:600;margin:2rem 0 .75rem}
+h4{font-size:1rem;font-weight:600;margin:1.5rem 0 .5rem}
+p,.theory{max-width:65ch;margin-bottom:1.25em;color:var(--text-secondary)}
+.theory{background:var(--bg-secondary);padding:1.25rem 1.5rem;border-radius:var(--radius-md);border-left:4px solid var(--primary);margin:1rem 0 1.5rem}
+.theory p:last-child{margin-bottom:0}
+
+/* Exercise styles */
+.exercise{background:var(--bg-secondary);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;margin:1.5rem 0}
+.exercise-title{font-weight:600;margin-bottom:1rem;display:flex;align-items:center;gap:.5rem}
+.exercise-title .num{background:var(--primary);color:#fff;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;flex-shrink:0}
+.quiz-options{display:flex;flex-direction:column;gap:.5rem}
+.quiz-option{background:#fff;border:2px solid var(--border);border-radius:var(--radius-md);padding:12px 16px;font-size:1rem;cursor:pointer;transition:all .2s;text-align:left;font-family:inherit;width:100%}
+.quiz-option:hover{border-color:var(--primary);background:var(--primary-light)}
+.quiz-option.correct{border-color:var(--success);background:var(--success-light);animation:pulse .3s}
+.quiz-option.incorrect{border-color:var(--error);background:var(--error-light);animation:shake .4s}
+.quiz-option.disabled{pointer-events:none;opacity:.7}
+@keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.02)}100%{transform:scale(1)}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.feedback{margin-top:.75rem;padding:8px 12px;border-radius:var(--radius-sm);font-weight:500;font-size:.9rem;display:none}
+.feedback.show{display:block}
+.feedback.correct{background:var(--success-light);color:var(--success)}
+.feedback.incorrect{background:var(--error-light);color:var(--error)}
+.btn{padding:8px 20px;border-radius:var(--radius-sm);border:none;font-size:.9rem;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s;min-height:44px}
+.btn-primary{background:var(--primary);color:#fff}
+.btn-primary:hover{background:var(--primary-hover)}
+.btn-secondary{background:var(--bg-tertiary);color:var(--text-primary)}
+.btn-row{display:flex;gap:.5rem;flex-wrap:wrap;margin:1rem 0}
+
+/* Piano */
+.piano-container{background:var(--bg-secondary);border-radius:var(--radius-lg);padding:1.5rem;margin:1.5rem 0;overflow-x:auto}
+.piano-staff{min-height:100px;margin-bottom:1rem}
+.piano{display:flex;position:relative;height:160px;user-select:none;margin:0 auto;width:fit-content}
+.white-key{width:40px;height:160px;background:#fff;border:1px solid #ccc;border-radius:0 0 5px 5px;cursor:pointer;position:relative;z-index:1;transition:background .1s}
+.white-key:hover{background:#f0e6f6}
+.white-key.active{background:#CE82FF}
+.white-key .key-label{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);font-size:.65rem;color:var(--text-muted);pointer-events:none}
+.black-key{width:26px;height:100px;background:#333;border-radius:0 0 4px 4px;cursor:pointer;position:absolute;z-index:2;transition:background .1s}
+.black-key:hover{background:#555}
+.black-key.active{background:#8549BA}
+.black-key .key-label{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);font-size:.55rem;color:#aaa;pointer-events:none}
+
+/* Circle of fifths */
+.circle-container{max-width:400px;margin:1rem auto}
+.circle-container svg{width:100%;height:auto}
+
+/* Interval table */
+.interval-table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.9rem}
+.interval-table th{background:var(--primary);color:#fff;padding:8px 12px;text-align:left}
+.interval-table td{padding:8px 12px;border-bottom:1px solid var(--border)}
+.interval-table tr:nth-child(even) td{background:var(--bg-secondary)}
+
+/* Responsive */
+@media(max-width:768px){
+  .hamburger{display:block}
+  .sidebar{position:fixed;left:-100%;top:56px;z-index:99;width:260px;transition:left .3s;box-shadow:2px 0 8px rgba(0,0,0,.1)}
+  .sidebar.open{left:0}
+  .sidebar-overlay{display:none;position:fixed;inset:0;top:56px;background:rgba(0,0,0,.3);z-index:98}
+  .sidebar-overlay.open{display:block}
+  .main{padding:1.5rem 1rem}
+  .level-tabs{display:none}
+  .piano .white-key{width:30px;height:130px}
+  .piano .black-key{width:20px;height:80px}
+}
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <button class="hamburger" onclick="toggleSidebar()">&#9776;</button>
+  <h1>&#9835; Musikteori</h1>
+  <div class="level-tabs">
+    <button class="level-tab active" onclick="filterLevel('grund',this)">Grund</button>
+    <button class="level-tab" onclick="filterLevel('mellem',this)">Mellem</button>
+    <button class="level-tab" onclick="filterLevel('avanceret',this)">Avanceret</button>
+    <button class="level-tab" onclick="filterLevel('ekspert',this)">Ekspert</button>
+    <button class="level-tab" onclick="filterLevel('gehoer',this)">Geh&oslash;r</button>
+    <button class="level-tab" onclick="filterLevel('all',this)">Alle</button>
+  </div>
+  <div class="sound-toggle">
+    <label>Lyd:
+      <select id="soundType" onchange="changeSoundType()">
+        <option value="piano">Piano</option>
+        <option value="sine">Sinustone</option>
+      </select>
+    </label>
+  </div>
+  <div class="score-toggle">
+    <label><input type="checkbox" id="scoreToggle" onchange="toggleScore()"> Point</label>
+  </div>
+  <div class="score-display" id="scoreDisplay">0 point</div>
+</nav>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+<div class="layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-section">Grundl&aelig;ggende</div>
+    <a href="#" onclick="showSection('s1',this)" class="active" data-level="grund">Noder og nodenavne</a>
+    <a href="#" onclick="showSection('s2',this)" data-level="grund">Nodev&aelig;rdier og pauser</a>
+    <a href="#" onclick="showSection('s3',this)" data-level="grund">Taktarter</a>
+    <a href="#" onclick="showSection('s4',this)" data-level="grund">Intervaller</a>
+    <a href="#" onclick="showSection('s5',this)" data-level="grund">Dur-skalaer</a>
+    <a href="#" onclick="showSection('s6',this)" data-level="grund">Mol-skalaer</a>
+
+    <div class="sidebar-section">Mellemniveau</div>
+    <a href="#" onclick="showSection('s7',this)" data-level="mellem">Treklange</a>
+    <a href="#" onclick="showSection('s8',this)" data-level="mellem">Firklange</a>
+    <a href="#" onclick="showSection('s9',this)" data-level="mellem">Omvendinger</a>
+    <a href="#" onclick="showSection('s10',this)" data-level="mellem">Kvintcirklen</a>
+    <a href="#" onclick="showSection('s11',this)" data-level="mellem">Funktionsharmonik</a>
+    <a href="#" onclick="showSection('s12',this)" data-level="mellem">Kadencer</a>
+    <a href="#" onclick="showSection('s13',this)" data-level="mellem">Pentatone og blues</a>
+    <a href="#" onclick="showSection('s14',this)" data-level="mellem">Becifring</a>
+
+    <div class="sidebar-section">Avanceret</div>
+    <a href="#" onclick="showSection('s15',this)" data-level="avanceret">Modi</a>
+    <a href="#" onclick="showSection('s16',this)" data-level="avanceret">Sekund&aelig;re dominanter</a>
+    <a href="#" onclick="showSection('s17',this)" data-level="avanceret">Udvidede akkorder</a>
+    <a href="#" onclick="showSection('s18',this)" data-level="avanceret">Jazz-progressioner</a>
+    <a href="#" onclick="showSection('s19',this)" data-level="avanceret">Formanalyse</a>
+    <a href="#" onclick="showSection('s20',this)" data-level="avanceret">Stemmefoering</a>
+
+    <div class="sidebar-section">Ekspert</div>
+    <a href="#" onclick="showSection('s21',this)" data-level="ekspert">Modulation</a>
+    <a href="#" onclick="showSection('s22',this)" data-level="ekspert">Napolitansk sekst</a>
+    <a href="#" onclick="showSection('s23',this)" data-level="ekspert">Tritonussubstitution</a>
+    <a href="#" onclick="showSection('s24',this)" data-level="ekspert">Reharmonisering</a>
+    <a href="#" onclick="showSection('s25',this)" data-level="ekspert">Modal interchange</a>
+    <a href="#" onclick="showSection('s26',this)" data-level="ekspert">Kontrapunkt</a>
+    <a href="#" onclick="showSection('s27',this)" data-level="ekspert">Polyrytmik</a>
+    <a href="#" onclick="showSection('s28',this)" data-level="ekspert">Avancerede skalaer</a>
+    <a href="#" onclick="showSection('s29',this)" data-level="ekspert">Generalbas</a>
+    <a href="#" onclick="showSection('s30',this)" data-level="ekspert">Jazzanalyse</a>
+    <a href="#" onclick="showSection('s31',this)" data-level="ekspert">Seriel musik</a>
+
+    <div class="sidebar-section">Geh&oslash;rtr&aelig;ning</div>
+    <a href="#" onclick="showSection('ear1',this)" data-level="gehoer">Intervaller (lyd)</a>
+    <a href="#" onclick="showSection('ear2',this)" data-level="gehoer">Akkorder (lyd)</a>
+
+    <div class="sidebar-section">Værkt&oslash;j</div>
+    <a href="#" onclick="showSection('piano_section',this)" data-level="all">&#127929; Klaviatur</a>
+  </aside>
+
+  <main class="main" id="mainContent">
+
+    <!-- ===== SECTION 1: Noder og nodenavne ===== -->
+    <div class="section active" id="s1">
+      <h2>Noder og nodenavne</h2>
+      <div class="theory">
+        <h4>Det danske tonesystem</h4>
+        <p>I Danmark bruger vi nodenavnene: <strong>C - D - E - F - G - A - H</strong></p>
+        <p><strong>Vigtigt:</strong> Det danske <strong>H</strong> svarer til det internationale <strong>B</strong>. Det danske <strong>B</strong> svarer til det internationale <strong>B&#9837;</strong> (Bb).</p>
+        <h4>Fortegn</h4>
+        <ul>
+          <li><strong>Kryds (&#9839;)</strong> — h&aelig;ver tonen en halvtone</li>
+          <li><strong>B (&#9837;)</strong> — s&aelig;nker tonen en halvtone</li>
+          <li><strong>Opl&oslash;sningstegn (&#9838;)</strong> — ophæver et fortegn</li>
+        </ul>
+      </div>
+
+      <h3>&Oslash;velser</h3>
+      <div class="exercise" id="ex1_1">
+        <div class="exercise-title"><span class="num">1</span> Dansk vs. international notation</div>
+        <p>Hvad hedder tonen H i international notation?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex1_1')">B</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex1_1')">Bb</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex1_1')">A#</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex1_1')">C</button>
+        </div>
+        <div class="feedback" id="fb_ex1_1"></div>
+      </div>
+
+      <div class="exercise" id="ex1_2">
+        <div class="exercise-title"><span class="num">2</span> Halvtoner</div>
+        <p>Hvor mange halvtoner er der fra C til E?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex1_2')">3</button>
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex1_2')">4</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex1_2')">5</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex1_2')">2</button>
+        </div>
+        <div class="feedback" id="fb_ex1_2"></div>
+      </div>
+
+      <p>Brug klaviaturet nederst p&aring; siden til at h&oslash;re tonerne og se dem p&aring; nodearket!</p>
+    </div>
+
+    <!-- ===== SECTION 2: Nodeværdier og pauser ===== -->
+    <div class="section" id="s2">
+      <h2>Nodev&aelig;rdier og pauser</h2>
+      <div class="theory">
+        <table class="interval-table">
+          <tr><th>Nodev&aelig;rdi</th><th>Slag (i 4/4)</th><th>Pause</th></tr>
+          <tr><td>Helnode</td><td>4 slag</td><td>Helpause</td></tr>
+          <tr><td>Halvnode</td><td>2 slag</td><td>Halvpause</td></tr>
+          <tr><td>Fjerdedelsnode</td><td>1 slag</td><td>Fjerdedelspause</td></tr>
+          <tr><td>Ottendedelsnode</td><td>&frac12; slag</td><td>Ottendedelspause</td></tr>
+          <tr><td>Sekstendedelsnode</td><td>&frac14; slag</td><td>Sekstendedelspause</td></tr>
+        </table>
+        <p><strong>Punktering:</strong> En prik efter noden forl&aelig;nger den med halvdelen af dens v&aelig;rdi. En punkteret halvnode = 3 slag.</p>
+      </div>
+
+      <div class="exercise" id="ex2_1">
+        <div class="exercise-title"><span class="num">1</span> Punkteret halvnode</div>
+        <p>Hvor mange slag varer en punkteret halvnode i 4/4-takt?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex2_1')">2</button>
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex2_1')">3</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex2_1')">4</button>
+        </div>
+        <div class="feedback" id="fb_ex2_1"></div>
+      </div>
+    </div>
+
+    <!-- ===== SECTION 3: Taktarter ===== -->
+    <div class="section" id="s3">
+      <h2>Taktarter</h2>
+      <div class="theory">
+        <p>Taktarten angiver, hvor mange slag der er i hver takt, og hvilken nodev&aelig;rdi der f&aring;r &eacute;t slag.</p>
+        <ul>
+          <li><strong>4/4</strong> — 4 fjerdedelsslag pr. takt (mest almindelig)</li>
+          <li><strong>3/4</strong> — 3 fjerdedelsslag pr. takt (vals)</li>
+          <li><strong>6/8</strong> — 6 ottendedelsslag pr. takt (ofte f&oslash;les som 2 grupper af 3)</li>
+          <li><strong>2/4</strong> — 2 fjerdedelsslag pr. takt (march)</li>
+        </ul>
+      </div>
+
+      <div class="exercise" id="ex3_1">
+        <div class="exercise-title"><span class="num">1</span> Genkend taktart</div>
+        <p>En vals spilles typisk i hvilken taktart?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex3_1')">4/4</button>
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex3_1')">3/4</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex3_1')">6/8</button>
+        </div>
+        <div class="feedback" id="fb_ex3_1"></div>
+      </div>
+    </div>
+
+    <!-- ===== SECTION 4: Intervaller ===== -->
+    <div class="section" id="s4">
+      <h2>Intervaller</h2>
+      <div class="theory">
+        <p>Et interval er afstanden mellem to toner, m&aring;lt i halvtoner.</p>
+        <table class="interval-table">
+          <tr><th>Dansk navn</th><th>Halvtoner</th><th>Eksempel fra C</th></tr>
+          <tr><td>Ren prim</td><td>0</td><td>C → C</td></tr>
+          <tr><td>Lille sekund</td><td>1</td><td>C → C&#9839;/D&#9837;</td></tr>
+          <tr><td>Stor sekund</td><td>2</td><td>C → D</td></tr>
+          <tr><td>Lille terts</td><td>3</td><td>C → D&#9839;/E&#9837;</td></tr>
+          <tr><td>Stor terts</td><td>4</td><td>C → E</td></tr>
+          <tr><td>Ren kvart</td><td>5</td><td>C → F</td></tr>
+          <tr><td>Tritonus</td><td>6</td><td>C → F&#9839;/G&#9837;</td></tr>
+          <tr><td>Ren kvint</td><td>7</td><td>C → G</td></tr>
+          <tr><td>Lille sekst</td><td>8</td><td>C → G&#9839;/A&#9837;</td></tr>
+          <tr><td>Stor sekst</td><td>9</td><td>C → A</td></tr>
+          <tr><td>Lille septim</td><td>10</td><td>C → A&#9839;/B</td></tr>
+          <tr><td>Stor septim</td><td>11</td><td>C → H</td></tr>
+          <tr><td>Ren oktav</td><td>12</td><td>C → C</td></tr>
+        </table>
+      </div>
+
+      <div class="exercise" id="ex4_1">
+        <div class="exercise-title"><span class="num">1</span> Identificer interval</div>
+        <p>Hvad hedder intervallet med 7 halvtoner?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex4_1')">Ren kvart</button>
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex4_1')">Ren kvint</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex4_1')">Stor sekst</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex4_1')">Tritonus</button>
+        </div>
+        <div class="feedback" id="fb_ex4_1"></div>
+      </div>
+
+      <div class="exercise" id="ex4_2">
+        <div class="exercise-title"><span class="num">2</span> T&aelig;l halvtoner</div>
+        <p>Hvor mange halvtoner er en stor terts?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex4_2')">3</button>
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex4_2')">4</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex4_2')">5</button>
+        </div>
+        <div class="feedback" id="fb_ex4_2"></div>
+      </div>
+    </div>
+
+    <!-- ===== SECTION 5: Dur-skalaer ===== -->
+    <div class="section" id="s5">
+      <h2>Dur-skalaer</h2>
+      <div class="theory">
+        <h4>Opbygning</h4>
+        <p>En dur-skala f&oslash;lger m&oslash;nstret: <strong>hel - hel - halv - hel - hel - hel - halv</strong></p>
+        <p>C-dur: C - D - E - F - G - A - H - C (ingen fortegn)</p>
+        <h4>Eksempel</h4>
+        <div id="abc_cdur"></div>
+      </div>
+
+      <div class="exercise" id="ex5_1">
+        <div class="exercise-title"><span class="num">1</span> Toneart</div>
+        <p>G-dur har &eacute;t kryds. Hvilket?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex5_1')">F&#9839;</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex5_1')">C&#9839;</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex5_1')">G&#9839;</button>
+        </div>
+        <div class="feedback" id="fb_ex5_1"></div>
+      </div>
+    </div>
+
+    <!-- ===== SECTION 6: Mol-skalaer ===== -->
+    <div class="section" id="s6">
+      <h2>Mol-skalaer</h2>
+      <div class="theory">
+        <h4>Tre typer</h4>
+        <ul>
+          <li><strong>Naturlig mol (ren mol):</strong> hel - halv - hel - hel - halv - hel - hel</li>
+          <li><strong>Harmonisk mol:</strong> som naturlig, men 7. trin h&aelig;ves en halvtone</li>
+          <li><strong>Melodisk mol:</strong> opadg&aring;ende h&aelig;ves 6. og 7. trin; nedadg&aring;ende som naturlig</li>
+        </ul>
+        <p>A-mol (naturlig): A - H - C - D - E - F - G - A</p>
+      </div>
+
+      <div class="exercise" id="ex6_1">
+        <div class="exercise-title"><span class="num">1</span> Paralleltoneart</div>
+        <p>Hvad er parallelmol til C-dur?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex6_1')">A-mol</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex6_1')">C-mol</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex6_1')">D-mol</button>
+        </div>
+        <div class="feedback" id="fb_ex6_1"></div>
+      </div>
+    </div>
+
+    <!-- ===== SECTION 7-14: Mellemniveau ===== -->
+    <div class="section" id="s7">
+      <h2>Treklange (akkordopbygning)</h2>
+      <div class="theory">
+        <table class="interval-table">
+          <tr><th>Type</th><th>Opbygning</th><th>Eksempel</th></tr>
+          <tr><td>Dur</td><td>Stor terts + lille terts</td><td>C-E-G</td></tr>
+          <tr><td>Mol</td><td>Lille terts + stor terts</td><td>C-E&#9837;-G</td></tr>
+          <tr><td>Formindsket (dim)</td><td>Lille terts + lille terts</td><td>C-E&#9837;-G&#9837;</td></tr>
+          <tr><td>Forst&oslash;rret (aug)</td><td>Stor terts + stor terts</td><td>C-E-G&#9839;</td></tr>
+        </table>
+      </div>
+
+      <div class="exercise" id="ex7_1">
+        <div class="exercise-title"><span class="num">1</span> Genkend treklang</div>
+        <p>Tonerne C-E&#9837;-G danner en:</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex7_1')">Dur-treklang</button>
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex7_1')">Mol-treklang</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex7_1')">Formindsket treklang</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex7_1')">Forst&oslash;rret treklang</button>
+        </div>
+        <div class="feedback" id="fb_ex7_1"></div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="playChord(['C4','E4','G4'])">&#9654; C-dur</button>
+        <button class="btn btn-primary" onclick="playChord(['C4','Eb4','G4'])">&#9654; C-mol</button>
+        <button class="btn btn-primary" onclick="playChord(['C4','Eb4','Gb4'])">&#9654; C-dim</button>
+        <button class="btn btn-primary" onclick="playChord(['C4','E4','G#4'])">&#9654; C-aug</button>
+      </div>
+    </div>
+
+    <div class="section" id="s8">
+      <h2>Firklange (septimakkorder)</h2>
+      <div class="theory">
+        <table class="interval-table">
+          <tr><th>Type</th><th>Symbol</th><th>Opbygning</th><th>Eksempel</th></tr>
+          <tr><td>Dominantseptim</td><td>C7</td><td>Dur + lille septim</td><td>C-E-G-B</td></tr>
+          <tr><td>Dur med stor septim</td><td>Cmaj7</td><td>Dur + stor septim</td><td>C-E-G-H</td></tr>
+          <tr><td>Mol septim</td><td>Cm7</td><td>Mol + lille septim</td><td>C-E&#9837;-G-B</td></tr>
+          <tr><td>Formindsket septim</td><td>Cdim7</td><td>Dim + formindsket septim</td><td>C-E&#9837;-G&#9837;-A</td></tr>
+          <tr><td>Halvformindsket</td><td>C&oslash;7</td><td>Dim + lille septim</td><td>C-E&#9837;-G&#9837;-B</td></tr>
+        </table>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="playChord(['C4','E4','G4','Bb4'])">&#9654; C7</button>
+        <button class="btn btn-primary" onclick="playChord(['C4','E4','G4','B4'])">&#9654; Cmaj7</button>
+        <button class="btn btn-primary" onclick="playChord(['C4','Eb4','G4','Bb4'])">&#9654; Cm7</button>
+      </div>
+    </div>
+
+    <div class="section" id="s9">
+      <h2>Omvendinger</h2>
+      <div class="theory">
+        <ul>
+          <li><strong>Grundstilling:</strong> Grundtonen i bassen (C-E-G)</li>
+          <li><strong>1. omvending (sekststilling):</strong> Tertsen i bassen (E-G-C)</li>
+          <li><strong>2. omvending (kvartsekststilling):</strong> Kvinten i bassen (G-C-E)</li>
+        </ul>
+      </div>
+
+      <div class="exercise" id="ex9_1">
+        <div class="exercise-title"><span class="num">1</span> Omvending</div>
+        <p>Tonerne E-G-C er en C-dur akkord i hvilken omvending?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex9_1')">Grundstilling</button>
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex9_1')">1. omvending</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex9_1')">2. omvending</button>
+        </div>
+        <div class="feedback" id="fb_ex9_1"></div>
+      </div>
+    </div>
+
+    <div class="section" id="s10">
+      <h2>Kvintcirklen</h2>
+      <div class="theory">
+        <p>Kvintcirklen viser alle 12 tonearter og deres indbyrdes forhold. Med uret g&aring;r vi en kvint op og f&aring;r &eacute;t kryds mere. Mod uret g&aring;r vi en kvint ned og f&aring;r &eacute;t b mere.</p>
+      </div>
+      <div class="circle-container">
+        <svg viewBox="0 0 400 400" id="circleOfFifths"></svg>
+      </div>
+
+      <div class="exercise" id="ex10_1">
+        <div class="exercise-title"><span class="num">1</span> Fortegn</div>
+        <p>Hvor mange krydser har D-dur?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex10_1')">1</button>
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex10_1')">2</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex10_1')">3</button>
+        </div>
+        <div class="feedback" id="fb_ex10_1"></div>
+      </div>
+    </div>
+
+    <div class="section" id="s11">
+      <h2>Funktionsharmonik</h2>
+      <div class="theory">
+        <p>I funktionsharmonik beskrives akkorder efter deres funktion i tonearten:</p>
+        <table class="interval-table">
+          <tr><th>Funktion</th><th>Symbol</th><th>Trin (dur)</th><th>Eksempel (C-dur)</th></tr>
+          <tr><td>Tonika</td><td>T</td><td>I</td><td>C</td></tr>
+          <tr><td>Subdominant</td><td>S</td><td>IV</td><td>F</td></tr>
+          <tr><td>Dominant</td><td>D</td><td>V</td><td>G</td></tr>
+          <tr><td>Tonikaparallel</td><td>Tp</td><td>vi</td><td>Am</td></tr>
+          <tr><td>Subdominantparallel</td><td>Sp</td><td>ii</td><td>Dm</td></tr>
+          <tr><td>Dominantparallel</td><td>Dp</td><td>iii</td><td>Em</td></tr>
+        </table>
+      </div>
+
+      <div class="exercise" id="ex11_1">
+        <div class="exercise-title"><span class="num">1</span> Funktionsanalyse</div>
+        <p>I C-dur: F-dur akkorden har funktionen:</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex11_1')">Tonika (T)</button>
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex11_1')">Subdominant (S)</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex11_1')">Dominant (D)</button>
+        </div>
+        <div class="feedback" id="fb_ex11_1"></div>
+      </div>
+    </div>
+
+    <div class="section" id="s12">
+      <h2>Kadencer</h2>
+      <div class="theory">
+        <ul>
+          <li><strong>Autentisk kadence:</strong> D → T (V → I) — den st&aelig;rkeste afslutning</li>
+          <li><strong>Plagal kadence:</strong> S → T (IV → I) — "amen-kadence"</li>
+          <li><strong>Halvslutning:</strong> ? → D (? → V) — &aring;ben, uafsluttet</li>
+          <li><strong>Skuffekadence:</strong> D → Tp (V → vi) — overraskende</li>
+        </ul>
+      </div>
+
+      <div class="exercise" id="ex12_1">
+        <div class="exercise-title"><span class="num">1</span> Kadencetype</div>
+        <p>Progressionen G → C i C-dur er en:</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex12_1')">Autentisk kadence</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex12_1')">Plagal kadence</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex12_1')">Halvslutning</button>
+        </div>
+        <div class="feedback" id="fb_ex12_1"></div>
+      </div>
+    </div>
+
+    <div class="section" id="s13">
+      <h2>Pentatone og blues-skalaer</h2>
+      <div class="theory">
+        <h4>Dur-pentaton</h4>
+        <p>C-dur-pentaton: C - D - E - G - A (5 toner, ingen halvtoner)</p>
+        <h4>Mol-pentaton</h4>
+        <p>A-mol-pentaton: A - C - D - E - G</p>
+        <h4>Blues-skala</h4>
+        <p>C-blues: C - E&#9837; - F - F&#9839; - G - B&#9837;</p>
+        <p>Blues-skalaen er en mol-pentaton med en tilf&oslash;jet "blue note" (formindsket kvint).</p>
+      </div>
+    </div>
+
+    <div class="section" id="s14">
+      <h2>Becifring</h2>
+      <div class="theory">
+        <p>Becifring er et system til at notere akkorder med symboler:</p>
+        <table class="interval-table">
+          <tr><th>Symbol</th><th>Betydning</th><th>Toner</th></tr>
+          <tr><td>C</td><td>C-dur</td><td>C-E-G</td></tr>
+          <tr><td>Cm</td><td>C-mol</td><td>C-E&#9837;-G</td></tr>
+          <tr><td>C7</td><td>C-dominantseptim</td><td>C-E-G-B</td></tr>
+          <tr><td>Cmaj7</td><td>C-dur stor septim</td><td>C-E-G-H</td></tr>
+          <tr><td>Cdim</td><td>C-formindsket</td><td>C-E&#9837;-G&#9837;</td></tr>
+          <tr><td>Csus4</td><td>C-suspenderet</td><td>C-F-G</td></tr>
+          <tr><td>C/E</td><td>C med E i bassen</td><td>E-C-G</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- ===== SECTION 15-20: Avanceret ===== -->
+    <div class="section" id="s15">
+      <h2>Modi (kirketonearterne)</h2>
+      <div class="theory">
+        <p>Modi er skalaer bygget p&aring; de hvide tangenter, men med forskellige startoner:</p>
+        <table class="interval-table">
+          <tr><th>Modus</th><th>Starter p&aring;</th><th>Karakter</th></tr>
+          <tr><td>Ionisk</td><td>C (= dur)</td><td>Lys, glad</td></tr>
+          <tr><td>Dorisk</td><td>D</td><td>Mol-agtig, jazzy</td></tr>
+          <tr><td>Frygisk</td><td>E</td><td>M&oslash;rk, spansk</td></tr>
+          <tr><td>Lydisk</td><td>F</td><td>Dr&oslash;mmende, &aring;ben</td></tr>
+          <tr><td>Mixolydisk</td><td>G</td><td>Dur-agtig, bluesy</td></tr>
+          <tr><td>Aeolisk</td><td>A (= naturlig mol)</td><td>Melankolsk</td></tr>
+          <tr><td>Lokrisk</td><td>H</td><td>Ustabil, sj&aelig;lden</td></tr>
+        </table>
+      </div>
+
+      <div class="exercise" id="ex15_1">
+        <div class="exercise-title"><span class="num">1</span> Modus</div>
+        <p>Dorisk modus starter p&aring; D. Hvad er den s&aelig;rlige forskel fra naturlig mol?</p>
+        <div class="quiz-options">
+          <button class="quiz-option" onclick="checkQuiz(this,true,'ex15_1')">Stor sekst i stedet for lille sekst</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex15_1')">Stor septim i stedet for lille septim</button>
+          <button class="quiz-option" onclick="checkQuiz(this,false,'ex15_1')">Forst&oslash;rret kvart</button>
+        </div>
+        <div class="feedback" id="fb_ex15_1"></div>
+      </div>
+    </div>
+
+    <div class="section" id="s16">
+      <h2>Sekund&aelig;re dominanter</h2>
+      <div class="theory">
+        <p>En <strong>sekund&aelig;r dominant</strong> er en dominant-septimakkord, der opl&oslash;ses til en anden akkord end tonika.</p>
+        <p><strong>Dobbeltdominant (DD):</strong> Dominanten til dominanten. I C-dur: D7 → G → C.</p>
+        <p>Notation: V/V (dominant til dominant), V/ii, V/vi osv.</p>
+      </div>
+    </div>
+
+    <div class="section" id="s17">
+      <h2>Udvidede akkorder</h2>
+      <div class="theory">
+        <table class="interval-table">
+          <tr><th>Symbol</th><th>Tilf&oslash;jede toner</th><th>Effekt</th></tr>
+          <tr><td>sus2</td><td>Sekund erstatter terts</td><td>&Aring;ben, uafgjort</td></tr>
+          <tr><td>sus4</td><td>Kvart erstatter terts</td><td>Sp&aelig;nding, vil opl&oslash;ses</td></tr>
+          <tr><td>add9</td><td>None tilf&oslash;jet (uden septim)</td><td>Fyldig, popmusik</td></tr>
+          <tr><td>9</td><td>Septim + none</td><td>Jazzy, rig</td></tr>
+          <tr><td>11</td><td>Septim + none + undecim</td><td>Kompleks, &aring;ben</td></tr>
+          <tr><td>13</td><td>Septim + tredecim</td><td>Meget fyldig</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="section" id="s18">
+      <h2>Jazz-progressioner</h2>
+      <div class="theory">
+        <h4>ii-V-I (den vigtigste jazzprogression)</h4>
+        <p>I C-dur: Dm7 → G7 → Cmaj7</p>
+        <h4>12-takters blues</h4>
+        <p>| I7 | I7 | I7 | I7 | IV7 | IV7 | I7 | I7 | V7 | IV7 | I7 | V7 |</p>
+        <h4>Turnaround</h4>
+        <p>I → vi → ii → V (C → Am → Dm → G)</p>
+        <h4>Rhythm changes</h4>
+        <p>Baseret p&aring; "I Got Rhythm": I-vi-ii-V gentaget med bro p&aring; III7-VI7-II7-V7</p>
+      </div>
+    </div>
+
+    <div class="section" id="s19">
+      <h2>Formanalyse</h2>
+      <div class="theory">
+        <h4>Popmusik</h4>
+        <p><strong>Vers-omkvæd:</strong> Intro → Vers → Omkvæd → Vers → Omkvæd → Bro → Omkvæd → Outro</p>
+        <h4>Jazz/Tin Pan Alley</h4>
+        <p><strong>AABA:</strong> 32 takter (4×8). A-delen gentages, B er "broen".</p>
+        <h4>Blues</h4>
+        <p><strong>12-takters blues:</strong> 3 linjer &agrave; 4 takter (AAB-lyrik).</p>
+        <h4>Klassisk</h4>
+        <p><strong>Rondo:</strong> A-B-A-C-A</p>
+        <p><strong>Sonateform:</strong> Eksposition → Gennemf&oslash;ring → Reprise</p>
+      </div>
+    </div>
+
+    <div class="section" id="s20">
+      <h2>Arrangement og stemmef&oslash;ring</h2>
+      <div class="theory">
+        <h4>Grundregler for stemmef&oslash;ring</h4>
+        <ul>
+          <li>Undg&aring; parallelle kvinter og oktaver</li>
+          <li>Led stemmerne i sm&aring; trin (trinvis bev&aelig;gelse)</li>
+          <li>Fasthold f&aelig;llestoner mellem akkorder</li>
+          <li>Modbev&aelig;gelse er at foretr&aelig;kke</li>
+          <li>Ledetonen (7. trin) opl&oslash;ses opad til grundtonen</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ===== SECTION 21-31: Ekspert ===== -->
+    <div class="section" id="s21">
+      <h2>Modulation</h2>
+      <div class="theory">
+        <p>Modulation er et toneartsskrifte midt i et stykke.</p>
+        <h4>Typer</h4>
+        <ul>
+          <li><strong>Pivot-akkord modulation:</strong> En akkord der h&oslash;rer til begge tonearter bruges som bro</li>
+          <li><strong>Direkte modulation:</strong> Brat skifte uden forberedelse</li>
+          <li><strong>Enharmonisk modulation:</strong> Udnytter enharmoniske omtydninger (f.eks. dim7-akkord)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section" id="s22">
+      <h2>Napolitansk sekstakkord</h2>
+      <div class="theory">
+        <p>Den <strong>napolitanske sekstakkord</strong> er en dur-treklang bygget p&aring; det s&aelig;nkede 2. trin, typisk i 1. omvending.</p>
+        <p>I C-mol: D&#9837;-dur i sekststilling (F-A&#9837;-D&#9837;). Opl&oslash;ses ofte til V.</p>
+        <p>Symbol: N6 eller &#9837;II6</p>
+        <p>Bruges til dramatisk, udtryksfuld effekt — meget almindelig i romantisk musik.</p>
+      </div>
+    </div>
+
+    <div class="section" id="s23">
+      <h2>Tritonussubstitution</h2>
+      <div class="theory">
+        <p>En <strong>tritonussubstitution</strong> erstatter en dominant-akkord med en anden dominant en tritonus v&aelig;k.</p>
+        <p>I C-dur: G7 kan erstattes af D&#9837;7 (tritonus fra G).</p>
+        <p>Det virker fordi G7 og D&#9837;7 deler de samme guide-toner (3. og 7. trin bytter plads).</p>
+        <p><strong>ii-V-I med tritone sub:</strong> Dm7 → D&#9837;7 → Cmaj7 (giver kromatisk baslinje: D → D&#9837; → C)</p>
+      </div>
+    </div>
+
+    <div class="section" id="s24">
+      <h2>Reharmonisering</h2>
+      <div class="theory">
+        <p>Reharmonisering er kunsten at &aelig;ndre akkorderne under en melodi, s&aring; den f&aring;r en ny karakter.</p>
+        <h4>Teknikker</h4>
+        <ul>
+          <li><strong>Substitution:</strong> Erstat en akkord med en beslægtet (f.eks. iii for I, vi for I)</li>
+          <li><strong>Tilf&oslash;j ii-V:</strong> Inds&aelig;t ii-V f&oslash;r m&aring;lakkorden</li>
+          <li><strong>Tritone sub:</strong> Se forrige sektion</li>
+          <li><strong>Pedaltone:</strong> Hold en bastonde mens akkorderne skifter ovenover</li>
+          <li><strong>Coltrane changes:</strong> Opdel i iii-VI-ii-V m&oslash;nstre p&aring; store tertser</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section" id="s25">
+      <h2>Modal interchange / l&aring;nte akkorder</h2>
+      <div class="theory">
+        <p><strong>Modal interchange</strong> (modal blanding) l&aring;ner akkorder fra parallel mol (eller andre modi).</p>
+        <p>I C-dur kan man l&aring;ne fra C-mol:</p>
+        <ul>
+          <li><strong>&#9837;VII:</strong> B&#9837;-dur (fra C-mixolydisk/C-mol)</li>
+          <li><strong>iv:</strong> Fm (fra C-mol)</li>
+          <li><strong>&#9837;VI:</strong> A&#9837;-dur (fra C-mol)</li>
+          <li><strong>&#9837;III:</strong> E&#9837;-dur (fra C-mol)</li>
+        </ul>
+        <p>Kendte eksempler: "Creep" (Radiohead) bruger III-IV, "No Woman No Cry" (Bob Marley) bruger &#9837;VII.</p>
+      </div>
+    </div>
+
+    <div class="section" id="s26">
+      <h2>Kontrapunkt</h2>
+      <div class="theory">
+        <h4>Grundregler (f&oslash;rste art)</h4>
+        <ul>
+          <li>To stemmer bev&aelig;ger sig uafh&aelig;ngigt med trinvis bevægelse</li>
+          <li>Konsonerende intervaller p&aring; betonede slag: prim, terts, kvint, sekst, oktav</li>
+          <li>Undg&aring; parallelle kvinter og oktaver</li>
+          <li>Foretr&aelig;k modbev&aelig;gelse og skr&aring;bev&aelig;gelse</li>
+          <li>Dissonerende intervaller (sekund, septim) skal forberedes og opl&oslash;ses</li>
+        </ul>
+        <h4>Bev&aelig;gelsestyper</h4>
+        <ul>
+          <li><strong>Parallelbev&aelig;gelse:</strong> Begge stemmer g&aring;r samme vej</li>
+          <li><strong>Modbev&aelig;gelse:</strong> Stemmerne g&aring;r mod hinanden</li>
+          <li><strong>Skr&aring;bev&aelig;gelse:</strong> En stemme ligger stille, den anden bev&aelig;ger sig</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section" id="s27">
+      <h2>Polyrytmik</h2>
+      <div class="theory">
+        <h4>Uregelmæssige taktarter</h4>
+        <ul>
+          <li><strong>5/4:</strong> Ofte f&oslash;lt som 3+2 eller 2+3 (f.eks. "Take Five" — Dave Brubeck)</li>
+          <li><strong>7/8:</strong> Ofte 2+2+3 eller 3+2+2 (balkansk musik)</li>
+        </ul>
+        <h4>Polyrytmik</h4>
+        <p>To eller flere forskellige rytmem&oslash;nstre spilles samtidig, f.eks. 3 mod 2 (hemiola) eller 4 mod 3.</p>
+        <h4>Metrisk modulation</h4>
+        <p>Tempoet &aelig;ndres ved at omfortolke en underdelingsv&aelig;rdi. F.eks. kan trioler i det gamle tempo blive fjerdedele i det nye tempo.</p>
+      </div>
+    </div>
+
+    <div class="section" id="s28">
+      <h2>Avancerede skalaer</h2>
+      <div class="theory">
+        <table class="interval-table">
+          <tr><th>Skala</th><th>Formel (halvtoner)</th><th>Brug</th></tr>
+          <tr><td>Lydisk</td><td>2-2-2-1-2-2-1</td><td>Dur med forst&oslash;rret kvart. Dr&oslash;mmende.</td></tr>
+          <tr><td>Frygisk dominant</td><td>1-3-1-2-1-2-2</td><td>Harmonisk mol fra 5. trin. Spansk/arabisk.</td></tr>
+          <tr><td>Altereret (superlokrisk)</td><td>1-2-1-2-2-2-2</td><td>Over altererede dominantakkorder i jazz.</td></tr>
+          <tr><td>Heltoneskala</td><td>2-2-2-2-2-2</td><td>Debussy, dr&oslash;mmeagtig. Kun 6 toner.</td></tr>
+          <tr><td>Formindsket (hel-halv)</td><td>2-1-2-1-2-1-2-1</td><td>Over dim7-akkorder. 8 toner.</td></tr>
+          <tr><td>Formindsket (halv-hel)</td><td>1-2-1-2-1-2-1-2</td><td>Over dominantakkorder (dominant-dim).</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="section" id="s29">
+      <h2>Generalbas-principper</h2>
+      <div class="theory">
+        <p><strong>Generalbas</strong> (basso continuo) er et harmonisk notationssystem fra barokken, hvor et basstemme ledsages af tal der angiver akkorderne.</p>
+        <h4>Grundl&aelig;ggende becifring</h4>
+        <ul>
+          <li><strong>Ingen tal:</strong> Grundstilling (5/3)</li>
+          <li><strong>6:</strong> Sekststilling / 1. omvending (6/3)</li>
+          <li><strong>6/4:</strong> Kvartsekststilling / 2. omvending</li>
+          <li><strong>7:</strong> Septimakkord i grundstilling</li>
+          <li><strong>&#9839; / &#9837; ved et tal:</strong> H&aelig;v/s&aelig;nk den p&aring;g&aelig;ldende tone</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section" id="s30">
+      <h2>Analyse af jazzstandards</h2>
+      <div class="theory">
+        <h4>"Autumn Leaves" — analyse</h4>
+        <p>Toneart: G-mol (eller Bb-dur). Progressionen f&oslash;lger kvintcirklen:</p>
+        <p><strong>Cm7 → F7 → B&#9837;maj7 → E&#9837;maj7 → A&oslash;7 → D7 → Gm</strong></p>
+        <p>Analyse: ii → V → I → IV → vii&oslash; → V/vi → vi (i B&#9837;-dur)</p>
+        <p>Dette er en af de vigtigste progressioner i jazz: en serie af ii-V forbindelser der bev&aelig;ger sig gennem kvintcirklen.</p>
+
+        <h4>"So What" — modal jazz</h4>
+        <p>Miles Davis (1959). Hele stykket er baseret p&aring; to modi:</p>
+        <p>A-del: D-dorisk (16 takter) → B-del: E&#9837;-dorisk (8 takter) → A: D-dorisk (8 takter)</p>
+        <p>Ingen funktionsharmonik — akkorderne er rent modale.</p>
+      </div>
+    </div>
+
+    <div class="section" id="s31">
+      <h2>Seriel musik / 12-tone</h2>
+      <div class="theory">
+        <p>Sch&ouml;nbergs <strong>12-toneteknik</strong> (dodekafoni) bruger alle 12 toner i en fast r&aelig;kkef&oslash;lge (en <strong>tonerække</strong>), f&oslash;r nogen tone m&aring; gentages.</p>
+        <h4>Fire former af rækken</h4>
+        <ul>
+          <li><strong>Original (O):</strong> Rækken som den er</li>
+          <li><strong>Retrograd (R):</strong> R&aelig;kken bagl&aelig;ns</li>
+          <li><strong>Inversion (I):</strong> Alle intervaller vendes (op→ned)</li>
+          <li><strong>Retrograd inversion (RI):</strong> Inversionen bagl&aelig;ns</li>
+        </ul>
+        <p>Hver form kan transponeres til alle 12 toner → 48 mulige varianter.</p>
+        <p>Senere udvidede komponister som Boulez og Stockhausen teknikken til <strong>total serialisme</strong> (rytme, dynamik, klangfarve organiseres ogs&aring; serielt).</p>
+      </div>
+    </div>
+
+    <!-- ===== GEHØRTRÆNING ===== -->
+    <div class="section" id="ear1">
+      <h2>Geh&oslash;rtr&aelig;ning: Intervaller</h2>
+      <p>Lyt til intervallet og g&aelig;t hvilken type det er.</p>
+
+      <div class="exercise" id="ear_interval">
+        <div class="exercise-title"><span class="num">&#9835;</span> Interv quiz</div>
+        <div class="btn-row">
+          <button class="btn btn-primary" onclick="playIntervalQuiz()">&#9654; Spil interval</button>
+          <button class="btn btn-secondary" onclick="playIntervalQuiz()">&#8635; Nyt interval</button>
+        </div>
+        <div class="quiz-options" id="intervalOptions"></div>
+        <div class="feedback" id="fb_ear_interval"></div>
+      </div>
+
+      <h3>Referencesange</h3>
+      <table class="interval-table">
+        <tr><th>Interval</th><th>Opadg&aring;ende eksempel</th></tr>
+        <tr><td>Lille sekund</td><td>Jaws-temaet</td></tr>
+        <tr><td>Stor sekund</td><td>"Mester Jakob" (f&oslash;rste to toner)</td></tr>
+        <tr><td>Lille terts</td><td>"Greensleeves"</td></tr>
+        <tr><td>Stor terts</td><td>"Oh When the Saints"</td></tr>
+        <tr><td>Ren kvart</td><td>Bryllupsmarschen (Wagner)</td></tr>
+        <tr><td>Tritonus</td><td>"The Simpsons" (temaet)</td></tr>
+        <tr><td>Ren kvint</td><td>"Star Wars" (temaet)</td></tr>
+        <tr><td>Lille sekst</td><td>"The Entertainer" (Joplin)</td></tr>
+        <tr><td>Stor sekst</td><td>"My Bonnie Lies Over the Ocean"</td></tr>
+        <tr><td>Lille septim</td><td>"Somewhere" (West Side Story)</td></tr>
+        <tr><td>Stor septim</td><td>"Take On Me" (omkvæd-spring)</td></tr>
+        <tr><td>Oktav</td><td>"Somewhere Over the Rainbow"</td></tr>
+      </table>
+    </div>
+
+    <div class="section" id="ear2">
+      <h2>Geh&oslash;rtr&aelig;ning: Akkorder</h2>
+      <p>Lyt til akkorden og g&aelig;t typen.</p>
+
+      <div class="exercise" id="ear_chord">
+        <div class="exercise-title"><span class="num">&#9835;</span> Akkord-quiz</div>
+        <div class="btn-row">
+          <button class="btn btn-primary" onclick="playChordQuiz()">&#9654; Spil akkord</button>
+          <button class="btn btn-secondary" onclick="playChordQuiz()">&#8635; Ny akkord</button>
+        </div>
+        <div class="quiz-options" id="chordOptions"></div>
+        <div class="feedback" id="fb_ear_chord"></div>
+      </div>
+    </div>
+
+    <!-- ===== PIANO SECTION ===== -->
+    <div class="section" id="piano_section">
+      <h2>&#127929; Interaktivt klaviatur</h2>
+      <p>Klik p&aring; tangenterne for at h&oslash;re tonerne. Noden vises p&aring; nodelinjen ovenfor.</p>
+
+      <div class="piano-container">
+        <div class="piano-staff" id="pianoStaff"></div>
+        <div class="piano" id="pianoKeys"></div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+// ===== STATE =====
+let score = 0;
+let scoreEnabled = false;
+let currentInterval = null;
+let currentChordType = null;
+let soundType = 'piano';
+let synth, polySynth;
+let toneStarted = false;
+
+// ===== AUDIO =====
+function initTone() {
+  if (toneStarted) return;
+  Tone.start();
+  toneStarted = true;
+  updateSynths();
+}
+
+function updateSynths() {
+  if (soundType === 'piano') {
+    synth = new Tone.Synth({
+      oscillator: { type: 'triangle' },
+      envelope: { attack: 0.01, decay: 0.3, sustain: 0.2, release: 0.8 }
+    }).toDestination();
+    polySynth = new Tone.PolySynth(Tone.Synth, {
+      oscillator: { type: 'triangle' },
+      envelope: { attack: 0.01, decay: 0.3, sustain: 0.2, release: 0.8 }
+    }).toDestination();
+  } else {
+    synth = new Tone.Synth({
+      oscillator: { type: 'sine' },
+      envelope: { attack: 0.05, decay: 0.1, sustain: 0.4, release: 0.5 }
+    }).toDestination();
+    polySynth = new Tone.PolySynth(Tone.Synth, {
+      oscillator: { type: 'sine' },
+      envelope: { attack: 0.05, decay: 0.1, sustain: 0.4, release: 0.5 }
+    }).toDestination();
+  }
+}
+
+function changeSoundType() {
+  soundType = document.getElementById('soundType').value;
+  if (toneStarted) updateSynths();
+}
+
+function playNote(note) {
+  initTone();
+  synth.triggerAttackRelease(note, '0.5');
+}
+
+function playChord(notes) {
+  initTone();
+  polySynth.triggerAttackRelease(notes, '1');
+}
+
+function playInterval(note1, note2) {
+  initTone();
+  const now = Tone.now();
+  synth.triggerAttackRelease(note1, '0.5', now);
+  synth.triggerAttackRelease(note2, '0.5', now + 0.7);
+}
+
+// ===== NAVIGATION =====
+function showSection(id, link) {
+  if (link) link.blur();
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
+  if (link) link.classList.add('active');
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('open');
+  window.scrollTo(0, 0);
+  // Render ABC if needed
+  if (id === 's5') {
+    ABCJS.renderAbc('abc_cdur', 'X:1\nT:\nM:4/4\nL:1/4\nK:C\nCDEF|GABc|\n', {responsive:'resize'});
+  }
+  if (id === 'piano_section') initPiano();
+  if (id === 's10') drawCircleOfFifths();
+  return false;
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebarOverlay').classList.toggle('open');
+}
+
+function filterLevel(level, btn) {
+  document.querySelectorAll('.level-tab').forEach(t => t.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  document.querySelectorAll('.sidebar a').forEach(a => {
+    const dl = a.dataset.level;
+    if (!dl) { a.style.display = ''; return; }
+    a.style.display = (level === 'all' || dl === level) ? '' : 'none';
+  });
+}
+
+// ===== QUIZ =====
+function checkQuiz(btn, correct, exId) {
+  const fb = document.getElementById('fb_' + exId);
+  const options = btn.parentElement.querySelectorAll('.quiz-option');
+  if (correct) {
+    btn.classList.add('correct');
+    fb.textContent = 'Rigtigt!';
+    fb.className = 'feedback show correct';
+    options.forEach(o => o.classList.add('disabled'));
+    addScore(10);
+  } else {
+    btn.classList.add('incorrect');
+    fb.textContent = 'Forkert \u2014 pr\u00f8v igen.';
+    fb.className = 'feedback show incorrect';
+    setTimeout(() => btn.classList.remove('incorrect'), 800);
+  }
+}
+
+function addScore(pts) {
+  if (!scoreEnabled) return;
+  score += pts;
+  document.getElementById('scoreDisplay').textContent = score + ' point';
+}
+
+function toggleScore() {
+  scoreEnabled = document.getElementById('scoreToggle').checked;
+  document.getElementById('scoreDisplay').classList.toggle('visible', scoreEnabled);
+}
+
+// ===== PIANO =====
+const NOTE_NAMES = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+const DANISH_NAMES = ['C','C#','D','D#','E','F','F#','G','G#','A','B','H'];
+const WHITE_NOTES = [0,2,4,5,7,9,11]; // C D E F G A B
+const BLACK_NOTES = [1,3,6,8,10]; // C# D# F# G# A#
+const ABC_MAP = {
+  'C3':'C,','D3':'D,','E3':'E,','F3':'F,','G3':'G,','A3':'A,','B3':'B,',
+  'C4':'C','D4':'D','E4':'E','F4':'F','G4':'G','A4':'A','B4':'B',
+  'C5':'c','D5':'d','E5':'e','F5':'f','G5':'g','A5':'a','B5':'b',
+  'C#3':'^C,','D#3':'^D,','F#3':'^F,','G#3':'^G,','A#3':'^A,',
+  'C#4':'^C','D#4':'^D','F#4':'^F','G#4':'^G','A#4':'^A',
+  'C#5':'^c','D#5':'^d','F#5':'^f','G#5':'^g','A#5':'^a',
+  'Eb3':'_E,','Eb4':'_E','Eb5':'_e',
+  'Bb3':'_B,','Bb4':'_B','Bb5':'_b',
+  'Ab3':'_A,','Ab4':'_A','Ab5':'_a',
+  'Gb3':'_G,','Gb4':'_G','Gb5':'_g',
+  'Db3':'_D,','Db4':'_D','Db5':'_d',
+};
+let pianoInitialized = false;
+
+function initPiano() {
+  if (pianoInitialized) return;
+  pianoInitialized = true;
+  const container = document.getElementById('pianoKeys');
+  container.innerHTML = '';
+  // 3 octaves: C3 to B5
+  for (let oct = 3; oct <= 5; oct++) {
+    for (let i = 0; i < 7; i++) {
+      const noteIdx = WHITE_NOTES[i];
+      const noteName = NOTE_NAMES[noteIdx] + oct;
+      const danishName = DANISH_NAMES[noteIdx];
+      const key = document.createElement('div');
+      key.className = 'white-key';
+      key.dataset.note = noteName;
+      key.innerHTML = `<span class="key-label">${danishName}${oct === 4 ? '' : oct}</span>`;
+      key.onmousedown = () => onPianoKey(noteName, key);
+      key.onmouseup = () => key.classList.remove('active');
+      key.onmouseleave = () => key.classList.remove('active');
+      container.appendChild(key);
+    }
+  }
+  // Black keys
+  const whiteWidth = 40;
+  const blackOffsets = {
+    0: 0.65, // C#
+    1: 1.65, // D#
+    2: 3.65, // F#
+    3: 4.65, // G#
+    4: 5.65, // A#
+  };
+  for (let oct = 3; oct <= 5; oct++) {
+    const octOffset = (oct - 3) * 7;
+    for (let bi = 0; bi < BLACK_NOTES.length; bi++) {
+      const noteIdx = BLACK_NOTES[bi];
+      const noteName = NOTE_NAMES[noteIdx] + oct;
+      const danishName = DANISH_NAMES[noteIdx];
+      const key = document.createElement('div');
+      key.className = 'black-key';
+      key.dataset.note = noteName;
+      key.innerHTML = `<span class="key-label">${danishName}</span>`;
+      key.style.left = ((octOffset + blackOffsets[bi]) * whiteWidth + whiteWidth * 0.35) + 'px';
+      key.onmousedown = (e) => { e.stopPropagation(); onPianoKey(noteName, key); };
+      key.onmouseup = () => key.classList.remove('active');
+      key.onmouseleave = () => key.classList.remove('active');
+      container.appendChild(key);
+    }
+  }
+  // Initial staff
+  ABCJS.renderAbc('pianoStaff', 'X:1\nM:\nL:1/1\nK:C clef=treble\nx|\n', {responsive:'resize', staffwidth:300});
+}
+
+function onPianoKey(note, keyEl) {
+  keyEl.classList.add('active');
+  playNote(note);
+  // Show on staff
+  const abcNote = ABC_MAP[note];
+  if (abcNote) {
+    ABCJS.renderAbc('pianoStaff', `X:1\nM:\nL:1/1\nK:C clef=treble\n${abcNote}|\n`, {responsive:'resize', staffwidth:300});
+  }
+}
+
+// ===== EAR TRAINING =====
+const INTERVALS = [
+  {name:'Lille sekund', semitones:1},
+  {name:'Stor sekund', semitones:2},
+  {name:'Lille terts', semitones:3},
+  {name:'Stor terts', semitones:4},
+  {name:'Ren kvart', semitones:5},
+  {name:'Tritonus', semitones:6},
+  {name:'Ren kvint', semitones:7},
+  {name:'Lille sekst', semitones:8},
+  {name:'Stor sekst', semitones:9},
+  {name:'Lille septim', semitones:10},
+  {name:'Stor septim', semitones:11},
+  {name:'Oktav', semitones:12},
+];
+
+function semitoneToNote(base, semitones) {
+  const baseIdx = NOTE_NAMES.indexOf(base.replace(/[0-9]/g,''));
+  const baseOct = parseInt(base.slice(-1));
+  const newIdx = baseIdx + semitones;
+  const newNote = NOTE_NAMES[newIdx % 12];
+  const newOct = baseOct + Math.floor(newIdx / 12);
+  return newNote + newOct;
+}
+
+function playIntervalQuiz() {
+  initTone();
+  currentInterval = INTERVALS[Math.floor(Math.random() * INTERVALS.length)];
+  const base = 'C4';
+  const top = semitoneToNote(base, currentInterval.semitones);
+  playInterval(base, top);
+
+  const fb = document.getElementById('fb_ear_interval');
+  fb.className = 'feedback';
+  const optDiv = document.getElementById('intervalOptions');
+  optDiv.innerHTML = '';
+  // Show 4 random options including the correct one
+  const options = [currentInterval];
+  while (options.length < 4) {
+    const r = INTERVALS[Math.floor(Math.random() * INTERVALS.length)];
+    if (!options.find(o => o.name === r.name)) options.push(r);
+  }
+  shuffle(options);
+  options.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'quiz-option';
+    btn.textContent = opt.name;
+    btn.onclick = () => {
+      if (opt.name === currentInterval.name) {
+        btn.classList.add('correct');
+        fb.textContent = 'Rigtigt! Det var en ' + currentInterval.name + '.';
+        fb.className = 'feedback show correct';
+        optDiv.querySelectorAll('.quiz-option').forEach(b => b.classList.add('disabled'));
+        addScore(15);
+      } else {
+        btn.classList.add('incorrect');
+        fb.textContent = 'Forkert \u2014 pr\u00f8v igen.';
+        fb.className = 'feedback show incorrect';
+        setTimeout(() => btn.classList.remove('incorrect'), 800);
+      }
+    };
+    optDiv.appendChild(btn);
+  });
+}
+
+const CHORD_TYPES = [
+  {name:'Dur', notes:['C4','E4','G4']},
+  {name:'Mol', notes:['C4','Eb4','G4']},
+  {name:'Formindsket', notes:['C4','Eb4','Gb4']},
+  {name:'Forst\u00f8rret', notes:['C4','E4','G#4']},
+  {name:'Dominant 7', notes:['C4','E4','G4','Bb4']},
+  {name:'Mol 7', notes:['C4','Eb4','G4','Bb4']},
+  {name:'Maj 7', notes:['C4','E4','G4','B4']},
+];
+
+function playChordQuiz() {
+  initTone();
+  currentChordType = CHORD_TYPES[Math.floor(Math.random() * CHORD_TYPES.length)];
+  // Transpose randomly
+  const trans = Math.floor(Math.random() * 5);
+  const notes = currentChordType.notes.map(n => {
+    const name = n.replace(/[0-9]/g,'');
+    const oct = parseInt(n.slice(-1));
+    const idx = NOTE_NAMES.indexOf(name);
+    const newIdx = (idx + trans) % 12;
+    const newOct = oct + Math.floor((idx + trans) / 12);
+    return NOTE_NAMES[newIdx] + newOct;
+  });
+  playChord(notes);
+
+  const fb = document.getElementById('fb_ear_chord');
+  fb.className = 'feedback';
+  const optDiv = document.getElementById('chordOptions');
+  optDiv.innerHTML = '';
+  const options = [currentChordType];
+  while (options.length < 4) {
+    const r = CHORD_TYPES[Math.floor(Math.random() * CHORD_TYPES.length)];
+    if (!options.find(o => o.name === r.name)) options.push(r);
+  }
+  shuffle(options);
+  options.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'quiz-option';
+    btn.textContent = opt.name;
+    btn.onclick = () => {
+      if (opt.name === currentChordType.name) {
+        btn.classList.add('correct');
+        fb.textContent = 'Rigtigt! Det var en ' + currentChordType.name + '-akkord.';
+        fb.className = 'feedback show correct';
+        optDiv.querySelectorAll('.quiz-option').forEach(b => b.classList.add('disabled'));
+        addScore(15);
+      } else {
+        btn.classList.add('incorrect');
+        fb.textContent = 'Forkert \u2014 pr\u00f8v igen.';
+        fb.className = 'feedback show incorrect';
+        setTimeout(() => btn.classList.remove('incorrect'), 800);
+      }
+    };
+    optDiv.appendChild(btn);
+  });
+}
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+// ===== CIRCLE OF FIFTHS =====
+function drawCircleOfFifths() {
+  const svg = document.getElementById('circleOfFifths');
+  if (svg.children.length > 0) return;
+  const cx = 200, cy = 200, r = 160, ri = 115;
+  const majors = ['C','G','D','A','E','H','F#/G\u266d','D\u266d','A\u266d','E\u266d','B','F'];
+  const minors = ['Am','Em','Hm','F#m','C#m','G#m','D#m/E\u266dm','B\u266dm','Fm','Cm','Gm','Dm'];
+  const sharps = ['0','1#','2#','3#','4#','5#','6#/6\u266d','5\u266d','4\u266d','3\u266d','2\u266d','1\u266d'];
+
+  for (let i = 0; i < 12; i++) {
+    const angle = (i * 30 - 90) * Math.PI / 180;
+    // Major key
+    const mx = cx + r * Math.cos(angle);
+    const my = cy + r * Math.sin(angle);
+    const t = document.createElementNS('http://www.w3.org/2000/svg','text');
+    t.setAttribute('x', mx);
+    t.setAttribute('y', my);
+    t.setAttribute('text-anchor','middle');
+    t.setAttribute('dominant-baseline','middle');
+    t.setAttribute('font-size','14');
+    t.setAttribute('font-weight','700');
+    t.setAttribute('fill','#8549BA');
+    t.textContent = majors[i];
+    svg.appendChild(t);
+    // Minor key
+    const mnx = cx + ri * Math.cos(angle);
+    const mny = cy + ri * Math.sin(angle);
+    const tm = document.createElementNS('http://www.w3.org/2000/svg','text');
+    tm.setAttribute('x', mnx);
+    tm.setAttribute('y', mny);
+    tm.setAttribute('text-anchor','middle');
+    tm.setAttribute('dominant-baseline','middle');
+    tm.setAttribute('font-size','11');
+    tm.setAttribute('fill','#6F6F6F');
+    tm.textContent = minors[i];
+    svg.appendChild(tm);
+    // Sharps/flats
+    const sx = cx + (r + 24) * Math.cos(angle);
+    const sy = cy + (r + 24) * Math.sin(angle);
+    const ts = document.createElementNS('http://www.w3.org/2000/svg','text');
+    ts.setAttribute('x', sx);
+    ts.setAttribute('y', sy);
+    ts.setAttribute('text-anchor','middle');
+    ts.setAttribute('dominant-baseline','middle');
+    ts.setAttribute('font-size','9');
+    ts.setAttribute('fill','#aaa');
+    ts.textContent = sharps[i];
+    svg.appendChild(ts);
+  }
+  // Circles
+  const c1 = document.createElementNS('http://www.w3.org/2000/svg','circle');
+  c1.setAttribute('cx',cx); c1.setAttribute('cy',cy); c1.setAttribute('r',r-20);
+  c1.setAttribute('fill','none'); c1.setAttribute('stroke','#E0E0E0'); c1.setAttribute('stroke-width','1');
+  svg.insertBefore(c1, svg.firstChild);
+  const c2 = document.createElementNS('http://www.w3.org/2000/svg','circle');
+  c2.setAttribute('cx',cx); c2.setAttribute('cy',cy); c2.setAttribute('r',ri-15);
+  c2.setAttribute('fill','none'); c2.setAttribute('stroke','#E0E0E0'); c2.setAttribute('stroke-width','1');
+  svg.insertBefore(c2, svg.firstChild);
+}
+
+// ===== INIT =====
+document.addEventListener('DOMContentLoaded', function() {
+  // Render ABC for C-dur scale on section 5
+  if (document.getElementById('abc_cdur')) {
+    ABCJS.renderAbc('abc_cdur', 'X:1\nT:\nM:4/4\nL:1/4\nK:C\nCDEF|GABc|\n', {responsive:'resize'});
+  }
+});
+</script>
+</body>
+</html>

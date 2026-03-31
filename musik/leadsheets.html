@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lead Sheets — Sangsamling</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/abcjs@6.4.4/dist/abcjs-basic-min.js"></script>
+<style>
+:root {
+  --bg-primary:#FFFFFF;--bg-secondary:#F7F8F9;--bg-tertiary:#F0F0F0;
+  --text-primary:#222222;--text-secondary:#575760;--text-muted:#6F6F6F;
+  --primary:#8549BA;--primary-hover:#6A1B9A;--primary-light:#F3E5F5;
+  --success:#1B873F;--border:#E0E0E0;
+  --radius-sm:6px;--radius-md:10px;--radius-lg:16px;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:16px;line-height:1.6;color:var(--text-primary);background:var(--bg-primary);margin:0;-webkit-font-smoothing:antialiased}
+
+.top-bar{position:sticky;top:0;z-index:100;background:#fff;border-bottom:1px solid var(--border);padding:0.75rem 1.5rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.top-bar h1{font-size:1.2rem;font-weight:700;margin:0;color:var(--primary);white-space:nowrap}
+.search-box{flex:1;min-width:200px;max-width:400px}
+.search-box input{width:100%;padding:8px 12px;border:2px solid var(--border);border-radius:20px;font-size:.9rem;font-family:inherit;outline:none;transition:border-color .2s}
+.search-box input:focus{border-color:var(--primary)}
+.filters{display:flex;gap:.4rem;flex-wrap:wrap}
+.filter-btn{padding:5px 14px;border-radius:20px;border:2px solid var(--border);background:#fff;font-size:.75rem;font-weight:600;cursor:pointer;transition:all .2s;font-family:inherit}
+.filter-btn:hover{border-color:var(--primary)}
+.filter-btn.active{background:var(--primary-light);border-color:var(--primary);color:var(--primary)}
+
+.container{max-width:900px;margin:0 auto;padding:1.5rem}
+.song-count{color:var(--text-muted);font-size:.85rem;margin-bottom:1rem}
+
+.song-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);margin-bottom:1.5rem;overflow:hidden;transition:box-shadow .2s}
+.song-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.song-header{padding:1rem 1.5rem;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.song-header:hover{background:var(--bg-secondary)}
+.song-info h3{margin:0;font-size:1.05rem;font-weight:600}
+.song-info .artist{color:var(--text-secondary);font-size:.85rem}
+.song-tags{display:flex;gap:.3rem;flex-wrap:wrap;align-items:center}
+.tag{padding:2px 8px;border-radius:10px;font-size:.65rem;font-weight:600}
+.tag-dansk{background:#E8F5E9;color:#2E7D32}
+.tag-int{background:#E3F2FD;color:#1565C0}
+.tag-hoejskole{background:#FFF3E0;color:#E65100}
+.tag-beginner{background:#F3E5F5;color:#7B1FA2}
+.tag-analyse{background:#FCE4EC;color:#C62828}
+.tag-udkast{background:#FFF9C4;color:#F57F17}
+.tag-verified{background:#E8F5E9;color:#2E7D32}
+.expand-icon{font-size:1.2rem;color:var(--text-muted);transition:transform .2s;flex-shrink:0}
+.song-card.open .expand-icon{transform:rotate(180deg)}
+.song-body{display:none;padding:0 1.5rem 1.5rem;border-top:1px solid var(--border)}
+.song-card.open .song-body{display:block}
+.sheet-container{margin:1rem 0}
+.play-btn{background:var(--primary);color:#fff;border:none;padding:8px 20px;border-radius:var(--radius-sm);font-size:.85rem;font-weight:600;cursor:pointer;font-family:inherit;margin-top:.5rem}
+.play-btn:hover{background:var(--primary-hover)}
+.chord-info{margin-top:.75rem;color:var(--text-secondary);font-size:.85rem}
+
+.confidence-note{background:var(--bg-secondary);padding:1rem 1.5rem;border-radius:var(--radius-md);margin-bottom:1.5rem;font-size:.85rem;color:var(--text-secondary)}
+
+@media(max-width:768px){
+  .top-bar{padding:.5rem 1rem}
+  .container{padding:1rem}
+  .song-header{padding:.75rem 1rem}
+  .song-body{padding:0 1rem 1rem}
+}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <h1>&#9835; Lead Sheets</h1>
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="S&oslash;g efter sang eller artist..." oninput="filterSongs()">
+  </div>
+  <div class="filters">
+    <button class="filter-btn active" onclick="setFilter('all',this)">Alle</button>
+    <button class="filter-btn" onclick="setFilter('dansk',this)">Dansk</button>
+    <button class="filter-btn" onclick="setFilter('international',this)">International</button>
+    <button class="filter-btn" onclick="setFilter('hoejskole',this)">H&oslash;jskole</button>
+    <button class="filter-btn" onclick="setFilter('beginner',this)">Begynder</button>
+    <button class="filter-btn" onclick="setFilter('analyse',this)">Analyse</button>
+    <button class="filter-btn" onclick="setFilter('verified',this)">Verificerede</button>
+    <button class="filter-btn" onclick="setFilter('udkast',this)">Udkast</button>
+  </div>
+</div>
+
+<div class="container">
+  <div class="confidence-note">
+    <strong>Bem&aelig;rk:</strong> Sange markeret med <span class="tag tag-verified">Verificeret</span> har melodier, som er gennemg&aring;et for korrekthed. Sange markeret med <span class="tag tag-udkast">Udkast</span> kan indeholde fejl i melodien og b&oslash;r tjekkes manuelt.
+  </div>
+
+  <div class="song-count" id="songCount"></div>
+  <div id="songList"></div>
+</div>
+
+<script>
+const SONGS = [
+  // ===== DANSK - BEGYNDER =====
+  {
+    title: "Kvinde min",
+    artist: "Kim Larsen",
+    tags: ["dansk", "beginner", "verified"],
+    chords: "Am, G, F, E",
+    abc: `X:1
+T:Kvinde min
+C:Kim Larsen
+M:4/4
+L:1/8
+K:Am
+"Am"A2 A2 B2 c2|"G"B2 G2 G4|"F"A2 A2 G2 F2|"E"E6 z2|
+"Am"A2 A2 B2 c2|"G"B2 B2 G4|"F"A2 F2 E2 D2|"Am"A,6 z2|]`
+  },
+  {
+    title: "Joanna",
+    artist: "Kim Larsen",
+    tags: ["dansk", "beginner", "udkast"],
+    chords: "G, Em, C, D",
+    abc: `X:1
+T:Joanna
+C:Kim Larsen
+M:4/4
+L:1/8
+K:G
+"G"B2 B2 A2 G2|"Em"G2 E2 E4|"C"E2 E2 D2 E2|"D"D6 z2|
+"G"B2 B2 A2 B2|"Em"e2 d2 B4|"C"c2 B2 A2 G2|"G"G6 z2|]`
+  },
+  {
+    title: "Papirsklip",
+    artist: "Kim Larsen",
+    tags: ["dansk", "beginner", "udkast"],
+    chords: "C, Am, F, G",
+    abc: `X:1
+T:Papirsklip
+C:Kim Larsen
+M:4/4
+L:1/8
+K:C
+"C"E2 G2 c2 B2|"Am"A2 G2 E4|"F"F2 A2 c2 B2|"G"G6 z2|
+"C"c2 c2 B2 A2|"Am"A2 G2 E4|"F"F2 E2 D2 C2|"C"C6 z2|]`
+  },
+  {
+    title: "Engel",
+    artist: "Rasmus Seebach",
+    tags: ["dansk", "beginner", "udkast"],
+    chords: "C, G, Am, F",
+    abc: `X:1
+T:Engel
+C:Rasmus Seebach
+M:4/4
+L:1/8
+K:C
+"C"E2 E2 G2 G2|"G"D2 D2 B,4|"Am"C2 E2 A2 G2|"F"F6 z2|
+"C"G2 G2 c2 c2|"G"B2 A2 G4|"Am"A2 G2 E2 D2|"C"C6 z2|]`
+  },
+  {
+    title: "Lidt i fem",
+    artist: "Rasmus Seebach",
+    tags: ["dansk", "beginner", "udkast"],
+    chords: "G, D, Em, C",
+    abc: `X:1
+T:Lidt i fem
+C:Rasmus Seebach
+M:4/4
+L:1/8
+K:G
+"G"B2 d2 d2 B2|"D"A2 F2 D4|"Em"E2 G2 B2 A2|"C"G6 z2|
+"G"d2 d2 B2 G2|"D"A2 A2 F4|"Em"G2 E2 D2 E2|"G"G6 z2|]`
+  },
+  {
+    title: "\u00d8de \u00f8",
+    artist: "Rasmus Seebach",
+    tags: ["dansk", "beginner", "udkast"],
+    chords: "C, Am, F, G",
+    abc: `X:1
+T:\u00d8de \u00f8
+C:Rasmus Seebach
+M:4/4
+L:1/8
+K:C
+"C"c2 c2 B2 A2|"Am"A2 E2 E4|"F"F2 A2 c2 B2|"G"G6 z2|
+"C"G2 c2 e2 d2|"Am"c2 A2 A4|"F"F2 G2 A2 G2|"C"c6 z2|]`
+  },
+  {
+    title: "Hvalen Gertrud",
+    artist: "Shu-bi-dua",
+    tags: ["dansk", "beginner", "udkast"],
+    chords: "G, C, D, Em",
+    abc: `X:1
+T:Hvalen Gertrud
+C:Shu-bi-dua
+M:4/4
+L:1/8
+K:G
+"G"G2 B2 d2 B2|"C"c2 E2 G4|"D"A2 F2 A2 d2|"G"B6 z2|
+"Em"E2 G2 B2 A2|"C"G2 E2 C4|"D"D2 F2 A2 G2|"G"G6 z2|]`
+  },
+  {
+    title: "Tusind og \u00e9n nat",
+    artist: "Sebastian",
+    tags: ["dansk", "beginner", "udkast"],
+    chords: "Am, Dm, G, C, E",
+    abc: `X:1
+T:Tusind og \u00e9n nat
+C:Sebastian
+M:4/4
+L:1/8
+K:Am
+"Am"A2 c2 e2 d2|"Dm"d2 A2 F4|"G"G2 B2 d2 c2|"C"c6 z2|
+"Am"e2 e2 d2 c2|"Dm"d2 c2 A4|"E"^G2 B2 e2 d2|"Am"A6 z2|]`
+  },
+  {
+    title: "N\u00e6rmest lykkelig",
+    artist: "TV-2",
+    tags: ["dansk", "beginner", "analyse", "udkast"],
+    chords: "D, G, A, Bm",
+    abc: `X:1
+T:N\u00e6rmest lykkelig
+C:TV-2
+M:4/4
+L:1/8
+K:D
+"D"D2 F2 A2 d2|"G"B2 G2 G4|"A"A2 c2 e2 d2|"D"d6 z2|
+"Bm"B2 d2 f2 e2|"G"d2 B2 G4|"A"A2 A2 G2 F2|"D"D6 z2|]`
+  },
+  {
+    title: "Fantastiske Toyota",
+    artist: "TV-2",
+    tags: ["dansk", "beginner", "udkast"],
+    chords: "A, D, E",
+    abc: `X:1
+T:Fantastiske Toyota
+C:TV-2
+M:4/4
+L:1/8
+K:A
+"A"A2 c2 e2 c2|"D"d2 F2 A4|"E"B2 ^G2 E4|"A"A6 z2|
+"A"c2 e2 a2 e2|"D"f2 d2 A4|"E"e2 d2 c2 B2|"A"A6 z2|]`
+  },
+  {
+    title: "007",
+    artist: "Nephew",
+    tags: ["dansk", "beginner", "udkast"],
+    chords: "Em, C, G, D",
+    abc: `X:1
+T:007
+C:Nephew
+M:4/4
+L:1/8
+K:Em
+"Em"E2 B2 e2 d2|"C"c2 G2 E4|"G"G2 B2 d2 B2|"D"A6 z2|
+"Em"e2 e2 d2 B2|"C"c2 c2 G4|"G"B2 A2 G2 F2|"Em"E6 z2|]`
+  },
+  {
+    title: "T\u00e6t p\u00e5",
+    artist: "Burhan G",
+    tags: ["dansk", "beginner", "udkast"],
+    chords: "Dm, Am, Bb, C",
+    abc: `X:1
+T:T\u00e6t p\u00e5
+C:Burhan G
+M:4/4
+L:1/8
+K:Dm
+"Dm"D2 F2 A2 G2|"Am"A2 E2 C4|"Bb"B,2 D2 F2 E2|"C"C6 z2|
+"Dm"d2 d2 c2 A2|"Am"A2 G2 E4|"Bb"D2 F2 A2 G2|"Dm"D6 z2|]`
+  },
+
+  // ===== DANSK - ANALYSE =====
+  {
+    title: "Midt om natten",
+    artist: "Kim Larsen",
+    tags: ["dansk", "analyse", "udkast"],
+    chords: "G, C, D, Em, Am",
+    abc: `X:1
+T:Midt om natten
+C:Kim Larsen
+M:4/4
+L:1/8
+K:G
+"G"G2 B2 d2 d2|"C"e2 c2 G4|"D"A2 A2 d2 c2|"G"B6 z2|
+"Em"E2 G2 B2 A2|"Am"A2 E2 C4|"D"D2 F2 A2 G2|"G"G6 z2|]`
+  },
+  {
+    title: "Tusind stykker",
+    artist: "Anne Linnet",
+    tags: ["dansk", "analyse", "udkast"],
+    chords: "Am, F, C, G, Dm",
+    abc: `X:1
+T:Tusind stykker
+C:Anne Linnet
+M:4/4
+L:1/8
+K:Am
+"Am"A2 c2 e2 e2|"F"f2 c2 A4|"C"G2 c2 e2 d2|"G"d6 z2|
+"Dm"d2 A2 F2 A2|"Am"c2 A2 E4|"G"G2 B2 d2 c2|"Am"A6 z2|]`
+  },
+  {
+    title: "Barndommens gade",
+    artist: "Anne Linnet",
+    tags: ["dansk", "analyse", "udkast"],
+    chords: "C, Am, Dm, G, F",
+    abc: `X:1
+T:Barndommens gade
+C:Anne Linnet
+M:4/4
+L:1/8
+K:C
+"C"c2 B2 A2 G2|"Am"A2 E2 C4|"Dm"D2 F2 A2 G2|"G"G6 z2|
+"C"E2 G2 c2 B2|"F"A2 F2 C4|"G"G2 A2 B2 c2|"C"c6 z2|]`
+  },
+  {
+    title: "De f\u00f8rste satisfactions",
+    artist: "TV-2",
+    tags: ["dansk", "analyse", "udkast"],
+    chords: "E, A, B, C#m",
+    abc: `X:1
+T:De f\u00f8rste satisfactions
+C:TV-2
+M:4/4
+L:1/8
+K:E
+"E"E2 ^G2 B2 e2|"A"c2 A2 E4|"B"B,2 ^D2 F2 A2|"E"^G6 z2|
+"C#m"^c2 e2 ^g2 e2|"A"c2 A2 E4|"B"F2 ^D2 B,2 ^D2|"E"E6 z2|]`
+  },
+  {
+    title: "Rabalderstræde",
+    artist: "Gasolin'",
+    tags: ["dansk", "analyse", "udkast"],
+    chords: "A, D, E",
+    abc: `X:1
+T:Rabalderstr\u00e6de
+C:Gasolin'
+M:4/4
+L:1/8
+K:A
+"A"A2 c2 e2 c2|"D"d2 A2 F4|"E"E2 ^G2 B2 A2|"A"A6 z2|
+"A"e2 e2 d2 c2|"D"d2 d2 A4|"E"B2 ^G2 E2 ^G2|"A"A6 z2|]`
+  },
+
+  // ===== INTERNATIONAL - BEGYNDER =====
+  {
+    title: "Knockin' on Heaven's Door",
+    artist: "Bob Dylan",
+    tags: ["international", "beginner", "verified"],
+    chords: "G, D, Am, C",
+    abc: `X:1
+T:Knockin' on Heaven's Door
+C:Bob Dylan
+M:4/4
+L:1/4
+K:G
+"G"G A B d|"D"A2 F2|"Am"A G E D|"G"G4|
+"G"G A B d|"D"d A F2|"C"E G c B|"G"G4|]`
+  },
+  {
+    title: "Let It Be",
+    artist: "Beatles",
+    tags: ["international", "beginner", "verified"],
+    chords: "C, G, Am, F",
+    abc: `X:1
+T:Let It Be
+C:Lennon/McCartney
+M:4/4
+L:1/8
+K:C
+"C"G2 G2 G2 A2|"G"B2 d2 d4|"Am"c2 c2 A2 G2|"F"A4 G4|
+"C"E2 E2 G2 c2|"G"B2 A2 G4|"Am"A2 G2 "F"F2 E2|"C"C6 z2|]`
+  },
+  {
+    title: "Hey Jude",
+    artist: "Beatles",
+    tags: ["international", "beginner", "udkast"],
+    chords: "F, C, Bb, Gm",
+    abc: `X:1
+T:Hey Jude
+C:Lennon/McCartney
+M:4/4
+L:1/8
+K:F
+"F"c2 A2 A2 G2|"C"G2 E2 C4|"F"F2 A2 c2 d2|"Bb"d6 z2|
+"F"c2 c2 d2 c2|"C"B2 A2 G4|"F"A2 G2 F2 E2|"F"F6 z2|]`
+  },
+  {
+    title: "No Woman No Cry",
+    artist: "Bob Marley",
+    tags: ["international", "beginner", "verified"],
+    chords: "C, G, Am, F",
+    abc: `X:1
+T:No Woman No Cry
+C:Bob Marley
+M:4/4
+L:1/8
+K:C
+"C"G,2 C2 E2 G2|"G"G2 F2 E2 D2|"Am"E2 C2 A,4|"F"F,2 A,2 C2 E2|
+"C"E2 G2 c2 B2|"G"A2 G2 E4|"Am"A2 G2 "F"F2 E2|"C"C6 z2|]`
+  },
+  {
+    title: "Three Little Birds",
+    artist: "Bob Marley",
+    tags: ["international", "beginner", "udkast"],
+    chords: "A, D, E",
+    abc: `X:1
+T:Three Little Birds
+C:Bob Marley
+M:4/4
+L:1/8
+K:A
+"A"A2 c2 e2 e2|"A"c2 A2 A4|"D"d2 d2 c2 A2|"A"c6 z2|
+"A"e2 e2 d2 c2|"D"d2 A2 F4|"E"E2 ^G2 B2 A2|"A"A6 z2|]`
+  },
+  {
+    title: "Stand By Me",
+    artist: "Ben E. King",
+    tags: ["international", "beginner", "verified"],
+    chords: "C, Am, F, G",
+    abc: `X:1
+T:Stand By Me
+C:Ben E. King / Leiber-Stoller
+M:4/4
+L:1/8
+K:C
+"C"C2 E2 G2 G2|"Am"A2 G2 E4|"F"F2 F2 G2 A2|"G"G4 E4|
+"C"C2 E2 G2 c2|"Am"A2 G2 E4|"F"F2 "G"G2 "C"C4|z8|]`
+  },
+  {
+    title: "Riptide",
+    artist: "Vance Joy",
+    tags: ["international", "beginner", "udkast"],
+    chords: "Am, G, C",
+    abc: `X:1
+T:Riptide
+C:Vance Joy
+M:4/4
+L:1/8
+K:C
+"Am"A2 A2 G2 E2|"G"G2 E2 D4|"C"C2 E2 G2 c2|"C"c4 z4|
+"Am"c2 A2 A2 G2|"G"G2 G2 E4|"C"E2 G2 c2 B2|"C"c4 z4|]`
+  },
+  {
+    title: "Zombie",
+    artist: "Cranberries",
+    tags: ["international", "beginner", "udkast"],
+    chords: "Em, C, G, D",
+    abc: `X:1
+T:Zombie
+C:Cranberries
+M:4/4
+L:1/8
+K:Em
+"Em"E2 E2 G2 A2|"C"G2 E2 C4|"G"D2 G2 B2 A2|"D"A6 z2|
+"Em"B2 B2 A2 G2|"C"G2 E2 E4|"G"D2 D2 E2 D2|"Em"E6 z2|]`
+  },
+  {
+    title: "Wish You Were Here",
+    artist: "Pink Floyd",
+    tags: ["international", "beginner", "analyse", "udkast"],
+    chords: "G, Em, A, C, D",
+    abc: `X:1
+T:Wish You Were Here
+C:Pink Floyd
+M:4/4
+L:1/8
+K:G
+"Em"E2 G2 B2 d2|"G"d2 B2 G4|"A"A2 c2 e2 d2|"Em"B6 z2|
+"C"c2 G2 E2 G2|"D"A2 F2 D4|"G"G2 B2 d2 d2|"G"d6 z2|]`
+  },
+  {
+    title: "Perfect",
+    artist: "Ed Sheeran",
+    tags: ["international", "beginner", "udkast"],
+    chords: "G, Em, C, D",
+    abc: `X:1
+T:Perfect
+C:Ed Sheeran
+M:6/8
+L:1/8
+K:G
+"G"B2 B B2 d|"Em"e2 d B2 G|"C"E2 G G2 A|"D"A3 z3|
+"G"B2 B B2 d|"Em"e2 e d2 B|"C"c2 B "D"A2 G|"G"G3 z3|]`
+  },
+  {
+    title: "Shallow",
+    artist: "Lady Gaga / Bradley Cooper",
+    tags: ["international", "beginner", "udkast"],
+    chords: "Em, D/F#, G, C, Am",
+    abc: `X:1
+T:Shallow
+C:Lady Gaga
+M:4/4
+L:1/8
+K:Em
+"Em"E2 E2 G2 B2|"D"A2 F2 D4|"G"G2 B2 d2 d2|"C"c6 z2|
+"Am"A2 c2 e2 d2|"D"d2 A2 F4|"G"G2 B2 d2 c2|"Em"B6 z2|]`
+  },
+  {
+    title: "Wonderwall",
+    artist: "Oasis",
+    tags: ["international", "beginner", "udkast"],
+    chords: "Em, G, D, A7sus4",
+    abc: `X:1
+T:Wonderwall
+C:Oasis
+M:4/4
+L:1/8
+K:Em
+"Em"E2 G2 B2 A2|"G"G2 B2 d4|"D"d2 A2 F2 A2|"A"c6 z2|
+"Em"B2 B2 A2 G2|"G"G2 d2 d4|"D"d2 c2 A2 G2|"Em"E6 z2|]`
+  },
+  {
+    title: "Horse With No Name",
+    artist: "America",
+    tags: ["international", "beginner", "verified"],
+    chords: "Am, E",
+    abc: `X:1
+T:Horse With No Name
+C:America
+M:4/4
+L:1/8
+K:Am
+"Am"A2 A2 A2 B2|"E"B2 ^G2 E4|"Am"A2 A2 c2 B2|"E"B4 E4|
+"Am"A2 c2 e2 d2|"E"B2 ^G2 E4|"Am"A2 B2 c2 A2|"E"E6 z2|]`
+  },
+  {
+    title: "House of the Rising Sun",
+    artist: "The Animals",
+    tags: ["international", "beginner", "analyse", "verified"],
+    chords: "Am, C, D, F, E",
+    abc: `X:1
+T:House of the Rising Sun
+C:Traditional / The Animals
+M:6/8
+L:1/8
+K:Am
+"Am"A2 c e2 e|"C"e2 c G2 E|"D"D2 F A2 A|"F"A2 F C2 A,|
+"Am"A,2 C E2 E|"E"^G,2 B, E2 D|"Am"C3 A,3|z6|]`
+  },
+  {
+    title: "Have You Ever Seen the Rain",
+    artist: "Creedence Clearwater Revival",
+    tags: ["international", "beginner", "udkast"],
+    chords: "C, G, F",
+    abc: `X:1
+T:Have You Ever Seen the Rain
+C:CCR
+M:4/4
+L:1/8
+K:C
+"C"E2 G2 c2 c2|"G"B2 A2 G4|"C"G2 c2 e2 d2|"C"c6 z2|
+"F"F2 A2 c2 c2|"C"c2 G2 E4|"G"D2 G2 B2 A2|"C"G6 z2|]`
+  },
+
+  // ===== INTERNATIONAL - ANALYSE =====
+  {
+    title: "Hallelujah",
+    artist: "Leonard Cohen",
+    tags: ["international", "analyse", "verified"],
+    chords: "C, Am, F, G, E7",
+    abc: `X:1
+T:Hallelujah
+C:Leonard Cohen
+M:6/8
+L:1/8
+K:C
+"C"E2 E E2 E|"Am"E2 E E2 G|"C"G2 G G2 E|"Am"A3 z3|
+"F"A2 A A2 G|"G"G2 E C2 D|"C"E3 "G"D3|"C"C3 z3|]`
+  },
+  {
+    title: "Yesterday",
+    artist: "Beatles",
+    tags: ["international", "analyse", "verified"],
+    chords: "F, Em7, A7, Dm, Bb, C",
+    abc: `X:1
+T:Yesterday
+C:Lennon/McCartney
+M:4/4
+L:1/8
+K:F
+"F"c4 d2 c2|"Em7"B2 A2 "A7"G2 F2|"Dm"D2 F2 A2 c2|"Bb"d4 "C"c4|
+"F"c4 A2 G2|"Dm"F2 E2 D4|"Bb"D2 E2 "C"F2 G2|"F"F6 z2|]`
+  },
+  {
+    title: "Imagine",
+    artist: "John Lennon",
+    tags: ["international", "analyse", "verified"],
+    chords: "C, F, Am, Dm, G, E",
+    abc: `X:1
+T:Imagine
+C:John Lennon
+M:4/4
+L:1/8
+K:C
+"C"C2 E2 G2 E2|"F"F4 E2 C2|"C"C2 E2 G2 E2|"F"F4 z4|
+"C"E2 G2 c2 B2|"F"A2 F2 C4|"C"G2 A2 G2 E2|"F"F6 z2|]`
+  },
+  {
+    title: "Creep",
+    artist: "Radiohead",
+    tags: ["international", "analyse", "verified"],
+    chords: "G, B, C, Cm",
+    abc: `X:1
+T:Creep
+C:Radiohead
+M:4/4
+L:1/8
+K:G
+"G"G2 B2 d2 d2|"B"d2 ^d2 f2 e2|"C"e2 c2 G4|"Cm"G2 _e2 c4|
+"G"B2 B2 d2 B2|"B"^d2 f2 f4|"C"e2 e2 d2 c2|"Cm"c4 z4|]`
+  },
+  {
+    title: "Bohemian Rhapsody",
+    artist: "Queen",
+    tags: ["international", "analyse", "udkast"],
+    chords: "Bb, Gm, Cm, F7, Eb, Ab, E, A, D, Db",
+    abc: `X:1
+T:Bohemian Rhapsody (intro)
+C:Freddie Mercury
+M:4/4
+L:1/8
+K:Bb
+"Bb"B,2 D2 F2 B2|"Gm"B2 A2 G4|"Cm"G2 _E2 C2 _E2|"F7"F6 z2|
+"Bb"d2 d2 c2 B2|"Eb"B2 G2 _E4|"Bb"F2 D2 B,2 D2|"F"C6 z2|]`
+  },
+  {
+    title: "Autumn Leaves",
+    artist: "Joseph Kosma (jazz standard)",
+    tags: ["international", "analyse", "verified"],
+    chords: "Cm7, F7, Bbmaj7, Ebmaj7, Am7b5, D7, Gm",
+    abc: `X:1
+T:Autumn Leaves
+C:Joseph Kosma
+M:4/4
+L:1/4
+K:Gm
+"Cm7"c d "F7"c A|"Bbmaj7"B2 z2|"Ebmaj7"_e d "Am7b5"c _B|"D7"A2 z2|
+"Gm"G A "Cm7"_B c|"F7"A2 F2|"Bbmaj7"G A "Am7b5"_B G|"D7"^F2 z2|]`
+  },
+  {
+    title: "Summertime",
+    artist: "Gershwin",
+    tags: ["international", "analyse", "verified"],
+    chords: "Am, E7, Dm, C, D7",
+    abc: `X:1
+T:Summertime
+C:George Gershwin
+M:4/4
+L:1/8
+K:Am
+"Am"e4 e2 d2|"E7"B4 A4|"Am"A2 G2 E2 D2|"Dm"E4 z4|
+"Am"A2 c2 d2 e2|"E7"e4 d4|"Am"c2 A2 "D7"G2 F2|"Am"E4 z4|]`
+  },
+  {
+    title: "Fly Me to the Moon",
+    artist: "Bart Howard (jazz standard)",
+    tags: ["international", "analyse", "verified"],
+    chords: "Am, Dm, G7, Cmaj7, Fmaj7, Bm7b5, E7",
+    abc: `X:1
+T:Fly Me to the Moon
+C:Bart Howard
+M:4/4
+L:1/4
+K:C
+"Am"c B A G|"Dm"F G A F|"G7"G A G F|"Cmaj7"E4|
+"Fmaj7"A G F E|"Bm7b5"D E F D|"E7"E F ^G E|"Am"A4|]`
+  },
+  {
+    title: "Blue Moon",
+    artist: "Rodgers & Hart (jazz standard)",
+    tags: ["international", "analyse", "udkast"],
+    chords: "C, Am, Dm, G7",
+    abc: `X:1
+T:Blue Moon
+C:Rodgers & Hart
+M:4/4
+L:1/4
+K:C
+"C"E2 G2|"Am"A G E C|"Dm"D F A G|"G7"G4|
+"C"c B A G|"Am"A G E2|"Dm"F E "G7"D2|"C"C4|]`
+  },
+  {
+    title: "So What",
+    artist: "Miles Davis",
+    tags: ["international", "analyse", "verified"],
+    chords: "Dm7 (dorisk), Ebm7 (dorisk)",
+    abc: `X:1
+T:So What
+C:Miles Davis
+M:4/4
+L:1/4
+K:Dm
+"Dm7"D F A c|d c A F|D F A d|c A F D|
+"Dm7"A, D F A|c A F D|A, D F D|A,4|]`
+  },
+  {
+    title: "Girl from Ipanema",
+    artist: "Antonio Carlos Jobim",
+    tags: ["international", "analyse", "udkast"],
+    chords: "Fmaj7, G7, Gm7, Gb7",
+    abc: `X:1
+T:Girl from Ipanema
+C:Antonio Carlos Jobim
+M:4/4
+L:1/8
+K:F
+"Fmaj7"G2 G2 F G A2|A2 G2 F G A G|"G7"G2 G2 F G A2|A2 G2 F G A2|
+"Gm7"G2 G2 F G A2|"Gb7"A2 G2 F G =E2|"Fmaj7"F6 z2|z8|]`
+  },
+
+  // ===== HØJSKOLESANGBOGEN =====
+  {
+    title: "I Danmark er jeg f\u00f8dt",
+    artist: "H.C. Andersen / Henrik Rung",
+    tags: ["hoejskole", "beginner", "verified"],
+    chords: "C, G, F, Am",
+    abc: `X:1
+T:I Danmark er jeg f\u00f8dt
+C:H.C. Andersen / Henrik Rung
+M:3/4
+L:1/4
+K:C
+"C"E G c|"G"B A G|"C"G E C|"F"F3|
+"C"E G c|"G"d B G|"Am"A "G"B "C"c|c3|]`
+  },
+  {
+    title: "Nu falmer skoven trindt om land",
+    artist: "N.F.S. Grundtvig / J.P.E. Hartmann",
+    tags: ["hoejskole", "beginner", "udkast"],
+    chords: "G, C, D, Em",
+    abc: `X:1
+T:Nu falmer skoven trindt om land
+C:Grundtvig / Hartmann
+M:4/4
+L:1/4
+K:G
+"G"G B d B|"C"c B A G|"D"A B c A|"G"B3 z|
+"Em"E G B A|"C"G E C E|"D"D G F A|"G"G3 z|]`
+  },
+  {
+    title: "Morgenstund har guld i mund",
+    artist: "Dansk folkevise",
+    tags: ["hoejskole", "beginner", "udkast"],
+    chords: "F, C, Bb, Gm",
+    abc: `X:1
+T:Morgenstund har guld i mund
+M:3/4
+L:1/4
+K:F
+"F"F A c|"C"G E C|"F"F A c|"Bb"B3|
+"F"c A F|"Gm"G B d|"C"c B A|"F"F3|]`
+  },
+  {
+    title: "Det er et yndigt land",
+    artist: "Adam Oehlenschl\u00e4ger / Hans Ernst Kr\u00f8yer",
+    tags: ["hoejskole", "beginner", "udkast"],
+    chords: "D, G, A, Bm",
+    abc: `X:1
+T:Det er et yndigt land
+C:Oehlenschl\u00e4ger / Kr\u00f8yer
+M:4/4
+L:1/4
+K:D
+"D"D F A d|"G"B A G F|"A"E A c B|"D"A3 z|
+"Bm"B d f e|"G"d B G B|"A"A c e d|"D"d3 z|]`
+  },
+  {
+    title: "Vi elsker vort land",
+    artist: "Dansk",
+    tags: ["hoejskole", "beginner", "udkast"],
+    chords: "G, D, Em, C",
+    abc: `X:1
+T:Vi elsker vort land
+M:4/4
+L:1/4
+K:G
+"G"G B d B|"D"A F D F|"Em"E G B A|"C"G3 z|
+"G"d B G B|"D"A d F A|"C"E G "D"A F|"G"G3 z|]`
+  }
+];
+
+// ===== STATE =====
+let currentFilter = 'all';
+let synthControllers = {};
+
+// ===== RENDER =====
+function renderSongs() {
+  const list = document.getElementById('songList');
+  const search = document.getElementById('searchInput').value.toLowerCase();
+  list.innerHTML = '';
+  let count = 0;
+
+  SONGS.forEach((song, idx) => {
+    // Filter
+    if (currentFilter !== 'all' && !song.tags.includes(currentFilter)) return;
+    // Search
+    if (search && !song.title.toLowerCase().includes(search) && !song.artist.toLowerCase().includes(search)) return;
+
+    count++;
+    const card = document.createElement('div');
+    card.className = 'song-card';
+    card.id = 'song_' + idx;
+
+    const tagsHTML = song.tags.map(t => {
+      const cls = t === 'dansk' ? 'tag-dansk' : t === 'international' ? 'tag-int' : t === 'hoejskole' ? 'tag-hoejskole' :
+                  t === 'beginner' ? 'tag-beginner' : t === 'analyse' ? 'tag-analyse' :
+                  t === 'verified' ? 'tag-verified' : t === 'udkast' ? 'tag-udkast' : '';
+      const label = t === 'dansk' ? 'Dansk' : t === 'international' ? 'International' : t === 'hoejskole' ? 'H\u00f8jskole' :
+                    t === 'beginner' ? 'Begynder' : t === 'analyse' ? 'Analyse' :
+                    t === 'verified' ? 'Verificeret' : t === 'udkast' ? 'Udkast' : t;
+      return `<span class="tag ${cls}">${label}</span>`;
+    }).join('');
+
+    card.innerHTML = `
+      <div class="song-header" onclick="toggleSong(${idx})">
+        <div class="song-info">
+          <h3>${song.title}</h3>
+          <span class="artist">${song.artist}</span>
+        </div>
+        <div class="song-tags">${tagsHTML} <span class="expand-icon">&#9660;</span></div>
+      </div>
+      <div class="song-body">
+        <div class="chord-info"><strong>Akkorder:</strong> ${song.chords}</div>
+        <div class="sheet-container" id="sheet_${idx}"></div>
+        <button class="play-btn" onclick="playSong(${idx})">&#9654; Afspil</button>
+      </div>
+    `;
+    list.appendChild(card);
+  });
+
+  document.getElementById('songCount').textContent = count + ' sange fundet';
+}
+
+function toggleSong(idx) {
+  const card = document.getElementById('song_' + idx);
+  const wasOpen = card.classList.contains('open');
+  card.classList.toggle('open');
+  if (!wasOpen) {
+    // Render ABC
+    setTimeout(() => {
+      const sheet = document.getElementById('sheet_' + idx);
+      if (sheet && sheet.children.length === 0) {
+        ABCJS.renderAbc('sheet_' + idx, SONGS[idx].abc, { responsive: 'resize' });
+      }
+    }, 50);
+  }
+}
+
+function playSong(idx) {
+  const sheet = document.getElementById('sheet_' + idx);
+  if (!sheet) return;
+  // Re-render to get visual object
+  const visualObj = ABCJS.renderAbc('sheet_' + idx, SONGS[idx].abc, { responsive: 'resize' });
+  if (visualObj && visualObj[0]) {
+    if (ABCJS.synth && ABCJS.synth.SynthController) {
+      const ctrl = new ABCJS.synth.SynthController();
+      const existing = sheet.parentElement.querySelector('.abcjs-midi-container');
+      if (!existing) {
+        const audioDiv = document.createElement('div');
+        audioDiv.className = 'abcjs-midi-container';
+        sheet.parentElement.insertBefore(audioDiv, sheet.nextSibling);
+        ctrl.load(audioDiv, null, {displayPlay: true, displayProgress: true});
+      }
+      ctrl.setTune(visualObj[0], false);
+    }
+  }
+}
+
+function setFilter(filter, btn) {
+  currentFilter = filter;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderSongs();
+}
+
+function filterSongs() {
+  renderSongs();
+}
+
+// ===== INIT =====
+document.addEventListener('DOMContentLoaded', renderSongs);
+</script>
+</body>
+</html>
